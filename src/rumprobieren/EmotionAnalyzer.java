@@ -21,7 +21,7 @@ public class EmotionAnalyzer {
 	
 	
 	/**
-	 * Constructor for EmotionAnalyzer loads EmotionLexicon (for recycling purposes)
+	 * Constructor for EmotionAnalyzer loads EmotionLexicon (for recycling purposes) and the compounts File2TokenReader and Token2Vectorizer.
 	 * @param givenLexiconPath
 	 * @throws IOException
 	 */
@@ -34,7 +34,9 @@ public class EmotionAnalyzer {
 	//performs the steps of the architecture
 	EmotionVector calculateEmotionVector(String givenDocumentPath, boolean printLookUps, boolean normalize) throws IOException{
 		lastProcessedDocument = givenDocumentPath;
+		//TODO wrap in document emotionContainer class (to be written)
 		HashMultiset<String> bagOfWords = this.f2tReader.produceBagOfWords(givenDocumentPath);
+		//TODO return EmotionContainer, so that all information (and the input settings aswell) about the document and its processing is available to the UI
 		return this.t2Vectorizer.calculateDocumentVector(bagOfWords,printLookUps,normalize);	
 	}
 	
