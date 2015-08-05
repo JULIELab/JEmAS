@@ -27,21 +27,32 @@ public class CorpusRenamer {
 	 * @param filePath
 	 * @return
 	 */
-	private static String getYear (String filePath){
+	private static String getYear (File givenFile){
 		//fileIndex <- index of the file in its folder
+		File folderOfGivenFile = givenFile.getParentFile();
+		ArrayList<File> folderContent = new ArrayList<File>(getFolderContents(folderOfGivenFile));
+		int indexOfGivenFile = folderContent.indexOf(givenFile);	
 		//get files in parallel folder
+		ArrayList<File> parallelFoldersContent = new ArrayList<File>(getFolderContents(new File(getParallelFolder(folderOfGivenFile))));
 		//pick the parallel file
-		//extract year from filename
-		//return
+		File parallelFile = parallelFoldersContent.get(indexOfGivenFile);
+		//extract year from filename and return it
+		return extractYear(parallelFile);
 		
-		return null;
 	}
 	
-	private static List<String> getFolderContents(String folderPath){
-		File folder = new File (folderPath);
-		ArrayList<String> content = new ArrayList<String>(Arrays.asList(folder.list()));
+	private static List<File> getFolderContents(File givenFile){
+		ArrayList<File> content = new ArrayList<File>(Arrays.asList(givenFile.listFiles()));
 		return content;
+	}
 	
+	static String extractYear (File givenFile){
+		String filename = givenFile.getName();
+		filename = filename.replaceAll("\\^[^\\d\\]*", ""); //cuts off every non-digit preface
+		filename = filename.replaceAll("^3M-", ""); //for the enterprise 3M, because the format is different in the corpus...
+		filename = filename.replaceAll("\\.pdf", ""); //cuts off suffix
+		return null;
+		
 	}
 	
 /**
@@ -50,8 +61,9 @@ public class CorpusRenamer {
  * @param folder
  * @return
  */
-	static String getParallelFolder(String folder){
-		return folder.replaceFirst("/Reports_TxT/", "Reports/");
+	static String getParallelFolder(File folder){
+		String folderPath = folder.getAbsolutePath();
+		return folderPath.replaceFirst("/Reports_TxT/", "Reports/");
 	}
 
 }
