@@ -50,7 +50,7 @@ public class CorpusRenamer {
 		String filename = givenFile.getName();
 		filename = filename.replaceAll("\\^[^\\d\\]*", ""); //cuts off every non-digit preface
 		filename = filename.replaceAll("^3M-", ""); //for the enterprise 3M, because the format is different in the corpus...
-		filename = filename.replaceAll("\\.pdf", ""); //cuts off suffix
+		filename = filename.replaceAll("\\.pdf$", ""); //cuts off suffix
 		return null;
 		
 	}
