@@ -1,4 +1,4 @@
-package rumprobieren;
+package emotionAnalyzer;
 
 /*
  * Vector representation of an emotion according to dimensional emotion model (also named VAD-model (valence, arousal, dominance).

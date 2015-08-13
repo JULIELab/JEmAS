@@ -1,4 +1,4 @@
-package rumprobieren;
+package emotionAnalyzer;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package rumprobieren;
+package emotionAnalyzer;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.google.common.collect.HashMultiset;
 
-public class TestsRumprobieren {
+public class Tests {
 	final EmotionVector vectorAIDS = new EmotionVector(-3.67, 0.0, -1.45);
 	final EmotionVector vectorCalm = new EmotionVector(1.89, -3.33, 2.44);
 	final EmotionVector vectorLobotomy = new EmotionVector(-2.55, 0.32, -3.0);
@@ -31,7 +31,7 @@ public class TestsRumprobieren {
 	@Test
 	public void testFile2Tokens() throws IOException  {
 		File2TokenReader reader = new File2TokenReader();
-		HashMultiset<String> bagOfWords = reader.produceBagOfWords("src/rumprobieren/testFile.txt");
+		HashMultiset<String> bagOfWords = reader.produceBagOfWords("src/emotionAnalyzer/testFile.txt");
 		Util.printBagOfWords(bagOfWords);
 		Util.printBagOfWords(getTestBagOfWords());
 		assertTrue(bagOfWords.equals(getTestBagOfWords()));

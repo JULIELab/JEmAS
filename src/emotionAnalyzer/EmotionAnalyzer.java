@@ -1,4 +1,4 @@
-package rumprobieren;
+package emotionAnalyzer;
 
 import java.io.IOException;
 
@@ -8,10 +8,10 @@ public class EmotionAnalyzer {
 //	private String documentPath =null;
 //	private EmotionVector documentVector=null;
 	
-	public static String TESTFILE ="src/rumprobieren/testFile.txt";
-	public static String TESTFILE2 ="src/rumprobieren/testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
-	public static String DEFAULTLEXICON ="/Users/sven/Documents/workspace/EmotionAnalyzer/src/rumprobieren/LexiconWarriner2013_transformed.txt";
-	public static String TESTLEXICON="src/rumprobieren/testLexicon.txt";
+	public static String TESTFILE ="src/emotionAnalyzer/testFile.txt";
+	public static String TESTFILE2 ="src/emotionAnalyzer/testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
+	public static String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
 	static EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
 	
 	EmotionLexicon lexicon=null;

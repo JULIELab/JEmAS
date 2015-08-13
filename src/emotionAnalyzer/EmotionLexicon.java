@@ -1,4 +1,4 @@
-package rumprobieren;
+package emotionAnalyzer;
 
 import com.google.common.hash.*;
 
@@ -19,7 +19,7 @@ import com.google.common.collect.HashMultiset;
 
 public class EmotionLexicon {
 	
-	String lexiconPath="/Users/sven/Documents/workspace/EmotionAnalyzer/src/rumprobieren/LexiconWarriner2013_transformed.txt";	//TODO put in config-file?
+	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";	//TODO put in config-file?
 	HashMap<String, EmotionVector> LexiconMap = new HashMap<String, EmotionVector>(14000,(float)1.0);
 	public EmotionVector neutralVector = new EmotionVector(0,0,0); //TODO in config-file oder an andere Stelle?
 	
