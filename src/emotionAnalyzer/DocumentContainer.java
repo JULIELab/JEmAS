@@ -1,5 +1,7 @@
 package emotionAnalyzer;
 
+import java.io.IOException;
+
 import com.google.common.collect.HashMultiset;
 
 /**
@@ -21,11 +23,13 @@ public class DocumentContainer {
 		return this.documentPath;
 	}
 
-	private EmotionVector emotionVector;
+	private EmotionVector normalizedEmotionVector;
 
-	public EmotionVector getEmotionVector() {
-		return emotionVector;
+	public EmotionVector getNormalizedEmotionVector() {
+		return normalizedEmotionVector;
 	}
+	
+	private EmotionVector sumOfVectors;
 
 	private int tokenCount;
 
@@ -54,7 +58,29 @@ public class DocumentContainer {
 	public void setBagOfWords(HashMultiset<String> bagOfWords) {
 		this.bagOfWords = bagOfWords;
 	}
+	
+	public void calculateBagOfWords(File2TokenReader givenF2TReader) throws IOException{
+		this.bagOfWords = givenF2TReader.produceBagOfWords(this.documentPath);
+		this.tokenCount = this.bagOfWords.size();
+	}
+	
+	public void calculateSumOfVectors(Token2Vectorizer givenToken2Vectorizer) throws IOException{
+		VectorizationResult result = givenToken2Vectorizer.calculateDocumentVector(this.bagOfWords); //calcualtes not normalized emotion vector (sum of found vectors
+		this.sumOfVectors = result.getEmotionVector();
+		this.sumOfVectors.print();
+		this.vectorCount = result.getNumberOfAddedVectors();
+	}
+	
+	
+	public void normalizeDocumentVector(VectorNormalizer givenVectorNormalizer){
+		this.normalizationParameter = givenVectorNormalizer.calculateNormalizationParameter(this.vectorCount);
+		this.normalizedEmotionVector = givenVectorNormalizer.calculateNormalizedDocumentVector(this.sumOfVectors, this.normalizationParameter);
+	}
 
-	// TODO Anzahl zugeordneter Vektoren, Normalisierungsparameter,...
+	public EmotionVector getSumOfVectors() {
+		return sumOfVectors;
+	}
+
+
 
 }

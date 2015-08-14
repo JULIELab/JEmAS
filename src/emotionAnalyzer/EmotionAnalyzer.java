@@ -2,6 +2,8 @@ package emotionAnalyzer;
 
 import java.io.IOException;
 
+import org.w3c.dom.views.DocumentView;
+
 import com.google.common.collect.HashMultiset;
 
 public class EmotionAnalyzer {
@@ -17,7 +19,8 @@ public class EmotionAnalyzer {
 	EmotionLexicon lexicon=null;
 	File2TokenReader f2tReader =null;
 	Token2Vectorizer t2Vectorizer =null;
-	String lastProcessedDocument="";
+	VectorNormalizer vectorNormalizer = null;
+//	String lastProcessedDocument="";
 	
 	
 	/**
@@ -29,35 +32,47 @@ public class EmotionAnalyzer {
 		this.lexicon = new EmotionLexicon(givenLexiconPath);
 		this.f2tReader = new File2TokenReader();
 		this.t2Vectorizer = new Token2Vectorizer(this.lexicon);
+		this.vectorNormalizer = new VectorNormalizer();
 	}
 	
-	//performs the steps of the architecture
-	EmotionVector calculateEmotionVector(String givenDocumentPath, boolean printLookUps, boolean normalize) throws IOException{
-		lastProcessedDocument = givenDocumentPath;
-		//TODO wrap in document emotionContainer class (to be written)
-		HashMultiset<String> bagOfWords = this.f2tReader.produceBagOfWords(givenDocumentPath);
-		//TODO return EmotionContainer, so that all information (and the input settings aswell) about the document and its processing is available to the UI
-		return this.t2Vectorizer.calculateDocumentVector(bagOfWords,printLookUps,normalize);	
+	
+//	EmotionVector analyzeEmotions(String givenDocumentPath, boolean printLookUps, boolean normalize) throws IOException{
+////		lastProcessedDocument = givenDocumentPath;
+//		//TODO wrap in document emotionContainer class (to be written)
+//		HashMultiset<String> bagOfWords = this.f2tReader.produceBagOfWords(givenDocumentPath);
+//		//TODO return EmotionContainer, so that all information (and the input settings aswell) about the document and its processing is available to the UI
+//		return this.t2Vectorizer.calculateDocumentVector(bagOfWords,printLookUps,normalize);	
+//	}
+//	
+//	EmotionVector calculateEmotionVector(String givenDocumentPath) throws IOException{
+//		return analyzeEmotions(givenDocumentPath, false, true);
+//	}
+	
+	
+	DocumentContainer analyzeEmotions(String givenDocumentPath) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
+		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath);
+		//calculates BagOfWords in documentContainer using f2tReader
+		documentContainer.calculateBagOfWords(this.f2tReader);
+		documentContainer.calculateSumOfVectors(t2Vectorizer);
+		documentContainer.normalizeDocumentVector(vectorNormalizer);
+		return documentContainer; //return 
+		
 	}
 	
-	EmotionVector calculateEmotionVector(String givenDocumentPath) throws IOException{
-		return calculateEmotionVector(givenDocumentPath, false, true);
-	}
-	
-	void presentResults(EmotionVector documentVector, boolean printTemplate){
-		if (printTemplate){
-			EmotionVector.printTemplate(true);
-		}
-		System.out.print(lastProcessedDocument + "\t ");
-		documentVector.print();
-	}
+//	void presentResults(EmotionVector documentVector, boolean printTemplate){
+//		if (printTemplate){
+//			EmotionVector.printTemplate(true);
+//		}
+//		System.out.print(lastProcessedDocument + "\t ");
+//		documentVector.print();
+//	}
 	
 	void showLexicon(){
 		this.lexicon.printLexicon();
 	}
 	
-	public DocumentContainer analyzeEmotions (String DocumentPath){
-		return null;
-	}
+//	public DocumentContainer analyzeEmotions (String DocumentPath){
+//		return null;
+//	}
 
 }

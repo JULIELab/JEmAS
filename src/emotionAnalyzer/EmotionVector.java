@@ -65,6 +65,7 @@ public class EmotionVector {
 	}
 	
 	/**
+	 *DEPRECATED: use VectorNormalizer.calculateNormalizedDocumentVector
 	 * Divides vector by given integer, e.g. to normalize the emotion vector of a document with the length of the document (number of tokens
 	 * or other measure).
 	 * @param length

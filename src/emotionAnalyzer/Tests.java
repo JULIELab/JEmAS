@@ -37,28 +37,46 @@ public class Tests {
 		assertTrue(bagOfWords.equals(getTestBagOfWords()));
 	}
 	
+//	@Test
+//	public void testToken2Vectorizer() throws IOException{
+//		Token2Vectorizer testVectorizer = new Token2Vectorizer(new EmotionLexicon(EmotionAnalyzer.TESTLEXICON)); //initiates an instance of Token2Vectorizer with test lexicon
+//		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), true,false);
+//		 EmotionVector documentVector = result.getEmotionVector();
+//		 assertTrue(documentVector.equals(testVector));
+//		//tests mode with normalization
+//		result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), true, true);
+//		documentVector = result.getEmotionVector();
+//		assertTrue(documentVector.equals(testVectorNormalized));
+//		System.out.println("Normalization works");	
+//	}
+	
 	@Test
 	public void testToken2Vectorizer() throws IOException{
 		Token2Vectorizer testVectorizer = new Token2Vectorizer(new EmotionLexicon(EmotionAnalyzer.TESTLEXICON)); //initiates an instance of Token2Vectorizer with test lexicon
-		EmotionVector documentVector = testVectorizer.calculateDocumentVector(getTestBagOfWords(), true,false);
-		assertTrue(documentVector.equals(testVector));
+		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords());
+		 EmotionVector documentVector = result.getEmotionVector();
+		 assertTrue(documentVector.equals(testVector));
 		//tests mode with normalization
-		documentVector = testVectorizer.calculateDocumentVector(getTestBagOfWords(), true, true);
+		result = testVectorizer.calculateDocumentVector(getTestBagOfWords());
+		documentVector = result.getEmotionVector();
+		VectorNormalizer normalizer = new VectorNormalizer();
+		documentVector = normalizer.calculateNormalizedDocumentVector(documentVector, 4); // 4 is the expected normalization parameter for the testing bag of words.
 		assertTrue(documentVector.equals(testVectorNormalized));
-		System.out.println("Normalization works");
-		
-		
-		
-	}
+		System.out.println("Normalization works");	
+	}	
 		
 
 
 		@Test
 	public void testEmotionAnalyzer() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
-		EmotionVector documentVector= analyzer.calculateEmotionVector(EmotionAnalyzer.TESTFILE,true,false);
-		assertTrue(documentVector.equals(testVector));
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE);
+		EmotionVector documentVector = documentContainer.getSumOfVectors();
 		documentVector.print();
+		documentContainer.getNormalizedEmotionVector().print();
+		testVector.print();
+		assertTrue(documentVector.equals(testVector));
+		
 	}
 	
 	@Test
@@ -72,8 +90,11 @@ public class Tests {
 //		analyzer.lexicon.lookUp("librarian").print();
 //		analyzer.lexicon.lookUp("earthquake").print();
 		
-		EmotionVector documentVector= analyzer.calculateEmotionVector(EmotionAnalyzer.TESTFILE2,true,false);
-		documentVector.print();
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2);
+		EmotionVector documentVector = documentContainer.getSumOfVectors();
+		documentContainer.getSumOfVectors().print();
+		documentContainer.getNormalizedEmotionVector().print();
+		testVector2.print();
 		assertTrue(documentVector.equals(testVector2));
 		
 	}
@@ -83,7 +104,8 @@ public class Tests {
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
 		System.out.println("used lexicon:");
 		analyzer.showLexicon();
-		EmotionVector documentVector = analyzer.calculateEmotionVector(EmotionAnalyzer.TESTFILE);
+		DocumentContainer documentContainer = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE);
+		EmotionVector documentVector = 	documentContainer.getNormalizedEmotionVector();
 		assertTrue(documentVector.equals(testVectorNormalized));
 		System.out.println("\ndocument vector:");
 		documentVector.print();
@@ -98,8 +120,10 @@ public class Tests {
 //		analyzer.lexicon.lookUp("leukemia").print();
 //		analyzer.lexicon.lookUp("librarian").print();
 //		analyzer.lexicon.lookUp("earthquake").print();	
-		EmotionVector documentVector= analyzer.calculateEmotionVector(EmotionAnalyzer.TESTFILE2);
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2);
+		EmotionVector documentVector = documentContainer.getNormalizedEmotionVector();
 		documentVector.print();
+		testVectorNormalized2.print();
 		assertTrue(documentVector.equals(testVectorNormalized2));
 		
 	}
