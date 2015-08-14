@@ -55,5 +55,9 @@ public class EmotionAnalyzer {
 	void showLexicon(){
 		this.lexicon.printLexicon();
 	}
+	
+	public DocumentContainer analyzeEmotions (String DocumentPath){
+		return null;
+	}
 
 }
