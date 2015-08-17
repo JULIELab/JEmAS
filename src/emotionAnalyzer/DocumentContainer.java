@@ -59,12 +59,12 @@ public class DocumentContainer {
 		this.bagOfWords = bagOfWords;
 	}
 	
-	public void calculateBagOfWords(File2TokenReader givenF2TReader) throws IOException{
-		this.bagOfWords = givenF2TReader.produceBagOfWords(this.documentPath);
+	public void calculateBagOfWords(File2BagOfWords_Processor givenF2TReader) throws IOException{
+		this.bagOfWords = givenF2TReader.produceBagOfWords_Token(this.documentPath);
 		this.tokenCount = this.bagOfWords.size();
 	}
 	
-	public void calculateSumOfVectors(Token2Vectorizer givenToken2Vectorizer) throws IOException{
+	public void calculateSumOfVectors(BagOfWords2Vector_Processor givenToken2Vectorizer) throws IOException{
 		VectorizationResult result = givenToken2Vectorizer.calculateDocumentVector(this.bagOfWords); //calcualtes not normalized emotion vector (sum of found vectors
 		this.sumOfVectors = result.getEmotionVector();
 		this.sumOfVectors.print();

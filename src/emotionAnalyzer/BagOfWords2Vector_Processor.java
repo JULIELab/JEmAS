@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import com.google.common.collect.HashMultiset;
 
-public class Token2Vectorizer {
+public class BagOfWords2Vector_Processor {
 //	private HashMultiset<String> bagOfWords = null;
 //	private EmotionVector documentVector = null;
 	private EmotionLexicon lexicon = null;
 	
-	public Token2Vectorizer(EmotionLexicon givenLexicon) throws IOException{
+	public BagOfWords2Vector_Processor(EmotionLexicon givenLexicon) throws IOException{
 //	this.bagOfWords=givenSet;
 	this.lexicon = givenLexicon; //TODO besser in der hauptklasse laden und recyceln.
 //	this.calculateDocumentVector();

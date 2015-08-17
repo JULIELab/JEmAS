@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import com.google.common.collect.HashMultiset;
 
+import edu.stanford.nlp.util.logging.NewlineLogFormatter;
+
 public class Tests {
 	final EmotionVector vectorAIDS = new EmotionVector(-3.67, 0.0, -1.45);
 	final EmotionVector vectorCalm = new EmotionVector(1.89, -3.33, 2.44);
@@ -20,6 +22,10 @@ public class Tests {
 	final EmotionVector testVector2 = new EmotionVector(-8.43, -3.75, -7.04);
 	final EmotionVector testVectorNormalized2 = new EmotionVector(-8.43/6.0, -3.75/6.0, -7.04/6.0); //this vector should be the normalized (divided by number of found lexicon entries) document vector of testFile2.txt using defaultLexicon.
 	
+	/**
+	 * 
+	 * @return Returns A HashMultiSet containing the expected tokens from testFile.txt
+	 */
 	public HashMultiset<String> getTestBagOfWords(){
 		HashMultiset<String> testBagOfWords = HashMultiset.create();
 		String[] strArray = {"test", "fish", "fish", "fish", ".",".",".", "ThisIsNotInLexicon"};
@@ -28,13 +34,54 @@ public class Tests {
 		return testBagOfWords;
 	}
 	
+	/**
+	 * 
+	 * @return Returns A HashMultiSet containing the stemmed forms of testFile3.txt
+	 */
+	public HashMultiset<String> getTestBagOfWords_Stem(){
+		HashMultiset<String> testBagOfWords = HashMultiset.create();
+		String[] strArray = {"veri", "outsid", "happi", "go", "I", "to", "am", "."};
+		for (String str: strArray){
+			testBagOfWords.add(str);}
+		return testBagOfWords;
+	}
+	
+	/**
+	 * 
+	 * @return Returns A HashMultiSet containing the lemmatized forms of testFile3.txt
+	 */
+	public HashMultiset<String> getTestBagOfWords_Lemma(){
+		HashMultiset<String> testBagOfWords = HashMultiset.create();
+		String[] strArray = {"very", "be", "outside", "happy", "go", "I", "to", "."};
+		for (String str: strArray){
+			testBagOfWords.add(str);}
+		return testBagOfWords;
+	}
+	
+	
 	@Test
 	public void testFile2Tokens() throws IOException  {
-		File2TokenReader reader = new File2TokenReader();
-		HashMultiset<String> bagOfWords = reader.produceBagOfWords("src/emotionAnalyzer/testFile.txt");
+		File2BagOfWords_Processor reader = new File2BagOfWords_Processor();
+		HashMultiset<String> bagOfWords = reader.produceBagOfWords_Token(EmotionAnalyzer.TESTFILE);
 		Util.printBagOfWords(bagOfWords);
-		Util.printBagOfWords(getTestBagOfWords());
+//		Util.printBagOfWords(getTestBagOfWords());
 		assertTrue(bagOfWords.equals(getTestBagOfWords()));
+	}
+	
+	@Test
+	public void testFile2Lemma() throws IOException{
+		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
+		HashMultiset<String> bagOfWords = processor.produceBagOfWords_Lemma(EmotionAnalyzer.TESTFILE3);
+		Util.printBagOfWords(bagOfWords);
+		assertEquals("Error in Lemmatization", getTestBagOfWords_Lemma(), bagOfWords);
+	}
+	
+	@Test
+	public void testFile2Stem() throws IOException{
+		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
+		HashMultiset<String> bagOfWords = processor.produceBagOfWords_Stems(EmotionAnalyzer.TESTFILE3);
+		Util.printBagOfWords(bagOfWords);
+		assertEquals("Error in stemming", getTestBagOfWords_Stem(), bagOfWords);
 	}
 	
 //	@Test
@@ -52,7 +99,7 @@ public class Tests {
 	
 	@Test
 	public void testToken2Vectorizer() throws IOException{
-		Token2Vectorizer testVectorizer = new Token2Vectorizer(new EmotionLexicon(EmotionAnalyzer.TESTLEXICON)); //initiates an instance of Token2Vectorizer with test lexicon
+		BagOfWords2Vector_Processor testVectorizer = new BagOfWords2Vector_Processor(new EmotionLexicon(EmotionAnalyzer.TESTLEXICON)); //initiates an instance of Token2Vectorizer with test lexicon
 		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords());
 		 EmotionVector documentVector = result.getEmotionVector();
 		 assertTrue(documentVector.equals(testVector));
@@ -182,6 +229,14 @@ public class Tests {
 				(vectorLovable.equals(lexicon.lookUp("lovable"))) &&
 				(lexicon.neutralVector.equals(lexicon.lookUp("this is not in dictionary"))) 
 				);
+	}
+	
+	@Test
+	public void testFile2String() throws IOException{
+		File2BagOfWords_Processor proc = new File2BagOfWords_Processor();
+		String str = proc.file2String(EmotionAnalyzer.TESTFILE);
+		System.out.println(str);
+		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 
 }

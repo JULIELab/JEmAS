@@ -28,17 +28,18 @@ public class UserInterface {
 	}
 	
 	private static void getVector(String documentPath) throws IOException{
-		EmotionVector calculatedVector=null;
 		EmotionAnalyzer currentEmotionAnalyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
+		DocumentContainer container = null;
 		try {
-			calculatedVector = currentEmotionAnalyzer.calculateEmotionVector(documentPath);
+			container = currentEmotionAnalyzer.analyzeEmotions(documentPath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
 			System.out.println("No such file!");
 		}
-		if (calculatedVector!=null) {
-			currentEmotionAnalyzer.presentResults(calculatedVector, false);
+		if (container!=null) {
+			EmotionVector.printTemplate();
+			container.getNormalizedEmotionVector().print();
 		}
 		
 	}

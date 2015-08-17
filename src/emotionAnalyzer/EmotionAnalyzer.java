@@ -12,13 +12,14 @@ public class EmotionAnalyzer {
 	
 	public static String TESTFILE ="src/emotionAnalyzer/testFile.txt";
 	public static String TESTFILE2 ="src/emotionAnalyzer/testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
+	public static String TESTFILE3 ="src/emotionAnalyzer/testFile3.txt";
 	public static String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
 	static EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
 	
 	EmotionLexicon lexicon=null;
-	File2TokenReader f2tReader =null;
-	Token2Vectorizer t2Vectorizer =null;
+	File2BagOfWords_Processor f2tReader =null;
+	BagOfWords2Vector_Processor t2Vectorizer =null;
 	VectorNormalizer vectorNormalizer = null;
 //	String lastProcessedDocument="";
 	
@@ -30,8 +31,8 @@ public class EmotionAnalyzer {
 	 */
 	public EmotionAnalyzer(String givenLexiconPath) throws IOException{
 		this.lexicon = new EmotionLexicon(givenLexiconPath);
-		this.f2tReader = new File2TokenReader();
-		this.t2Vectorizer = new Token2Vectorizer(this.lexicon);
+		this.f2tReader = new File2BagOfWords_Processor();
+		this.t2Vectorizer = new BagOfWords2Vector_Processor(this.lexicon);
 		this.vectorNormalizer = new VectorNormalizer();
 	}
 	
