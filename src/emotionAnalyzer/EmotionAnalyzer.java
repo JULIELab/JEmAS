@@ -6,6 +6,8 @@ import org.w3c.dom.views.DocumentView;
 
 import com.google.common.collect.HashMultiset;
 
+import emotionAnalyzer.DocumentContainer.Preprocessing;
+
 public class EmotionAnalyzer {
 //	private String documentPath =null;
 //	private EmotionVector documentVector=null;
@@ -50,8 +52,8 @@ public class EmotionAnalyzer {
 //	}
 	
 	
-	DocumentContainer analyzeEmotions(String givenDocumentPath) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
-		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath);
+	DocumentContainer analyzeEmotions(String givenDocumentPath, DocumentContainer.Preprocessing givenPreprocessor) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
+		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenPreprocessor);
 		//calculates BagOfWords in documentContainer using f2tReader
 		documentContainer.calculateBagOfWords(this.f2tReader);
 		documentContainer.calculateSumOfVectors(t2Vectorizer);

@@ -2,6 +2,8 @@ package emotionAnalyzer;
 
 import java.io.IOException;
 
+import org.w3c.dom.DocumentType;
+
 import com.google.common.collect.HashMultiset;
 
 /**
@@ -14,9 +16,14 @@ import com.google.common.collect.HashMultiset;
 public class DocumentContainer {
 
 	final private String documentPath;
+	
+	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE};
+	
+	Preprocessing usedPreprocessing = null;
 
-	public DocumentContainer(String documentPath) {
+	public DocumentContainer(String documentPath, Preprocessing givenPreprocessor) {
 		this.documentPath = documentPath;
+		this.usedPreprocessing = givenPreprocessor;
 	}
 
 	public String getDocumentPath() {
