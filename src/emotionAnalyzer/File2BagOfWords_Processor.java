@@ -57,7 +57,11 @@ public  class File2BagOfWords_Processor {
 		String doc = file2String(documentPath);
 		if (this.lemmatizer==null) this.lemmatizer = new StanfordLemmatizer();
 		List<String> lemmas = this.lemmatizer.lemmatize(doc);
-		for (String lemma: lemmas) lemmaMultiset.add(lemma);
+		for (String lemma: lemmas){
+			lemmaMultiset.add(lemma);
+			System.out.println(lemma);
+		}
+	
 		return lemmaMultiset;
 	}
 	

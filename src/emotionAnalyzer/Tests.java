@@ -115,8 +115,16 @@ public class Tests {
 		
 
 
-		@Test
-	public void testEmotionAnalyzer() throws IOException{
+	@Test
+	public void testEmotionAnalyzer_Lemmatize() throws IOException{
+		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_LEMMA);
+		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA);
+		EmotionVector documentVector = container.getNormalizedEmotionVector();
+		documentVector.print();
+	}
+	
+	@Test
+	public void testEmotionAnalyzer_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Preprocessing.TOKENIZE);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
@@ -128,7 +136,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void testEmotionAnalyzer2() throws IOException{
+	public void testEmotionAnalyzer2_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
 		//this is now done by the second parameter of calculateEmotionVector (printing all found dictionary entries	
 		//		analyzer.lexicon.lookUp("AIDS").print();
@@ -148,7 +156,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void testEmotionAnalyzerNormalized() throws IOException{
+	public void testEmotionAnalyzerNormalized_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
 		System.out.println("used lexicon:");
 		analyzer.showLexicon();
@@ -160,7 +168,7 @@ public class Tests {
 	}
 	
 	@Test
-	public void testEmotionAnalyzerNormalized2() throws IOException{
+	public void testEmotionAnalyzerNormalized2_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
 //		analyzer.lexicon.lookUp("AIDS").print();
 //		analyzer.lexicon.lookUp("calm").print();
