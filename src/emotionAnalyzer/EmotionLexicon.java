@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sound.sampled.Line;
 
@@ -21,10 +22,11 @@ public class EmotionLexicon {
 	
 	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";	//TODO put in config-file?
 	HashMap<String, EmotionVector> LexiconMap = new HashMap<String, EmotionVector>(14000,(float)1.0);
+	
 	public EmotionVector neutralVector = new EmotionVector(0,0,0); //TODO in config-file oder an andere Stelle?
 	
 	public EmotionLexicon() throws IOException{
-		System.out.println("loading lexicon");
+//		System.out.println("loading lexicon");
 		this.loadLexicon();
 	}
 	
@@ -34,6 +36,10 @@ public class EmotionLexicon {
 	
 	private void loadLexicon() throws IOException{
 		this.loadLexicon(lexiconPath);
+	}
+	
+	public Set<String> getKeySet(){
+		return LexiconMap.keySet();
 	}
 	
 	
