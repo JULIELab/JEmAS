@@ -200,7 +200,7 @@ public class PdfOptimizer {
 	 * @return
 	 * @throws IOException
 	 */
-	private String readFile(String filePath) throws IOException{
+	 String readFile(String filePath) throws IOException{
 		InputStreamReader in = new InputStreamReader(new FileInputStream(filePath), "UTF-8");
 		BufferedReader br = new BufferedReader(in);
 		String line = "";
