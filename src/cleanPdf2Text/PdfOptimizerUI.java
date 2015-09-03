@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public class PdfOptimizerUI {
 	
+	/**
+	 * Wendet die Methode PdfOptimizer.optimize für jede Datei in jedem Unterordner von /home/jago/PdfToTxt/output/ an.
+	 * @param args
+	 */
 	public static void main(String[] args){
 		PdfOptimizer optimizer = new PdfOptimizer();
 		
