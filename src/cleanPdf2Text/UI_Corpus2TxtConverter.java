@@ -10,10 +10,9 @@ public class UI_Corpus2TxtConverter {
 	/**
 	 * Erstellt zu allem im angegebenen Verzeichnis befindlichen PDF-Dokumenten eine bereinigte TXT-Datei im gleichen Verzeichnis.
 	 * @param args Erstes und einziges Argument: Ein Verzeichnis mit PDF-Dokumenten
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * @throws Exception 
 	 */
-	public static void main (String[] args) throws IOException, InterruptedException{
+	public static void main (String[] args) throws Exception{
 		File dir = new File(args[0]);
 		File[] files = dir.listFiles();
 		//Verzeichnis für die Dateien, die nicht konvertiert werden können, wegen Kopierschutz
@@ -28,8 +27,12 @@ public class UI_Corpus2TxtConverter {
 				try {
 					CleanPdf2TextConverter.convert(currentFile.getPath(), outputPath);
 				} catch (Exception e) {
-					//copy the elements which could not be converted into a seperated folder
-					Files.move(currentFile, new File (copyProtectionFolder.getPath()+"/"+currentFile.getName()));
+//					//copy the elements which could not be converted into a seperated folder
+//					Files.move(currentFile, new File (copyProtectionFolder.getPath()+"/"+currentFile.getName()));
+					
+					//file will be decrypted and conversion will be tried again
+					PdfDecrypter.decyptPdf(currentFile.getPath());
+					CleanPdf2TextConverter.convert(currentFile.getPath(), outputPath);
 				}
 			}
 		}
