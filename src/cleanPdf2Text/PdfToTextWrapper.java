@@ -14,7 +14,8 @@ public class PdfToTextWrapper {
 	 *
 	 */
 	public static void pdftotext(final String pdfPath, final String txtPath) throws IOException, InterruptedException{
-		new ProcessBuilder("./pdftotext", pdfPath, txtPath).start().waitFor();
+		System.out.println("Converting " + pdfPath +" ...");
+		new ProcessBuilder("/usr/local/bin/pdftotext", pdfPath, txtPath).start().waitFor();
 	}
 
 }

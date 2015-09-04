@@ -34,18 +34,14 @@ public class PdfOptimizer {
 	 * @param filePath
 	 * @throws IOException
 	 */
-	public void simpleOptimize(String inputPath, String outputPath) throws IOException{
-		String text = readFile(inputPath);
+	public void optimize(String inputPath, String outputPath) throws IOException{
+		String text = Util.readFile(inputPath);
 		System.out.println("OPTIMIZE "+inputPath+" ...");
 		text = repairTxt(text);
-		write(text, outputPath);
+		Util.write(text, outputPath);
 	}
 	
-	private void write (String content, String filePath) throws FileNotFoundException{
-		PrintWriter writer = new PrintWriter(filePath);
-		writer.write(content);
-		writer.close();
-	}
+	
 	
 	/**
 	 * "Repariert" die in ein txt umgewandelte PDF-Datei durch 
@@ -191,28 +187,15 @@ public class PdfOptimizer {
 		}
 		
 		all = all.replace("#", "");
+		/**
+		 * @Author Büchel
+		 * Regel hinzugefügt, die Non-Printing-Characters am Dokumentende und -anfang entfernt.
+		 */
+		all = all.trim();
 		return all;
 	}
 	
-	/**
-	 * Liest die angebene Datei und gibt sie als String zurück.
-	 * @param filePath
-	 * @return
-	 * @throws IOException
-	 */
-	 String readFile(String filePath) throws IOException{
-		InputStreamReader in = new InputStreamReader(new FileInputStream(filePath), "UTF-8");
-		BufferedReader br = new BufferedReader(in);
-		String line = "";
-		String all = "";
-		
-//		System.out.println("OPTIMIZE "+file+" ...");
-		
-		while((line = br.readLine()) != null){
-			all = all+line+"\n";
-		}
-		return all;
-	}
+	
 		
 
 
