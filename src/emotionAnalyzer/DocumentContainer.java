@@ -63,6 +63,9 @@ public class DocumentContainer {
 		return tokenCount;
 	}
 
+	/**
+	 * Number of word vectors which contribute to the document vector. Unlike in prior versions, only the words which can be found in the lexicon contribute to the vector count (unidentified words will be evaluated as null vecotor and not neutral vector anymore.)
+	 */
 	private int vectorCount;
 
 	private double normalizationParameter;
