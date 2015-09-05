@@ -1,7 +1,10 @@
 package emotionAnalyzer;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,9 +23,20 @@ public  class File2BagOfWords_Processor {
 	StanfordLemmatizer lemmatizer = null;
 	PorterStemmerInterface stemmer = null;
 
-
 	
 	public File2BagOfWords_Processor(){
+		// this is your print stream, store the reference
+		PrintStream err = System.err;
+
+		// now make all writes to the System.err stream silent 
+		System.setErr(new PrintStream(new OutputStream() {
+		    public void write(int b) {
+		    }
+		}));
+		this.lemmatizer = new StanfordLemmatizer();
+		this.stemmer = new PorterStemmerInterface();
+		// set everything back to its original state afterwards
+		System.setErr(err); 
 	}
 	
 	/**
@@ -59,7 +73,7 @@ public  class File2BagOfWords_Processor {
 		List<String> lemmas = this.lemmatizer.lemmatize(doc);
 		for (String lemma: lemmas){
 			lemmaMultiset.add(lemma);
-			System.out.println(lemma);
+//			System.out.println(lemma);
 		}
 	
 		return lemmaMultiset;
@@ -72,7 +86,7 @@ public  class File2BagOfWords_Processor {
 	 * @throws IOException
 	 */
 	public HashMultiset<String> produceBagOfWords_Stems(String documentPath) throws IOException{
-		if (this.stemmer==null) this.stemmer = new PorterStemmerInterface();
+//		if (this.stemmer==null) this.stemmer = new PorterStemmerInterface(); //TODO wird jetzt schon im Konstruktor geladen (dadurch kommen die Ausgaben vom lemmatizer an eine bessere Stelle)
 		HashMultiset<String> tokens = produceBagOfWords_Token(documentPath);
 		HashMultiset<String> stems = HashMultiset.create();
 		for (String str: tokens){

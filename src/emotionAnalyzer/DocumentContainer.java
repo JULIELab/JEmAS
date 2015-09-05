@@ -1,5 +1,6 @@
 package emotionAnalyzer;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.w3c.dom.DocumentType;
@@ -15,7 +16,8 @@ import com.google.common.collect.HashMultiset;
  */
 public class DocumentContainer {
 
-	final private String documentPath;
+	final private String documentPath; //TODO should be completely replaced by File
+	final private File documentFile;
 	
 	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE};
 	
@@ -24,10 +26,16 @@ public class DocumentContainer {
 	public DocumentContainer(String documentPath, Preprocessing givenPreprocessor) {
 		this.documentPath = documentPath;
 		this.usedPreprocessing = givenPreprocessor;
+		this.documentFile = new File(this.documentPath);
 	}
 
 	public String getDocumentPath() {
 		return this.documentPath;
+	}
+	
+	public void printData(){
+			System.out.println(this.documentFile.getName() + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength());
+		
 	}
 
 	private EmotionVector normalizedEmotionVector;

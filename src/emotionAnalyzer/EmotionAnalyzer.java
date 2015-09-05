@@ -10,6 +10,7 @@ public class EmotionAnalyzer {
 	public static String TESTFILE2 ="src/emotionAnalyzer/testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
 	public static String TESTFILE3 ="src/emotionAnalyzer/testFile3.txt";
 	public static String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
 	static EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
 	public static String TESTFILE_LEMMA = "src/emotionAnalyzer/testFile_Lemma.txt";

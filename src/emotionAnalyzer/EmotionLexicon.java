@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -34,8 +35,16 @@ public class EmotionLexicon {
 		this.loadLexicon(lexiconPath);
 	}
 	
-	private void loadLexicon() throws IOException{
-		this.loadLexicon(lexiconPath);
+
+	//deprecated?
+		private void loadLexicon() throws IOException{
+		try {
+			//if unpacked
+			this.loadLexicon(lexiconPath);
+		} catch (Exception e) {
+			//if packed in jar
+			this.loadLexicon(EmotionAnalyzer.DEFAULTLEXICON_JAR);
+		}
 	}
 	
 	public Set<String> getKeySet(){
@@ -46,7 +55,8 @@ public class EmotionLexicon {
 	private void loadLexicon(String path) throws IOException{
 		BufferedReader bReader = null;
 		String line = null;
-		 bReader = this.file2BufferedReader(path);
+		
+		bReader = this.file2BufferedReader(path);
 		 while ((line = bReader.readLine())!=null){
 			 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
 			 while (line.startsWith("//")){
@@ -57,9 +67,43 @@ public class EmotionLexicon {
 			 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
 				 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
 				 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
-				 this.LexiconMap.put(currentWord, currentVector);}
-		 	}
-		 return;
+				 this.LexiconMap.put(currentWord, currentVector);
+			 }
+		 }
+		
+//		 try {
+//			bReader = this.file2BufferedReader(path);
+//			 while ((line = bReader.readLine())!=null){
+//				 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
+//				 while (line.startsWith("//")){
+//					 line =bReader.readLine();
+//				 }
+//				 String[] line2Array = line.split("\t");
+//				 String currentWord = line2Array[0];
+//				 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
+//					 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
+//					 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
+//					 this.LexiconMap.put(currentWord, currentVector);}
+//			 }
+//		} catch (Exception e) {
+//			//if packed in jar
+////			bReader = this.file2BufferedReader(Util.getJarPath(path));
+//			bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/emotionAnalyzer/LexiconWarriner2013_transformed.txt")));
+//			 while ((line = bReader.readLine())!=null){
+//				 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
+//				 while (line.startsWith("//")){
+//					 line =bReader.readLine();
+//				 }
+//				 String[] line2Array = line.split("\t");
+//				 String currentWord = line2Array[0];
+//				 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
+//					 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
+//					 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
+//					 this.LexiconMap.put(currentWord, currentVector);}
+//			 }
+//			
+//		}
+//		 return;
 	}
 	
 	public EmotionVector lookUp(String token) throws IOException{
@@ -68,14 +112,22 @@ public class EmotionLexicon {
 	}
 	
 	
-	private BufferedReader file2BufferedReader(String path){
+	
+	/**
+	 * Returns a Buffered reader of the indicated file/resource. The path which worked in IDE should also work when packed into jar.
+	 * @param path
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	private BufferedReader file2BufferedReader(String path) throws FileNotFoundException{
 		BufferedReader bReader = null;
-		try {
-			bReader= new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			try {
+				//if not packed into jar
+				bReader= new BufferedReader(new FileReader(path));
+			} catch (Exception e) {
+				//if packed into jar
+				bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(Util.getJarLocation(path))));
+			}
 		return bReader;
 		
 	}
