@@ -18,15 +18,23 @@ public class DocumentContainer {
 
 	final private String documentPath; //TODO should be completely replaced by File
 	final private File documentFile;
-	
-	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE};
-	
+	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE}
 	Preprocessing usedPreprocessing = null;
+	final private String reportCategory;
+	final private String origin;
+	final private String organization;
+	final private String year;
+
 
 	public DocumentContainer(String documentPath, Preprocessing givenPreprocessor) {
 		this.documentPath = documentPath;
 		this.usedPreprocessing = givenPreprocessor;
 		this.documentFile = new File(this.documentPath);
+		String[] nameParts = this.documentFile.getName().split("\\.");
+		this.reportCategory = nameParts[0];
+		this.origin = nameParts[1];
+		this.organization = nameParts[2];
+		this.year = nameParts[3];
 	}
 
 	public String getDocumentPath() {
@@ -34,7 +42,7 @@ public class DocumentContainer {
 	}
 	
 	public void printData(){
-			System.out.println(this.documentFile.getName() + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength());
+			System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength());
 		
 	}
 
@@ -46,6 +54,9 @@ public class DocumentContainer {
 	
 	private EmotionVector sumOfVectors;
 
+	/**
+	 * Number of tokens in the input text. Tokenization is done be Stanfords PTBTokenizer.
+	 */
 	private int tokenCount;
 
 	public int getTokenCount() {

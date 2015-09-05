@@ -61,7 +61,7 @@ public  class File2BagOfWords_Processor {
 	
 	//TODO test!
 	/**
-	 * Loads file a given path into string representation. Process it with Stanford-Lemmatizer and returns it as Mulitset.
+	 * Loads file at given path into string representation. Process it with Stanford-Lemmatizer and returns it as Mulitset.
 	 * @param documentPath
 	 * @return
 	 * @throws IOException
@@ -69,7 +69,7 @@ public  class File2BagOfWords_Processor {
 	public HashMultiset<String> produceBagOfWords_Lemma(String documentPath) throws IOException{
 		HashMultiset<String> lemmaMultiset = HashMultiset.create();
 		String doc = file2String(documentPath);
-		if (this.lemmatizer==null) this.lemmatizer = new StanfordLemmatizer();
+//		if (this.lemmatizer==null) this.lemmatizer = new StanfordLemmatizer(); //deprecated. will be constructed in class constructor
 		List<String> lemmas = this.lemmatizer.lemmatize(doc);
 		for (String lemma: lemmas){
 			lemmaMultiset.add(lemma);

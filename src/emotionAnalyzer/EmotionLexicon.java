@@ -106,9 +106,17 @@ public class EmotionLexicon {
 //		 return;
 	}
 	
+	
+	/**
+	 * Performs the dicitonary look-up. Returns the emotion vector of the given "word". By (to some extend aribitrary definition) the vector of an unindidentified "word" is null (not 0,0,0 or any other neutral vector). Therefore, in normalization process, the number of identified "words" is important.
+	 * @param token
+	 * @return
+	 * @throws IOException
+	 */
 	public EmotionVector lookUp(String token) throws IOException{
 		if (this.LexiconMap.get(token)!=null) return this.LexiconMap.get(token);
-		else return neutralVector;
+		else return null;
+		//else return neutralVector
 	}
 	
 	

@@ -88,18 +88,19 @@ public class BagOfWords2Vector_Processor {
 	 VectorizationResult calculateDocumentVector(HashMultiset<String> givenSet) throws IOException{
 		 EmotionVector documentVector = new EmotionVector(0, 0, 0);
 		 int count=0;
-			for (String currentToken : givenSet) { //Iterates over all entries of the Multiset. N interations for an entry of count N.
+		 	//Iterates over all entries of the Multiset. N interations for an entry of count N.
+			for (String currentToken : givenSet) { 
 				EmotionVector currentVector = lexicon.lookUp(currentToken);
+				if (currentVector!=null){
 				documentVector.addVector(currentVector);
-				//TODO Das sollte ich noch ändern. Zum einen ist das Verfahren fragwürdig, dass ich am Ende durch die Anzahl der emotionalen Wörter teile, zum anderen sollte ich eine Methode einbauen, die explizit danach fragt, ob das wort im Lexikon ist (es kann ja auch drinstehen und trotzdem neutral sein.
-				if (!currentVector.equals(EmotionAnalyzer.neutralVector)){ //if the token is in the dictionanary (most probably different that neutral vector) count will be increment. Therefore, only emotional words are counted.
-					count++;
+				count++;
 				}
-//				this is wrong. Iteration over multiple entries is yet done by outer loop.
-//				do {
-//					documentVector.addVector(currentVector);
-//					count--;
-//				} while (count > 0);
+				//deprecated
+//				//TODO Das sollte ich noch ändern. Zum einen ist das Verfahren fragwürdig, dass ich am Ende durch die Anzahl der emotionalen Wörter teile, zum anderen sollte ich eine Methode einbauen, die explizit danach fragt, ob das wort im Lexikon ist (es kann ja auch drinstehen und trotzdem neutral sein.
+//				if (!currentVector.equals(EmotionAnalyzer.neutralVector)){ 
+//
+//					count++;
+//				}
 			}
 			return new VectorizationResult(documentVector, count);
 	 }
