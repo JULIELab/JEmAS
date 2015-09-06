@@ -3,9 +3,12 @@ package emotionAnalyzer;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.junit.Test;
+
+import porterStemmer.PorterStemmerWrapper;
 
 import com.google.common.collect.HashMultiset;
 
@@ -268,5 +271,42 @@ public class Tests {
 //		System.out.println(boo);
 		assertEquals("Wrong result.", false, boo);
 	}
+	
+	@Test
+	public void testStemLexikon () throws IOException{
+		EmotionLexicon oldLexicon = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_STEMMER);
+		EmotionLexicon newLexicon = oldLexicon.stemLexicon();
+		
+//		System.out.println("unstemmed:");
+//		oldLexicon.printLexicon();
+//		System.out.println();
+//		System.out.println("stemmed:");
+//		newLexicon.printLexicon();
+		
+		//testing
+		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
+		//for every key in the old lexicon...
+		for (String currentKey: oldLexicon.getKeySet()){
+			//... check if the value of the key in the old lexicon and the value of the stemmed key in the new lexicon are the same
+			assertEquals("Different values", oldLexicon.lookUp(currentKey) , newLexicon.lookUp(stemmer.stem(currentKey)));
+		}
+		
+	}
+
+	
+	//TODO Brauche ich eine Klasse um mir print Lexicon zu testen? Ist vll unnötig.
+//	@Test
+//	public void testPrintLexicon () throws IOException{
+//		EmotionLexicon lexicon1 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON);
+//		EmotionLexicon lexicon2 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_LEMMA);
+//		EmotionLexicon lexicon3 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_STEMMER);
+//		EmotionLexicon[] lexicons = {lexicon1, lexicon2, lexicon3};
+//		
+//		System.setOut(out);
+//		for (EmotionLexicon lex : lexicons){
+//			lex.printLexicon();
+//			System.out.println();
+//		}
+//	}
 
 }

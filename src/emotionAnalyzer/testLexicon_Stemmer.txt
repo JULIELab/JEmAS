@@ -1,0 +1,3 @@
+briefly 	1	1	1
+puts	2	2	2
+happily	3	3	3

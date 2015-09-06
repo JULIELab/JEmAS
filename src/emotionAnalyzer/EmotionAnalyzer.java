@@ -6,15 +6,16 @@ import emotionAnalyzer.DocumentContainer.Preprocessing;
 public class EmotionAnalyzer {
 
 	
-	public static String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
-	public static String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
-	public static String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
-	public static String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
-	static EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
-	public static String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
-	public static String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
+	public static final String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
+	public static final String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
+	public static final  String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
+	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
+	public static final EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
+	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
+	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
+	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
 	
 	EmotionLexicon lexicon=null;
 	File2BagOfWords_Processor f2tReader =null;

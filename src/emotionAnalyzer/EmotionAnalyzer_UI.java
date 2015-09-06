@@ -101,7 +101,8 @@ public class EmotionAnalyzer_UI {
 	private static void getVector(String documentPath, EmotionAnalyzer emotionAnalyzer) throws IOException{
 //		EmotionAnalyzer currentEmotionAnalyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
 		DocumentContainer container = null;
-			container = emotionAnalyzer.analyzeEmotions(documentPath);
+//			container = emotionAnalyzer.analyzeEmotions(documentPath);
+		container = emotionAnalyzer.analyzeEmotions(documentPath, Util.defaultSettings);
 		if (container!=null) {
 			container.printData();
 		}

@@ -1,8 +1,8 @@
 package porterStemmer;
 
-public class PorterStemmerInterface {
+public class PorterStemmerWrapper {
 	
-	public PorterStemmerInterface(){	
+	public PorterStemmerWrapper(){	
 	}
 	
 	public String stem (String inputString){
@@ -14,7 +14,7 @@ public class PorterStemmerInterface {
 	}
 	
 	public static void main (String[] args){
-		PorterStemmerInterface stemmer = new PorterStemmerInterface();
+		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
 		for (String currentString: args){
 			System.out.println(stemmer.stem(currentString));
 		}

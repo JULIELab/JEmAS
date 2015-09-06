@@ -13,9 +13,12 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.sound.sampled.Line;
+
+import porterStemmer.PorterStemmerWrapper;
 
 import com.google.common.collect.HashMultiset;
 
@@ -33,6 +36,32 @@ public class EmotionLexicon {
 	
 	public EmotionLexicon(String lexiconPath) throws IOException{
 		this.loadLexicon(lexiconPath);
+	}
+	
+	/**
+	 * Constructor used when producing a stemmed lexicon out of an existing one. 
+	 * @param givenMap Use getStemmedLexicon method of an existing lexicon to construct a stemmed one out of it.
+	 * @param givenLexiconPath Acutally not needed, but in case some other method will ask for the lexicon path it is better to hold it up to date
+	 */
+	public EmotionLexicon (HashMap<String, EmotionVector> givenMap, String givenLexiconPath){
+		this.lexiconPath = null;
+		this.lexiconPath = givenLexiconPath;
+		this.LexiconMap = givenMap;
+	}
+	
+	
+	/**
+	 * Returns the a stemmed version of the lexicon's map.
+	 * Only the first occurence will be put in the map, if multiple entries are made the same by stemming.
+	 */
+	public HashMap<String, EmotionVector> getStemmedLexicon(){
+		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
+		HashMap<String, EmotionVector> stemmedMap = new HashMap<String, EmotionVector>();
+		for (Entry<String, EmotionVector> currentEntry: this.LexiconMap.entrySet()){
+			//for every entry of the orignial map, put an entry in the new map in which the key is stemmed and the value is the same.
+			stemmedMap.putIfAbsent(stemmer.stem(currentEntry.getKey()), currentEntry.getValue());
+		}
+		return stemmedMap;
 	}
 	
 
@@ -141,7 +170,7 @@ public class EmotionLexicon {
 	}
 	
 	void printLexicon(){
-		for (Map.Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){
+		for (Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){
 			System.out.print(currentEntry.getKey()+"\t");
 			currentEntry.getValue().print();
 		}
@@ -175,8 +204,18 @@ public class EmotionLexicon {
 			try (Writer writer = new BufferedWriter(new OutputStreamWriter(
 		              new FileOutputStream("convertedLexicon.txt"), "utf-8"))) {
 		   writer.write(line+"\n");
+			}
 		}
-		}
+	}
+	
+	/**
+	 * Returns a new EmotionLexicon with stemmed entries.
+	 * @return
+	 * @throws IOException
+	 */
+	public EmotionLexicon stemLexicon () throws IOException{
+		EmotionLexicon stemmedLexicon = new EmotionLexicon(this.getStemmedLexicon(), this.lexiconPath);
+		return stemmedLexicon;
 	}
 	
 	

@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import porterStemmer.PorterStemmerInterface;
+import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
 
 import com.google.common.collect.HashMultiset;
@@ -21,7 +21,7 @@ import edu.stanford.nlp.process.PTBTokenizer;
 
 public  class File2BagOfWords_Processor {
 	StanfordLemmatizer lemmatizer = null;
-	PorterStemmerInterface stemmer = null;
+	PorterStemmerWrapper stemmer = null;
 
 	
 	public File2BagOfWords_Processor(){
@@ -34,7 +34,7 @@ public  class File2BagOfWords_Processor {
 		    }
 		}));
 		this.lemmatizer = new StanfordLemmatizer();
-		this.stemmer = new PorterStemmerInterface();
+		this.stemmer = new PorterStemmerWrapper();
 		// set everything back to its original state afterwards
 		System.setErr(err); 
 	}
