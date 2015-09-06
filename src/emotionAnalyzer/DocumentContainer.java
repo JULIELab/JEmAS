@@ -16,14 +16,20 @@ import com.google.common.collect.HashMultiset;
  */
 public class DocumentContainer {
 
-	final private String documentPath; //TODO should be completely replaced by File
+	final private String documentPath; 
 	final private File documentFile;
+	//TODO Enum Preprocessing should be externalized from DocumentContainer.
 	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE}
 	Preprocessing usedPreprocessing = null;
 	final private String reportCategory;
 	final private String origin;
 	final private String organization;
 	final private String year;
+	/**
+	 * Number of "letter tokens" (Tokens which purely of letters and can therefore be regarded as "real words". This deviation may be important in this context to interprete the difference between token count and count of identified tokens during look-up because especially in annual reports, many tokens may be numbers.)
+	 */
+	private int letterTokenCount;
+//	final private Settings settings;
 
 
 	public DocumentContainer(String documentPath, Preprocessing givenPreprocessor) {
@@ -35,6 +41,7 @@ public class DocumentContainer {
 		this.origin = nameParts[1];
 		this.organization = nameParts[2];
 		this.year = nameParts[3];
+		this.letterTokenCount = -1;
 	}
 
 	public String getDocumentPath() {
@@ -42,7 +49,7 @@ public class DocumentContainer {
 	}
 	
 	public void printData(){
-			System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength());
+			System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength() + "\t" + this.tokenCount + "\t" + this.letterTokenCount + "\t" + this.vectorCount);
 		
 	}
 
@@ -101,6 +108,20 @@ public class DocumentContainer {
 		}
 		
 		this.tokenCount = this.bagOfWords.size();
+	}
+	
+	
+	//TODO write test for that.
+	/**
+	 * Calculates the number of letter tokens ((Tokens which purely of letters and can therefore be regarded as "real words". This deviation may be important in this context to interprete the difference between token count and count of identified tokens during look-up because especially in annual reports, many tokens may be numbers.).
+	 */
+	public void calculateLetterTokenCount(){
+		int letterTokenCount = 0;
+		for (String currentToken: this.bagOfWords){
+			if (Util.isLetterToken(currentToken)) letterTokenCount++;
+		}
+//		if (letterTokenCount==-1) Throw new Exception("Error in calculation of letter token count!")
+		this.letterTokenCount = letterTokenCount;
 	}
 	
 	public void calculateSumOfVectors(BagOfWords2Vector_Processor givenToken2Vectorizer) throws IOException{

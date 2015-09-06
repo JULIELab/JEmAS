@@ -72,7 +72,18 @@ public class EmotionAnalyzer_UI {
 	
 	
 	private static void printDataTemplate() {
-		System.out.println("File Name\tReport Category\tOrigin\tOrganization\tYear\tValence\tArousal\tDominance\tLength"); //Documentname, Valence, Arousal, Dominace, vector lenght
+		System.out.println("File Name"
+				+ "\tReport Category"
+				+ "\tOrigin"
+				+ "\tOrganization"
+				+ "\tYear"
+				+ "\tValence"
+				+ "\tArousal"
+				+ "\tDominance"
+				+ "\tLength"
+				+ "\tTokens"
+				+ "\tWord Tokens"
+				+ "\tIdentified Tokens"); //Documentname, Valence, Arousal, Dominace, vector lenght
 		
 	}
 

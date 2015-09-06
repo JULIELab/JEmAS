@@ -39,8 +39,20 @@ public class Util {
 		return map.get(formerLocation);
 		
 	}
+
+	//TODO maybe develope a better definition for letter token?
+	/**
+	 * Decides if the given token is a letter word (meaning it consists purely of letters).
+	 * @param currentToken
+	 * @return
+	 */
+	public static boolean isLetterToken(String givenToken) {
+		return givenToken.matches("[A-Za-z]+");
+	}
 	
-//	public static final String 
+	public static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, false);
+	
+
 
 
 }

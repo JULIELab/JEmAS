@@ -39,6 +39,7 @@ public class EmotionAnalyzer {
 		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenPreprocessor);
 		//calculates BagOfWords in documentContainer using f2tReader
 		documentContainer.calculateBagOfWords(this.f2tReader);
+		documentContainer.calculateLetterTokenCount();
 		documentContainer.calculateSumOfVectors(t2Vectorizer);
 		documentContainer.normalizeDocumentVector(vectorNormalizer);
 		return documentContainer; //return 
