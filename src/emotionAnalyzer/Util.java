@@ -40,14 +40,14 @@ public class Util {
 		
 	}
 
-	//TODO maybe develope a better definition for letter token?
+	//TODO Test.
 	/**
 	 * Decides if the given token is a letter word (meaning it consists purely of letters).
 	 * @param currentToken
 	 * @return
 	 */
 	public static boolean isLetterToken(String givenToken) {
-		return givenToken.matches("[A-Za-z]+");
+		return givenToken.matches("\\p{L}+");
 	}
 	
 	public final  static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, false);

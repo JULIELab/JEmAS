@@ -248,5 +248,25 @@ public class Tests {
 		System.out.println(str);
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
+	
+	@Test
+	public void testIsLetterToken (){
+		boolean boo;
+		boo = Util.isLetterToken("314345");
+//		System.out.println(boo);
+		assertEquals("Wrong result.", false, boo);
+		boo = Util.isLetterToken("look-up");
+//		System.out.println(boo);
+		assertEquals("Wrong result.", false, boo);
+		boo = Util.isLetterToken("house");
+//		System.out.println(boo);
+		assertEquals("Wrong result.", true, boo);
+		boo = Util.isLetterToken("Allé");
+//		System.out.println(boo);
+		assertEquals("Wrong result.", true, boo);
+		boo = Util.isLetterToken(".");
+//		System.out.println(boo);
+		assertEquals("Wrong result.", false, boo);
+	}
 
 }
