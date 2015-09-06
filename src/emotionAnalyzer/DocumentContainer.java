@@ -29,12 +29,13 @@ public class DocumentContainer {
 	 * Number of "letter tokens" (Tokens which purely of letters and can therefore be regarded as "real words". This deviation may be important in this context to interprete the difference between token count and count of identified tokens during look-up because especially in annual reports, many tokens may be numbers.)
 	 */
 	private int letterTokenCount;
-//	final private Settings settings;
+	final private Settings settings;
 
 
-	public DocumentContainer(String documentPath, Preprocessing givenPreprocessor) {
+	public DocumentContainer(String documentPath, Settings givenSettings) {
 		this.documentPath = documentPath;
-		this.usedPreprocessing = givenPreprocessor;
+		this.settings = givenSettings;
+		this.usedPreprocessing = this.settings.usedPreprocessing;
 		this.documentFile = new File(this.documentPath);
 		String[] nameParts = this.documentFile.getName().split("\\.");
 		this.reportCategory = nameParts[0];

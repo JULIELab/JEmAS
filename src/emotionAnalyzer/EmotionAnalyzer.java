@@ -35,8 +35,8 @@ public class EmotionAnalyzer {
 	}
 		
 	
-	DocumentContainer analyzeEmotions(String givenDocumentPath, DocumentContainer.Preprocessing givenPreprocessor) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
-		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenPreprocessor);
+	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
+		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenSettings);
 		//calculates BagOfWords in documentContainer using f2tReader
 		documentContainer.calculateBagOfWords(this.f2tReader);
 		documentContainer.calculateLetterTokenCount();
@@ -53,7 +53,7 @@ public class EmotionAnalyzer {
 	 * @throws IOException
 	 */
 	DocumentContainer analyzeEmotions (String givenDocumentPath) throws IOException{
-		return analyzeEmotions(givenDocumentPath, Preprocessing.LEMMATIZE);
+		return analyzeEmotions(givenDocumentPath, Util.defaultSettings);
 	}
 	
 	

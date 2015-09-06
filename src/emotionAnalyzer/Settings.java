@@ -5,9 +5,9 @@ import emotionAnalyzer.DocumentContainer.Preprocessing;
 public class Settings {
 	
 	DocumentContainer.Preprocessing usedPreprocessing;
-	boolean printTokens;
-	boolean printLetterTokens;
-	boolean printIdentifiedTokens;
+	final boolean printTokens;
+	final boolean printLetterTokens;
+	final boolean printIdentifiedTokens;
 	
 	public Settings(Preprocessing usedPreprocessing, boolean printTokens,
 			boolean printLetterTokens, boolean printIdentifiedTokens) {

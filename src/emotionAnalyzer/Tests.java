@@ -126,7 +126,7 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
-		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, DocumentContainer.Preprocessing.TOKENIZE);
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
 		documentVector.print();
 		documentContainer.getNormalizedEmotionVector().print();
@@ -146,7 +146,7 @@ public class Tests {
 //		analyzer.lexicon.lookUp("librarian").print();
 //		analyzer.lexicon.lookUp("earthquake").print();
 		
-		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, DocumentContainer.Preprocessing.TOKENIZE);
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
 		documentContainer.getSumOfVectors().print();
 		documentContainer.getNormalizedEmotionVector().print();
@@ -160,7 +160,7 @@ public class Tests {
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
 		System.out.println("used lexicon:");
 		analyzer.showLexicon();
-		DocumentContainer documentContainer = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, DocumentContainer.Preprocessing.TOKENIZE);
+		DocumentContainer documentContainer = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Util.settings_tokenize);
 		EmotionVector documentVector = 	documentContainer.getNormalizedEmotionVector();
 		assertTrue(documentVector.equals(testVectorNormalized));
 		System.out.println("\ndocument vector:");
@@ -176,7 +176,7 @@ public class Tests {
 //		analyzer.lexicon.lookUp("leukemia").print();
 //		analyzer.lexicon.lookUp("librarian").print();
 //		analyzer.lexicon.lookUp("earthquake").print();	
-		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, DocumentContainer.Preprocessing.TOKENIZE);
+		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getNormalizedEmotionVector();
 		documentVector.print();
 		testVectorNormalized2.print();

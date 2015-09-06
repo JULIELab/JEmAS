@@ -50,9 +50,9 @@ public class Util {
 		return givenToken.matches("[A-Za-z]+");
 	}
 	
-	public static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, false);
-	
-
+	public final  static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, false);
+	public static final Settings settings_tokenize = new Settings(DocumentContainer.Preprocessing.TOKENIZE, false, false, false);
+	public static final Settings settings_stem = new Settings(DocumentContainer.Preprocessing.STEM, false, false, false);
 
 
 }
