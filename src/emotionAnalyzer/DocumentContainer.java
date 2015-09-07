@@ -50,6 +50,13 @@ public class DocumentContainer {
 	}
 	
 	public void printData(){
+		//i dont use this because it would not only give the identified tokens, but all of them.
+//		if (this.settings.printIdentifiedTokens){
+//			System.out.println("\nIdentified Tokens:\n\n");
+//			for (String token: this.bagOfWords){
+//				System.out.println(token);
+//			}
+//		}
 		System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength() + "\t" + this.tokenCount + "\t" + this.letterTokenCount + "\t" + this.vectorCount);
 		
 	}

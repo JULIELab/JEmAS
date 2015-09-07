@@ -1,5 +1,9 @@
 package emotionAnalyzer;
 
+import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +31,13 @@ public class Util {
 		return path;
 	}
 	
+	public static boolean compareFiles(File file1, File file2) throws IOException{
+		List<String> list1 = Files.readAllLines(file1.toPath());
+		List<String> list2 = Files.readAllLines(file2.toPath());
+		if (list1.equals(list2)) return true;
+		else return false;	
+	}
+	
 	public static String getJarLocation (String formerLocation){
 		final Map<String, String> map = new HashMap<String, String>(){/**
 			 * 
@@ -50,9 +61,9 @@ public class Util {
 		return givenToken.matches("\\p{L}+");
 	}
 	
-	public final  static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, false);
-	public static final Settings settings_tokenize = new Settings(DocumentContainer.Preprocessing.TOKENIZE, false, false, false);
-	public static final Settings settings_stem = new Settings(DocumentContainer.Preprocessing.STEM, false, false, false);
+	public final  static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false);
+	public static final Settings settings_tokenize = new Settings(DocumentContainer.Preprocessing.TOKENIZE, false);
+	public static final Settings settings_stem = new Settings(DocumentContainer.Preprocessing.STEM, false);
 
 
 }

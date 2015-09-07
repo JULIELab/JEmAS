@@ -2,7 +2,13 @@ package emotionAnalyzer;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -67,7 +73,7 @@ public class Tests {
 	public void testFile2Tokens() throws IOException  {
 		File2BagOfWords_Processor reader = new File2BagOfWords_Processor();
 		HashMultiset<String> bagOfWords = reader.produceBagOfWords_Token(EmotionAnalyzer.TESTFILE);
-		Util.printBagOfWords(bagOfWords);
+//		Util.printBagOfWords(bagOfWords);
 //		Util.printBagOfWords(getTestBagOfWords());
 		assertTrue(bagOfWords.equals(getTestBagOfWords()));
 	}
@@ -76,7 +82,7 @@ public class Tests {
 	public void testFile2Lemma() throws IOException{
 		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
 		HashMultiset<String> bagOfWords = processor.produceBagOfWords_Lemma(EmotionAnalyzer.TESTFILE3);
-		Util.printBagOfWords(bagOfWords);
+//		Util.printBagOfWords(bagOfWords);
 		assertEquals("Error in Lemmatization", getTestBagOfWords_Lemma(), bagOfWords);
 	}
 	
@@ -84,7 +90,7 @@ public class Tests {
 	public void testFile2Stem() throws IOException{
 		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
 		HashMultiset<String> bagOfWords = processor.produceBagOfWords_Stems(EmotionAnalyzer.TESTFILE3);
-		Util.printBagOfWords(bagOfWords);
+//		Util.printBagOfWords(bagOfWords); 
 		assertEquals("Error in stemming", getTestBagOfWords_Stem(), bagOfWords);
 	}
 	
@@ -114,7 +120,7 @@ public class Tests {
 		VectorNormalizer normalizer = new VectorNormalizer();
 		documentVector = normalizer.calculateNormalizedDocumentVector(documentVector, 4); // 4 is the expected normalization parameter for the testing bag of words.
 		assertTrue(documentVector.equals(testVectorNormalized));
-		System.out.println("Normalization works");	
+//		System.out.println("Normalization works");	
 	}	
 		
 
@@ -122,9 +128,12 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Lemmatize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_LEMMA);
-		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, true));
+		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA, new Settings(DocumentContainer.Preprocessing.LEMMATIZE,false));
 		EmotionVector documentVector = container.getNormalizedEmotionVector();
-		documentVector.print();
+//		documentVector.print();
+		EmotionVector testVector =new EmotionVector(1.0/3, 1.0/3, 1.0/3);
+//		testVector.print();
+		assertEquals("Wrong result of analysis with lemmatizer.", true, testVector.equals(documentVector));
 	}
 	
 	@Test
@@ -132,9 +141,9 @@ public class Tests {
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
-		documentVector.print();
-		documentContainer.getNormalizedEmotionVector().print();
-		testVector.print();
+//		documentVector.print();
+//		documentContainer.getNormalizedEmotionVector().print();
+//		testVector.print();
 		assertTrue(documentVector.equals(testVector));
 		
 	}
@@ -152,9 +161,9 @@ public class Tests {
 		
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
-		documentContainer.getSumOfVectors().print();
-		documentContainer.getNormalizedEmotionVector().print();
-		testVector2.print();
+//		documentContainer.getSumOfVectors().print();
+//		documentContainer.getNormalizedEmotionVector().print();
+//		testVector2.print();
 		assertTrue(documentVector.equals(testVector2));
 		
 	}
@@ -162,13 +171,13 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzerNormalized_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
-		System.out.println("used lexicon:");
-		analyzer.showLexicon();
+//		System.out.println("used lexicon:");
+//		analyzer.showLexicon(); //TODO test schreiben für EmotionAnalyzer.showLexicon()
 		DocumentContainer documentContainer = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Util.settings_tokenize);
 		EmotionVector documentVector = 	documentContainer.getNormalizedEmotionVector();
 		assertTrue(documentVector.equals(testVectorNormalized));
-		System.out.println("\ndocument vector:");
-		documentVector.print();
+//		System.out.println("\ndocument vector:");
+//		documentVector.print();
 	}
 	
 	@Test
@@ -182,8 +191,8 @@ public class Tests {
 //		analyzer.lexicon.lookUp("earthquake").print();	
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getNormalizedEmotionVector();
-		documentVector.print();
-		testVectorNormalized2.print();
+//		documentVector.print();
+//		testVectorNormalized2.print();
 		assertTrue(documentVector.equals(testVectorNormalized2));
 		
 	}
@@ -192,9 +201,9 @@ public class Tests {
 	public void testEmotionVector() {
 		EmotionVector vector1 = new EmotionVector(1,2,3);
 		EmotionVector vector2 = new EmotionVector(3,2,1);
-		EmotionVector.printTemplate();
-		vector1.print();
-		vector2.print();
+//		EmotionVector.printTemplate(); //TODO die Methode EmotionVector.printTemplate() ist veraltet.
+//		vector1.print(); //TODO test schreiben für print vector
+//		vector2.print();
 		vector1.addVector(vector2);
 //		assertEquals(new EmotionVector(4,4,4), vector1);  //this does not work. implement equals-method for vector.
 		assertEquals(4, vector1.getValence(),0001);
@@ -203,37 +212,37 @@ public class Tests {
 		assertEquals(true, vector1.equals(new EmotionVector(4,4,4)));
 //		assertEquals(Math.sqrt(48), vector1.getLength()); //Floats cannot be compared like this. Delta has to be given.
 		assertEquals(Math.sqrt(48), vector1.getLength(), 0.001);
-		vector1.print();
+//		vector1.print();
 		vector1.normalize(4);
 		assertEquals(1, vector1.getValence(),0001);
 		assertEquals(1, vector1.getArousal(),0.001);
 		assertEquals(1, vector1.getDominance(),0.001);
-		vector1.print();
+//		vector1.print();
 		assertEquals(Math.sqrt(48)/4, vector1.getLength(), 0.001);
 		vector1.multiplyWithConstant(3);
-		vector1.print();
+//		vector1.print();
 		assertEquals(Math.sqrt(48)/4*3, vector1.getLength(), 0.001);
 		//chechs if equals-method of EmotionVector-class works (also with double roundoff errors)
 		assertTrue(new EmotionVector(1,2,3).equals(new EmotionVector(1,2,3)));
 		assertTrue(new EmotionVector(1,2,3).equals(new EmotionVector(1.000000001,1.999999999,3.0000000005)));
 		//checks if normalization works
-		System.out.println("testing normalization");
+//		System.out.println("testing normalization");
 		testVector.normalize(4);
-		testVector.print();
-		testVectorNormalized.print();
+//		testVector.print();
+//		testVectorNormalized.print();
 		assertTrue(testVector.equals(testVectorNormalized));
-		System.out.println("Normalization works");
+//		System.out.println("Normalization works");
 	}
 	
 	@Test
 	public void testEmotionLexicon() throws IOException{
-		System.out.println("anfang");
+//		System.out.println("anfang");
 		EmotionLexicon lexicon = new EmotionLexicon();
-		EmotionVector.printTemplate();
-		lexicon.lookUp("AIDS").print();	//delete print-statements before end of project.
-		lexicon.lookUp("calm").print();
-		lexicon.lookUp("lobotomy").print();
-		lexicon.lookUp("lovable").print();
+//		EmotionVector.printTemplate();
+//		lexicon.lookUp("AIDS").print();	//delete print-statements before end of project.
+//		lexicon.lookUp("calm").print();
+//		lexicon.lookUp("lobotomy").print();
+//		lexicon.lookUp("lovable").print();
 //		lexicon.lookUp("loveable").print(); //cannot be printed because EmotionVector lexicon.lookUp("loveable)=null.
 		assertTrue(
 				(vectorAIDS.equals(lexicon.lookUp("AIDS"))) &&
@@ -249,7 +258,7 @@ public class Tests {
 	public void testFile2String() throws IOException{
 		File2BagOfWords_Processor proc = new File2BagOfWords_Processor();
 		String str = proc.file2String(EmotionAnalyzer.TESTFILE);
-		System.out.println(str);
+//		System.out.println(str);
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 	
@@ -297,26 +306,34 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Stem () throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_STEMMER);
-		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, false, false, true));
-		output.printData();
-		System.out.println("\n\nLexicon:\n");
-		analyzer.showStemmedLexicon();
+		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, true));
+		
+		assertEquals("Wrong result of emotion analysis",
+				true,
+				output.getNormalizedEmotionVector().equals(new EmotionVector(2, 2, 2)));
+	}
+	
+	@Test
+	public void testPrintIdentifiedTokens() throws IOException{
+		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
+		PrintStream original = System.out;
+		File outputFile = File.createTempFile("temp", ".txt");
+		PrintStream out = new PrintStream(outputFile);
+		
+		//redirect output
+		System.setOut(out);
+		analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, true));
+		
+			
+		//back to normal
+		System.setOut(original);
+		
+		assertEquals("Output differs from expected one.",true , Util.compareFiles(outputFile, new File("src/emotionAnalyzer/testOutput_testPrintIdentifiedTokens.txt")));
+		
+//		output.printData();
+		
+		
 	}
 
-	
-	//TODO Brauche ich eine Klasse um mir print Lexicon zu testen? Ist vll unnötig.
-//	@Test
-//	public void testPrintLexicon () throws IOException{
-//		EmotionLexicon lexicon1 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON);
-//		EmotionLexicon lexicon2 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_LEMMA);
-//		EmotionLexicon lexicon3 = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_STEMMER);
-//		EmotionLexicon[] lexicons = {lexicon1, lexicon2, lexicon3};
-//		
-//		System.setOut(out);
-//		for (EmotionLexicon lex : lexicons){
-//			lex.printLexicon();
-//			System.out.println();
-//		}
-//	}
 
 }
