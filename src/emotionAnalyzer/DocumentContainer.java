@@ -20,7 +20,7 @@ public class DocumentContainer {
 	final private File documentFile;
 	//TODO Enum Preprocessing should be externalized from DocumentContainer.
 	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE}
-	Preprocessing usedPreprocessing = null;
+	Preprocessing usedPreprocessing; //TODO das sollte komplett auf this.settings.preprocessing umstellen/ersetzen
 	final private String reportCategory;
 	final private String origin;
 	final private String organization;
@@ -29,7 +29,7 @@ public class DocumentContainer {
 	 * Number of "letter tokens" (Tokens which purely of letters and can therefore be regarded as "real words". This deviation may be important in this context to interprete the difference between token count and count of identified tokens during look-up because especially in annual reports, many tokens may be numbers.)
 	 */
 	private int letterTokenCount;
-	final private Settings settings;
+	final Settings settings;
 
 
 	public DocumentContainer(String documentPath, Settings givenSettings) {
@@ -50,7 +50,7 @@ public class DocumentContainer {
 	}
 	
 	public void printData(){
-			System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength() + "\t" + this.tokenCount + "\t" + this.letterTokenCount + "\t" + this.vectorCount);
+		System.out.println(this.documentFile.getName() + "\t" + this.reportCategory+ "\t" + this.origin+ "\t" + this.organization + "\t" + this.year + "\t" + this.normalizedEmotionVector.getValence() + "\t" + this.normalizedEmotionVector.getArousal() + "\t" + this.normalizedEmotionVector.getDominance() + "\t" + this.normalizedEmotionVector.getLength() + "\t" + this.tokenCount + "\t" + this.letterTokenCount + "\t" + this.vectorCount);
 		
 	}
 
@@ -105,7 +105,7 @@ public class DocumentContainer {
 			this.bagOfWords = givenF2TReader.produceBagOfWords_Lemma(this.documentPath);
 			break;
 		case STEM:
-			 throw new IllegalArgumentException( "Not yet implemented!" );
+			 this.bagOfWords = givenF2TReader.produceBagOfWords_Stems(this.documentPath);
 		}
 		
 		this.tokenCount = this.bagOfWords.size();
@@ -125,8 +125,8 @@ public class DocumentContainer {
 		this.letterTokenCount = letterTokenCount;
 	}
 	
-	public void calculateSumOfVectors(BagOfWords2Vector_Processor givenToken2Vectorizer) throws IOException{
-		VectorizationResult result = givenToken2Vectorizer.calculateDocumentVector(this.bagOfWords); //calcualtes not normalized emotion vector (sum of found vectors
+	public void calculateSumOfVectors(BagOfWords2Vector_Processor givenToken2Vectorizer, EmotionLexicon givenLexicon) throws IOException{
+		VectorizationResult result = givenToken2Vectorizer.calculateDocumentVector(this.bagOfWords, givenLexicon, this.settings); //calcualtes not normalized emotion vector (sum of found vectors
 		this.sumOfVectors = result.getEmotionVector();
 //		this.sumOfVectors.print();
 		this.vectorCount = result.getNumberOfAddedVectors();

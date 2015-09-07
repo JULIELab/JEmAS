@@ -103,12 +103,13 @@ public class Tests {
 	
 	@Test
 	public void testToken2Vectorizer() throws IOException{
-		BagOfWords2Vector_Processor testVectorizer = new BagOfWords2Vector_Processor(new EmotionLexicon(EmotionAnalyzer.TESTLEXICON)); //initiates an instance of Token2Vectorizer with test lexicon
-		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords());
+		EmotionLexicon lexicon = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON);
+		BagOfWords2Vector_Processor testVectorizer = new BagOfWords2Vector_Processor(); //initiates an instance of Token2Vectorizer with test lexicon
+		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), lexicon, Util.defaultSettings);
 		 EmotionVector documentVector = result.getEmotionVector();
 		 assertTrue(documentVector.equals(testVector));
 		//tests mode with normalization
-		result = testVectorizer.calculateDocumentVector(getTestBagOfWords());
+		result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), lexicon,Util.defaultSettings);
 		documentVector = result.getEmotionVector();
 		VectorNormalizer normalizer = new VectorNormalizer();
 		documentVector = normalizer.calculateNormalizedDocumentVector(documentVector, 4); // 4 is the expected normalization parameter for the testing bag of words.
@@ -121,7 +122,7 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Lemmatize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_LEMMA);
-		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA);
+		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false, false, true));
 		EmotionVector documentVector = container.getNormalizedEmotionVector();
 		documentVector.print();
 	}
@@ -291,6 +292,15 @@ public class Tests {
 			assertEquals("Different values", oldLexicon.lookUp(currentKey) , newLexicon.lookUp(stemmer.stem(currentKey)));
 		}
 		
+	}
+	
+	@Test
+	public void testEmotionAnalyzer_Stem () throws IOException{
+		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_STEMMER);
+		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, false, false, true));
+		output.printData();
+		System.out.println("\n\nLexicon:\n");
+		analyzer.showStemmedLexicon();
 	}
 
 	

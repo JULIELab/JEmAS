@@ -9,6 +9,7 @@ public class EmotionAnalyzer {
 	public static final String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
 	public static final String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
 	public static final  String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
+	public static final String TESTFILE_STEM = "src/emotionAnalyzer/test.test.test.testFile_Stem.txt";
 	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
@@ -17,10 +18,19 @@ public class EmotionAnalyzer {
 	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
 	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
 	
-	EmotionLexicon lexicon=null;
-	File2BagOfWords_Processor f2tReader =null;
-	BagOfWords2Vector_Processor t2Vectorizer =null;
-	VectorNormalizer vectorNormalizer = null;
+	final private EmotionLexicon lexicon;
+	final private File2BagOfWords_Processor f2tReader;
+	final private BagOfWords2Vector_Processor t2Vectorizer;
+	final private VectorNormalizer vectorNormalizer;
+	
+	/**
+	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
+	 */
+	private EmotionLexicon stemmedLexicon;
+	/**
+	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
+	 */
+	private BagOfWords2Vector_Processor stemming_t2Vectorizer;
 	
 	
 	/**
@@ -31,7 +41,7 @@ public class EmotionAnalyzer {
 	public EmotionAnalyzer(String givenLexiconPath) throws IOException{
 		this.lexicon = new EmotionLexicon(givenLexiconPath);
 		this.f2tReader = new File2BagOfWords_Processor();
-		this.t2Vectorizer = new BagOfWords2Vector_Processor(this.lexicon);
+		this.t2Vectorizer = new BagOfWords2Vector_Processor();
 		this.vectorNormalizer = new VectorNormalizer();
 	}
 		
@@ -41,7 +51,16 @@ public class EmotionAnalyzer {
 		//calculates BagOfWords in documentContainer using f2tReader
 		documentContainer.calculateBagOfWords(this.f2tReader);
 		documentContainer.calculateLetterTokenCount();
-		documentContainer.calculateSumOfVectors(t2Vectorizer);
+		//if the selected preprocessor is stemming, another lexicon (the stemmed one) must be used.
+		if (documentContainer.settings.usedPreprocessing == Preprocessing.STEM){
+			//checks if the lexicon has already been stemmed and does so if necessary
+			if (this.stemmedLexicon == null){this.stemmedLexicon = this.lexicon.stemLexicon();
+			//calculate the sum of vectors with the stemmed lexicon
+			documentContainer.calculateSumOfVectors(t2Vectorizer, stemmedLexicon);
+			}
+		}
+		//calculates the emotion vectors if preprocessor is different than stemmer
+		else documentContainer.calculateSumOfVectors(t2Vectorizer, lexicon); //TODO das hier muss geändert werden.
 		documentContainer.normalizeDocumentVector(vectorNormalizer);
 		return documentContainer; //return 
 		
@@ -60,6 +79,10 @@ public class EmotionAnalyzer {
 	
 	void showLexicon(){
 		this.lexicon.printLexicon();
+	}
+	
+	void showStemmedLexicon(){
+		this.stemmedLexicon.printLexicon();
 	}
 
 }
