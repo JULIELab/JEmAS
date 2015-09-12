@@ -1,4 +1,4 @@
-package cleanPdf2Text;
+package corpusManagement;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package cleanPdf2Text;
+package corpusManagement;
 
 import static org.junit.Assert.*;
 

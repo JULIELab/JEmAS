@@ -1,4 +1,4 @@
-package cleanPdf2Text;
+package corpusManagement;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,22 +16,11 @@ import java.util.regex.Pattern;
 
 public class PdfOptimizer {
 	
-	
-//	//buechel: ?
-//	public static void main(String[] args){
-//		PdfOptimizer opt = new PdfOptimizer();
-//		
-//		File dir = new File("/home/jago/PdfToTxt/output/");
-//		File[] subdirs = dir.listFiles();
-//		
-//		for(int i=0; i<subdirs.length; i++){
-//		}
-//		
-//	}
-	
+
 	/**
-	 * Führt die Optimierung eines txt-konvertierten Pdfs für eine Datei aus.
-	 * @param filePath
+	 * Optimiert txt-Dateien, die durch pdftotext aus einer pdf umgewandelt worden sind.
+	 * @param inputPath
+	 * @param outputPath
 	 * @throws IOException
 	 */
 	public void optimize(String inputPath, String outputPath) throws IOException{
@@ -44,7 +33,7 @@ public class PdfOptimizer {
 	
 	
 	/**
-	 * "Repariert" die in ein txt umgewandelte PDF-Datei durch 
+	 * "Repariert" die in ein txt umgewandelte PDF-Datei durch eine Reihe von Ersetzungsbefehlen.
 	 * @param givenString
 	 * @return
 	 */
@@ -194,14 +183,4 @@ public class PdfOptimizer {
 		all = all.trim();
 		return all;
 	}
-	
-	
-		
-
-
-//	private String replaceAll(String string, String string2) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 }

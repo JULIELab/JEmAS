@@ -1,4 +1,4 @@
-package cleanPdf2Text;
+package corpusManagement;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -39,6 +39,7 @@ public class Util {
 		while((line = br.readLine()) != null){
 			all = all+line+"\n";
 		}
+		br.close();
 		return all;
 	}
 }

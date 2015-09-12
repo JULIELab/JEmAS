@@ -1,4 +1,4 @@
-package cleanPdf2Text;
+package corpusManagement;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +8,9 @@ public class CorpusOrganizer {
 
 	
 	/**
-	 * Rekursive Methode um alle PDFs in den verschiedenen Unterordnern in einen Ordner zu schreiben und sie eindeutig zu benennen.
-	 * @param currentFile Die Datei, das gegenwärtig bearbeitet wird. Beim Start der Rekursion ist diese mit root identisch.
-	 * @param root Das Verzeichnis von dem alle weitere Verzeichnisse ausgehen, die die PDFs enthalten.
+	 * Rekursive Methode um alle PDFs in den verschiedenen Unterordnern in einen Ordner zu schreiben und sie eindeutig zu benennen. Die Bennungskonvention ist dabei Berichtart.Aktienindex.Unternehmen.Jahreszahl.pdf .
+	 * @param currentFile Die Datei, das gegenwärtig bearbeitet wird. Beim Start der Rekursion ist diese mit root identisch bzw. muss diese mit root identisch sein.
+	 * @param root Das Verzeichnis von dem alle weitere Verzeichnisse ausgehen, die die PDFs mit berichten enthalten.
 	 * @param outputPath Das Verzeichnis, in das die umbenannten PDFs geschrieben werden sollen.
 	 * @throws Exception
 	 */
@@ -49,7 +49,7 @@ public class CorpusOrganizer {
 			newName = currentFile.getName() + "." + newName;
 			currentFile = currentFile.getParentFile();
 		}
-		//Adds correct suffic in case it misses.
+		//Adds correct suffix in case it misses.
 		if(!newName.endsWith(".pdf")){
 			newName = newName+".pdf";
 		}
