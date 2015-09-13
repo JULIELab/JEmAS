@@ -48,15 +48,6 @@ public class EmotionVector {
 		System.out.println(this.valence + "\t" + this.arousal + "\t" + this.dominance + "\t" + this.getLength());
 	}
 	
-	static void printTemplate(){
-		printTemplate(false);
-	}
-	
-	static void printTemplate(boolean printDocumentName){
-		System.out.println("V = Valence\nA = Arousal\nD = Dominance\nL = Length\n");
-		if (printDocumentName) System.out.print("Document\t");
-		System.out.println("V\tA\tD\tL");
-	}
 	
 	private void multiply(double constant){
 		this.valence*=constant;

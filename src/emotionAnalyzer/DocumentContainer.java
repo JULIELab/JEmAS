@@ -49,6 +49,10 @@ public class DocumentContainer {
 		return this.documentPath;
 	}
 	
+	/**
+	 * Prints the results of the lemmatization. With the momentarily definition, the vector count is identical to the normalization paremter.
+	 * The pieces of information printed include the file name, the the type of the report, the originating stock markte index, the enterprise, the year, the values of the vector itself, the lenght of the vector, the token count, the letter token count and the vector count (tokens mapped successfully to a lexicon entry).
+	 */
 	public void printData(){
 		//i dont use this because it would not only give the identified tokens, but all of them.
 //		if (this.settings.printIdentifiedTokens){

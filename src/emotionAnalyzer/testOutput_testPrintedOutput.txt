@@ -1,0 +1,2 @@
+File Name	Report Category	Origin	Organization	Year	Valence	Arousal	Dominance	Length	Tokens	Word Tokens	Identified Tokens
+test.test.test.testFile_Lemma.txt	test	test	test	testFile_Lemma	0.865	-0.28500000000000003	0.605	1.0933777938114528	10	8	4

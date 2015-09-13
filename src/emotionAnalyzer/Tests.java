@@ -38,6 +38,7 @@ public class Tests {
 	 */
 	public HashMultiset<String> getTestBagOfWords(){
 		HashMultiset<String> testBagOfWords = HashMultiset.create();
+		//number of identified tokens (normalization parameter
 		String[] strArray = {"test", "fish", "fish", "fish", ".",".",".", "ThisIsNotInLexicon"};
 		for (String str: strArray){
 			testBagOfWords.add(str);}
@@ -69,15 +70,25 @@ public class Tests {
 	}
 	
 	
+	/**
+	 * Tests if production of a token-based bag of words from a file works. (method: File2BagOfWords_Processor.produceBagOfWords_Token).
+	 * @throws IOException
+	 */
 	@Test
 	public void testFile2Tokens() throws IOException  {
 		File2BagOfWords_Processor reader = new File2BagOfWords_Processor();
 		HashMultiset<String> bagOfWords = reader.produceBagOfWords_Token(EmotionAnalyzer.TESTFILE);
 //		Util.printBagOfWords(bagOfWords);
 //		Util.printBagOfWords(getTestBagOfWords());
-		assertTrue(bagOfWords.equals(getTestBagOfWords()));
+//		assertTrue(bagOfWords.equals(getTestBagOfWords()));
+		assertEquals("Error in tokenization! Produced bag of words differs from TestBagOfWords.", true, bagOfWords.equals(getTestBagOfWords()));
 	}
 	
+	
+	/**
+	 * Tests if the production of a lemma-based bag of words from a file works. (method: File2BagOfWords_Processor.produceBagOfWords_Lemma )
+	 * @throws IOException
+	 */
 	@Test
 	public void testFile2Lemma() throws IOException{
 		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
@@ -86,6 +97,10 @@ public class Tests {
 		assertEquals("Error in Lemmatization", getTestBagOfWords_Lemma(), bagOfWords);
 	}
 	
+	/**
+	 * Tests if the production of a stem-based bag of words from a file works. (method: File2BagOfWords_Processor.produceBagOfWords_Stem )
+	 * @throws IOException
+	 */
 	@Test
 	public void testFile2Stem() throws IOException{
 		File2BagOfWords_Processor processor = new File2BagOfWords_Processor();
@@ -106,25 +121,39 @@ public class Tests {
 //		assertTrue(documentVector.equals(testVectorNormalized));
 //		System.out.println("Normalization works");	
 //	}
-	
+
+	/**
+	 * Tests if calculation of document emotion vector works when a bag of words is already given a) without normalizaton and b) with normalization
+	 * @throws IOException
+	 */
 	@Test
-	public void testToken2Vectorizer() throws IOException{
+	public void testToken2Vectorizer() throws IOException {
 		EmotionLexicon lexicon = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON);
-		BagOfWords2Vector_Processor testVectorizer = new BagOfWords2Vector_Processor(); //initiates an instance of Token2Vectorizer with test lexicon
-		VectorizationResult result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), lexicon, Util.defaultSettings);
-		 EmotionVector documentVector = result.getEmotionVector();
-		 assertTrue(documentVector.equals(testVector));
-		//tests mode with normalization
-		result = testVectorizer.calculateDocumentVector(getTestBagOfWords(), lexicon,Util.defaultSettings);
+		// initiates an instance of Token2Vectorizer with test lexicon
+		BagOfWords2Vector_Processor testVectorizer = new BagOfWords2Vector_Processor();
+		VectorizationResult result = testVectorizer.calculateDocumentVector(
+				getTestBagOfWords(), lexicon, Util.defaultSettings);
+		EmotionVector documentVector = result.getEmotionVector();
+		//tests result before normalization
+		assertEquals("Fehler bei der Vektorberechnung ohne Normalisierung.", true , documentVector.equals(testVector));
+		
+		// tests mode with normalization
+		result = testVectorizer.calculateDocumentVector(getTestBagOfWords(),
+				lexicon, Util.defaultSettings);
 		documentVector = result.getEmotionVector();
 		VectorNormalizer normalizer = new VectorNormalizer();
-		documentVector = normalizer.calculateNormalizedDocumentVector(documentVector, 4); // 4 is the expected normalization parameter for the testing bag of words.
-		assertTrue(documentVector.equals(testVectorNormalized));
-//		System.out.println("Normalization works");	
-	}	
+		documentVector = normalizer.calculateNormalizedDocumentVector(
+				documentVector, 4); // 4 is the expected normalization parameter
+									// for the testing bag of words.
+		assertEquals("Failure at normalization of calculated bag of words. Acutal vector differs from expected.", true, documentVector.equals(testVectorNormalized));
+	}
 		
 
 
+	/**
+	 * Tests whole analysis with lemmatized bag of words.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzer_Lemmatize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_LEMMA);
@@ -136,6 +165,11 @@ public class Tests {
 		assertEquals("Wrong result of analysis with lemmatizer.", true, testVector.equals(documentVector));
 	}
 	
+	
+	/**
+	 * Tests whole analysis with token-based bag of words without normalization of vector.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzer_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
@@ -148,151 +182,135 @@ public class Tests {
 		
 	}
 	
+	/**
+	 * Another testing of the whole analysis (still without normalization) but with the use of the default lexicon.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzer2_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
-		//this is now done by the second parameter of calculateEmotionVector (printing all found dictionary entries	
-		//		analyzer.lexicon.lookUp("AIDS").print();
-//		analyzer.lexicon.lookUp("calm").print();
-//		analyzer.lexicon.lookUp("lobotomy").print();
-//		analyzer.lexicon.lookUp("leukemia").print();
-//		analyzer.lexicon.lookUp("librarian").print();
-//		analyzer.lexicon.lookUp("earthquake").print();
-		
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getSumOfVectors();
-//		documentContainer.getSumOfVectors().print();
-//		documentContainer.getNormalizedEmotionVector().print();
-//		testVector2.print();
 		assertTrue(documentVector.equals(testVector2));
 		
 	}
 	
+	/**
+	 * Tests the whole analysis with a token-based bag of words. Normalization is also checked this time.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzerNormalized_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
-//		System.out.println("used lexicon:");
-//		analyzer.showLexicon(); //TODO test schreiben für EmotionAnalyzer.showLexicon()
 		DocumentContainer documentContainer = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, Util.settings_tokenize);
 		EmotionVector documentVector = 	documentContainer.getNormalizedEmotionVector();
 		assertTrue(documentVector.equals(testVectorNormalized));
-//		System.out.println("\ndocument vector:");
-//		documentVector.print();
 	}
 	
+	
+	/**
+	 * Another testing of the whole analysis using a token-based bag-of words. Normalization is performed.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzerNormalized2_Tokenize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
-//		analyzer.lexicon.lookUp("AIDS").print();
-//		analyzer.lexicon.lookUp("calm").print();
-//		analyzer.lexicon.lookUp("lobotomy").print();
-//		analyzer.lexicon.lookUp("leukemia").print();
-//		analyzer.lexicon.lookUp("librarian").print();
-//		analyzer.lexicon.lookUp("earthquake").print();	
 		DocumentContainer documentContainer= analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE2, Util.settings_tokenize);
 		EmotionVector documentVector = documentContainer.getNormalizedEmotionVector();
-//		documentVector.print();
-//		testVectorNormalized2.print();
 		assertTrue(documentVector.equals(testVectorNormalized2));
 		
 	}
 	
+	
+	/** 
+	 * Tests functions of EmotionVector class: addition, equals, getters,
+	 */
 	@Test
 	public void testEmotionVector() {
 		EmotionVector vector1 = new EmotionVector(1,2,3);
 		EmotionVector vector2 = new EmotionVector(3,2,1);
-//		EmotionVector.printTemplate(); //TODO die Methode EmotionVector.printTemplate() ist veraltet.
-//		vector1.print(); //TODO test schreiben für print vector
-//		vector2.print();
+		//adding vector1 and 2
 		vector1.addVector(vector2);
-//		assertEquals(new EmotionVector(4,4,4), vector1);  //this does not work. implement equals-method for vector.
+		//checking addition
 		assertEquals(4, vector1.getValence(),0001);
 		assertEquals(4, vector1.getArousal(),0.001);
 		assertEquals(4, vector1.getDominance(),0.001);
+		//checking .equals-method
 		assertEquals(true, vector1.equals(new EmotionVector(4,4,4)));
-//		assertEquals(Math.sqrt(48), vector1.getLength()); //Floats cannot be compared like this. Delta has to be given.
+		//checking getLength (sqrt(48) = length of vector 4,4,4)
 		assertEquals(Math.sqrt(48), vector1.getLength(), 0.001);
-//		vector1.print();
+		//tests normalization
 		vector1.normalize(4);
 		assertEquals(1, vector1.getValence(),0001);
 		assertEquals(1, vector1.getArousal(),0.001);
 		assertEquals(1, vector1.getDominance(),0.001);
-//		vector1.print();
 		assertEquals(Math.sqrt(48)/4, vector1.getLength(), 0.001);
+		//test multiplication
 		vector1.multiplyWithConstant(3);
-//		vector1.print();
 		assertEquals(Math.sqrt(48)/4*3, vector1.getLength(), 0.001);
-		//chechs if equals-method of EmotionVector-class works (also with double roundoff errors)
+		//checks if equals-method of EmotionVector-class works (also with double roundoff errors)
 		assertTrue(new EmotionVector(1,2,3).equals(new EmotionVector(1,2,3)));
 		assertTrue(new EmotionVector(1,2,3).equals(new EmotionVector(1.000000001,1.999999999,3.0000000005)));
-		//checks if normalization works
-//		System.out.println("testing normalization");
+		//again testing normalization
 		testVector.normalize(4);
-//		testVector.print();
-//		testVectorNormalized.print();
 		assertTrue(testVector.equals(testVectorNormalized));
-//		System.out.println("Normalization works");
 	}
 	
+	/**
+	 * Test the functionality of the EmotionLexicon class, especially the correct look-up.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionLexicon() throws IOException{
-//		System.out.println("anfang");
 		EmotionLexicon lexicon = new EmotionLexicon();
-//		EmotionVector.printTemplate();
-//		lexicon.lookUp("AIDS").print();	//delete print-statements before end of project.
-//		lexicon.lookUp("calm").print();
-//		lexicon.lookUp("lobotomy").print();
-//		lexicon.lookUp("lovable").print();
-//		lexicon.lookUp("loveable").print(); //cannot be printed because EmotionVector lexicon.lookUp("loveable)=null.
 		assertTrue(
 				(vectorAIDS.equals(lexicon.lookUp("AIDS"))) &&
 				(vectorCalm.equals(lexicon.lookUp("calm"))) &&
 				(vectorLobotomy.equals(lexicon.lookUp("lobotomy"))) &&
 				(vectorLovable.equals(lexicon.lookUp("lovable"))) &&
-			//	(lexicon.neutralVector.equals(lexicon.lookUp("this is not in dictionary")))  //deprecated: I now interprete a not identified word as null
 				(lexicon.lookUp("this is not in lexikon")==null)
 				);
 	}
 	
+	
+	/**
+	 * Tests the method .file2String of File2BagOfWords_Processor.
+	 * @throws IOException
+	 */
 	@Test
 	public void testFile2String() throws IOException{
 		File2BagOfWords_Processor proc = new File2BagOfWords_Processor();
 		String str = proc.file2String(EmotionAnalyzer.TESTFILE);
-//		System.out.println(str);
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 	
+	/**
+	 * Tests the static function Util.isLetterToken.
+	 */
 	@Test
 	public void testIsLetterToken (){
 		boolean boo;
 		boo = Util.isLetterToken("314345");
-//		System.out.println(boo);
 		assertEquals("Wrong result.", false, boo);
 		boo = Util.isLetterToken("look-up");
-//		System.out.println(boo);
 		assertEquals("Wrong result.", false, boo);
 		boo = Util.isLetterToken("house");
-//		System.out.println(boo);
 		assertEquals("Wrong result.", true, boo);
 		boo = Util.isLetterToken("Allé");
-//		System.out.println(boo);
 		assertEquals("Wrong result.", true, boo);
 		boo = Util.isLetterToken(".");
-//		System.out.println(boo);
 		assertEquals("Wrong result.", false, boo);
 	}
 	
+	
+	/**
+	 * Tests the method stemLexicon of EmotionLexicon class.
+	 * @throws IOException
+	 */
 	@Test
 	public void testStemLexikon () throws IOException{
 		EmotionLexicon oldLexicon = new EmotionLexicon(EmotionAnalyzer.TESTLEXICON_STEMMER);
 		EmotionLexicon newLexicon = oldLexicon.stemLexicon();
-		
-//		System.out.println("unstemmed:");
-//		oldLexicon.printLexicon();
-//		System.out.println();
-//		System.out.println("stemmed:");
-//		newLexicon.printLexicon();
-		
 		//testing
 		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
 		//for every key in the old lexicon...
@@ -303,37 +321,54 @@ public class Tests {
 		
 	}
 	
+	
+	/**
+	 * Tests the whole analysis with a stemming-based bag of words.
+	 * @throws IOException
+	 */
 	@Test
 	public void testEmotionAnalyzer_Stem () throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_STEMMER);
-		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, true));
-		
-		assertEquals("Wrong result of emotion analysis",
+		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, false));		
+		assertEquals("Wrong result of emotion analysis with stemmer.",
 				true,
 				output.getNormalizedEmotionVector().equals(new EmotionVector(2, 2, 2)));
 	}
 	
+	/**
+	 * Tests the option printIdentifiedTokens of EmotionAnalyzer.analyze by redirecting the standard output into temp file and compare it to another file.
+	 * @throws IOException
+	 */
 	@Test
 	public void testPrintIdentifiedTokens() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON);
-		PrintStream original = System.out;
-		File outputFile = File.createTempFile("temp", ".txt");
-		PrintStream out = new PrintStream(outputFile);
-		
+		PrintStream originalOut = System.out;
+		File outputFile = File.createTempFile("temp", "txt");
+		PrintStream newOut = new PrintStream(outputFile);		
 		//redirect output
-		System.setOut(out);
-		analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, true));
-		
-			
+		System.setOut(newOut);
+		analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, true));		
 		//back to normal
-		System.setOut(original);
-		
-		assertEquals("Output differs from expected one.",true , Util.compareFiles(outputFile, new File("src/emotionAnalyzer/testOutput_testPrintIdentifiedTokens.txt")));
-		
-//		output.printData();
-		
-		
+		System.setOut(originalOut);
+		assertEquals("Output differs from expected one.",true , Util.compareFiles(outputFile, new File("src/emotionAnalyzer/testOutput_testPrintIdentifiedTokens.txt")));		
 	}
-
-
+	
+	
+	/**
+	 * Tests if the printed output of the tool is correct.
+	 * @throws IOException
+	 */
+	@Test
+	public void testPrintedOutput() throws IOException{
+		PrintStream originalStream = System.out;
+		File output = File.createTempFile("temp", "txt");
+		File testOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		PrintStream newOut = new PrintStream(output);
+		//redirect output
+		System.setOut(newOut);
+		EmotionAnalyzer_UI.main(new String[]{"-file", EmotionAnalyzer.TESTFILE_LEMMA});
+		//switch output back to normal
+		System.setOut(originalStream);
+		assertEquals("Wrong printed output! Output differs from predefined test output.", true, Util.compareFiles(output, testOutput));
+	}
 }

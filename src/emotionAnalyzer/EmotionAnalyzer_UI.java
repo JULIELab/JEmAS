@@ -9,6 +9,14 @@ import java.util.Scanner;
 public class EmotionAnalyzer_UI {
 	
 
+	/**
+	 * USAGE: -option- -file-
+	 * OPTIONS:-file	Analyzes a single file or a list of files.
+				-folder	Analyzes all .txt-files in a folder.
+				-help	Show this help message;
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
 //		System.out.println("Folgende Argumente wurden erkannt:");
