@@ -2,16 +2,12 @@ package corpusManagement;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.Test;
-
-import edu.stanford.nlp.io.EncodingPrintWriter.out;
 
 public class Tests_CleanPdf2Text {
 

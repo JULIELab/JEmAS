@@ -1,7 +1,5 @@
 package emotionAnalyzer;
 
-import com.google.common.hash.*;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -16,11 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.sound.sampled.Line;
-
 import porterStemmer.PorterStemmerWrapper;
-
-import com.google.common.collect.HashMultiset;
 
 public class EmotionLexicon {
 	

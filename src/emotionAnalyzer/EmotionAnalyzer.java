@@ -28,7 +28,6 @@ public class EmotionAnalyzer {
 	/**
 	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
 	 */
-	private BagOfWords2Vector_Processor stemming_t2Vectorizer;
 	
 	
 	/**

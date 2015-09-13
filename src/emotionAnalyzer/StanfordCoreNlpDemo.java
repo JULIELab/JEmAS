@@ -4,10 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import edu.stanford.nlp.io.*;
-import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
-import edu.stanford.nlp.trees.*;
-import edu.stanford.nlp.util.*;
 
 public class StanfordCoreNlpDemo {
 
@@ -18,9 +15,7 @@ public class StanfordCoreNlpDemo {
     } else {
       out = new PrintWriter(System.out);
     }
-    PrintWriter xmlOut = null;
     if (args.length > 2) {
-      xmlOut = new PrintWriter(args[2]);
     }
 
     Properties props = new Properties();

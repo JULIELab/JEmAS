@@ -2,12 +2,8 @@ package emotionAnalyzer;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
-
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
-import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.process.PTBTokenizer;
 
 public class TokenizerDemo {

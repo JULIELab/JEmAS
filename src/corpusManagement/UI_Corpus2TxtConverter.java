@@ -1,9 +1,6 @@
 package corpusManagement;
 
 import java.io.File;
-import java.io.IOException;
-
-import com.google.common.io.Files;
 
 public class UI_Corpus2TxtConverter {
 	

@@ -1,20 +1,15 @@
 package emotionAnalyzer;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
 
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
@@ -30,7 +25,8 @@ public  class File2BagOfWords_Processor {
 
 		// now make all writes to the System.err stream silent 
 		System.setErr(new PrintStream(new OutputStream() {
-		    public void write(int b) {
+		    @Override
+			public void write(int b) {
 		    }
 		}));
 		this.lemmatizer = new StanfordLemmatizer();

@@ -3,8 +3,6 @@ package emotionAnalyzer;
 import java.io.File;
 import java.io.IOException;
 
-import org.w3c.dom.DocumentType;
-
 import com.google.common.collect.HashMultiset;
 
 /**
@@ -18,7 +16,7 @@ public class DocumentContainer {
 
 	final private String documentPath; 
 	final private File documentFile;
-	Preprocessing usedPreprocessing; //TODO das sollte komplett auf this.settings.preprocessing umstellen/ersetzen
+	Preprocessing usedPreprocessing;
 	final private String reportCategory;
 	final private String origin;
 	final private String organization;

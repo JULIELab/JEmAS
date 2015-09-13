@@ -2,23 +2,14 @@ package emotionAnalyzer;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.junit.Test;
 
 import porterStemmer.PorterStemmerWrapper;
 
 import com.google.common.collect.HashMultiset;
-
-import edu.stanford.nlp.util.logging.NewlineLogFormatter;
 
 
 public class Tests {
