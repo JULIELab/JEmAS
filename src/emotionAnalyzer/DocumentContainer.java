@@ -18,8 +18,6 @@ public class DocumentContainer {
 
 	final private String documentPath; 
 	final private File documentFile;
-	//TODO Enum Preprocessing should be externalized from DocumentContainer.
-	public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE}
 	Preprocessing usedPreprocessing; //TODO das sollte komplett auf this.settings.preprocessing umstellen/ersetzen
 	final private String reportCategory;
 	final private String origin;
@@ -123,7 +121,6 @@ public class DocumentContainer {
 	}
 	
 	
-	//TODO write test for that.
 	/**
 	 * Calculates the number of letter tokens ((Tokens which purely of letters and can therefore be regarded as "real words". This deviation may be important in this context to interprete the difference between token count and count of identified tokens during look-up because especially in annual reports, many tokens may be numbers.).
 	 */

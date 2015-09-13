@@ -4,6 +4,7 @@ import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +51,7 @@ public class Util {
 		return map.get(formerLocation);
 		
 	}
-
-	//TODO Test.
+	
 	/**
 	 * Decides if the given token is a letter word (meaning it consists purely of letters).
 	 * @param currentToken
@@ -61,9 +61,19 @@ public class Util {
 		return givenToken.matches("\\p{L}+");
 	}
 	
-	public final  static Settings defaultSettings = new Settings(DocumentContainer.Preprocessing.LEMMATIZE, false);
-	public static final Settings settings_tokenize = new Settings(DocumentContainer.Preprocessing.TOKENIZE, false);
-	public static final Settings settings_stem = new Settings(DocumentContainer.Preprocessing.STEM, false);
+	public static String file2String(String path) throws IOException{
+		List<String> lines = Files.readAllLines(Paths.get(path));
+		String output = "";
+		for (String line: lines){
+			if (!output.isEmpty()) output=output+"\n";
+			output=output+line;
+		}
+		return output;
+	}
+	
+	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false);
+	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false);
+	public static final Settings settings_stem = new Settings(Preprocessing.STEM, false);
 
 
 }

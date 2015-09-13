@@ -28,7 +28,6 @@ public class Tests {
 	final EmotionVector vectorLovable = new EmotionVector(3.26, 0.41, 1.83);
 	final EmotionVector testVector = new EmotionVector(4,5,6); //to test the calculated emotion vector of testFile.txt when using testLexicon.txt
 	final EmotionVector testVectorNormalized = new EmotionVector(1.0, 5.0/4.0, 6.0/4.0);
-	final EmotionVector[] testVectors = {vectorAIDS, vectorCalm, vectorLobotomy, vectorLovable, EmotionAnalyzer.neutralVector};
 	final EmotionVector testVector2 = new EmotionVector(-8.43, -3.75, -7.04);
 	final EmotionVector testVectorNormalized2 = new EmotionVector(-8.43/6.0, -3.75/6.0, -7.04/6.0); //this vector should be the normalized (divided by number of found lexicon entries) document vector of testFile2.txt using defaultLexicon.
 	
@@ -157,7 +156,7 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Lemmatize() throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_LEMMA);
-		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA, new Settings(DocumentContainer.Preprocessing.LEMMATIZE,false));
+		DocumentContainer container = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_LEMMA, new Settings(Preprocessing.LEMMATIZE,false));
 		EmotionVector documentVector = container.getNormalizedEmotionVector();
 //		documentVector.print();
 		EmotionVector testVector =new EmotionVector(1.0/3, 1.0/3, 1.0/3);
@@ -279,8 +278,7 @@ public class Tests {
 	 */
 	@Test
 	public void testFile2String() throws IOException{
-		File2BagOfWords_Processor proc = new File2BagOfWords_Processor();
-		String str = proc.file2String(EmotionAnalyzer.TESTFILE);
+		String str = Util.file2String(EmotionAnalyzer.TESTFILE);
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 	
@@ -329,7 +327,7 @@ public class Tests {
 	@Test
 	public void testEmotionAnalyzer_Stem () throws IOException{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(EmotionAnalyzer.TESTLEXICON_STEMMER);
-		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(DocumentContainer.Preprocessing.STEM, false));		
+		DocumentContainer output = analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE_STEM, new Settings(Preprocessing.STEM, false));		
 		assertEquals("Wrong result of emotion analysis with stemmer.",
 				true,
 				output.getNormalizedEmotionVector().equals(new EmotionVector(2, 2, 2)));
@@ -347,7 +345,7 @@ public class Tests {
 		PrintStream newOut = new PrintStream(outputFile);		
 		//redirect output
 		System.setOut(newOut);
-		analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, new Settings(DocumentContainer.Preprocessing.LEMMATIZE, true));		
+		analyzer.analyzeEmotions(EmotionAnalyzer.TESTFILE, new Settings(Preprocessing.LEMMATIZE, true));		
 		//back to normal
 		System.setOut(originalOut);
 		assertEquals("Output differs from expected one.",true , Util.compareFiles(outputFile, new File("src/emotionAnalyzer/testOutput_testPrintIdentifiedTokens.txt")));		
@@ -355,7 +353,7 @@ public class Tests {
 	
 	
 	/**
-	 * Tests if the printed output of the tool is correct.
+	 * Tests if the printed output of the tool is correct. 
 	 * @throws IOException
 	 */
 	@Test

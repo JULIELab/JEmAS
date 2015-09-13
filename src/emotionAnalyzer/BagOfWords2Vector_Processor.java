@@ -5,14 +5,7 @@ import java.io.IOException;
 import com.google.common.collect.HashMultiset;
 
 public class BagOfWords2Vector_Processor {
-//	final private EmotionLexicon lexicon;
-	
-	public BagOfWords2Vector_Processor() throws IOException{
-//	this.lexicon = givenLexicon; 
-	}
-	
-	//TODO Update documentation
-	
+
 	/**
 	 * Transforms bag-of-words representation of the document into an emotion vector representation.
 	 * @param givenSet
@@ -27,7 +20,7 @@ public class BagOfWords2Vector_Processor {
 			for (String currentToken : givenSet) { 
 				EmotionVector currentVector = givenLexicon.lookUp(currentToken);
 				//if Stemmer is used, the look-up should also check for small letter word beginnings
-				if (givenSettings.usedPreprocessing == DocumentContainer.Preprocessing.STEM && currentVector==null){
+				if (givenSettings.usedPreprocessing == Preprocessing.STEM && currentVector==null){
 					currentToken = currentToken.substring(0, 1).toLowerCase() +currentToken.substring(1);
 					currentVector=givenLexicon.lookUp(currentToken);
 				}
@@ -39,10 +32,4 @@ public class BagOfWords2Vector_Processor {
 			}
 			return new VectorizationResult(documentVector, count);
 	 }
-	 
-//	 VectorizationResult calculateDocumentVector(HashMultiset<String> givenSet, EmotionLexicon givenLexicon) throws IOException{
-//		 return calculateDocumentVector(givenSet, givenLexicon, false);
-//	 }
-	
-
 }

@@ -1,10 +1,9 @@
 package emotionAnalyzer;
 
-import emotionAnalyzer.DocumentContainer.Preprocessing;
 
 public class Settings {
 	
-	DocumentContainer.Preprocessing usedPreprocessing;
+	Preprocessing usedPreprocessing;
 	final boolean printIdentifiedTokens;
 	
 	public Settings(Preprocessing usedPreprocessing, boolean printIdentifiedTokens) {

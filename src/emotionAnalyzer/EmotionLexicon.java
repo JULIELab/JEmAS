@@ -24,11 +24,9 @@ import com.google.common.collect.HashMultiset;
 
 public class EmotionLexicon {
 	
-	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";	//TODO put in config-file?
+	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	HashMap<String, EmotionVector> LexiconMap = new HashMap<String, EmotionVector>(14000,(float)1.0);
-	
-	public EmotionVector neutralVector = new EmotionVector(0,0,0); //TODO in config-file oder an andere Stelle?
-	
+		
 	public EmotionLexicon() throws IOException{
 //		System.out.println("loading lexicon");
 		this.loadLexicon();
@@ -188,7 +186,7 @@ public class EmotionLexicon {
 	 * @param outputPath
 	 * @throws IOException
 	 */
-	//TODO Not tested yet. Perhaps, not necessary at all, because i can do that in a spreadsheet.
+	//not tested yet
 	public void convertLexicon(EmotionVector additionalVector, double multiplicationConstant) throws IOException{
 		String line = null;
 		this.loadLexicon();

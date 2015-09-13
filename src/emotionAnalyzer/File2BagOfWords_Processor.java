@@ -59,7 +59,6 @@ public  class File2BagOfWords_Processor {
 	      return tokenMultiset;
 	}
 	
-	//TODO test!
 	/**
 	 * Loads file at given path into string representation. Process it with Stanford-Lemmatizer and returns it as Mulitset.
 	 * @param documentPath
@@ -68,7 +67,7 @@ public  class File2BagOfWords_Processor {
 	 */
 	public HashMultiset<String> produceBagOfWords_Lemma(String documentPath) throws IOException{
 		HashMultiset<String> lemmaMultiset = HashMultiset.create();
-		String doc = file2String(documentPath);
+		String doc = Util.file2String(documentPath);
 //		if (this.lemmatizer==null) this.lemmatizer = new StanfordLemmatizer(); //deprecated. will be constructed in class constructor
 		List<String> lemmas = this.lemmatizer.lemmatize(doc);
 		for (String lemma: lemmas){
@@ -86,27 +85,12 @@ public  class File2BagOfWords_Processor {
 	 * @throws IOException
 	 */
 	public HashMultiset<String> produceBagOfWords_Stems(String documentPath) throws IOException{
-//		if (this.stemmer==null) this.stemmer = new PorterStemmerInterface(); //TODO wird jetzt schon im Konstruktor geladen (dadurch kommen die Ausgaben vom lemmatizer an eine bessere Stelle)
 		HashMultiset<String> tokens = produceBagOfWords_Token(documentPath);
 		HashMultiset<String> stems = HashMultiset.create();
 		for (String str: tokens){
 			stems.add(stemmer.stem(str));
 		}
 		return stems;
-	}
-		
-		
-	
-	
-	//TODO test! Muss ich da noch Absätze dazwischen setzen (zwischen die einzelnen Zeilen???
-	public String file2String(String path) throws IOException{
-		List<String> lines = Files.readAllLines(Paths.get(path));
-		String output = "";
-		for (String line: lines){
-			if (!output.isEmpty()) output=output+"\n";
-			output=output+line;
-		}
-		return output;
 	}
 		
 }

@@ -1,7 +1,6 @@
 package emotionAnalyzer;
 
 import java.io.IOException;
-import emotionAnalyzer.DocumentContainer.Preprocessing;
 
 public class EmotionAnalyzer {
 
@@ -13,7 +12,6 @@ public class EmotionAnalyzer {
 	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
-	public static final EmotionVector neutralVector = new EmotionVector(0,0,0);  //TODO maybe not hard coded?
 	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
 	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
 	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
@@ -46,7 +44,7 @@ public class EmotionAnalyzer {
 	}
 		
 	
-	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{ //viel weniger Argumente, weil erstmal alles berechnet wird und dann wird in der main-methode entschieden, was ausgegeben wird und was nicht...
+	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{
 		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenSettings);
 		//calculates BagOfWords in documentContainer using f2tReader
 		documentContainer.calculateBagOfWords(this.f2tReader);
@@ -60,7 +58,7 @@ public class EmotionAnalyzer {
 			}
 		}
 		//calculates the emotion vectors if preprocessor is different than stemmer
-		else documentContainer.calculateSumOfVectors(t2Vectorizer, lexicon); //TODO das hier muss geändert werden.
+		else documentContainer.calculateSumOfVectors(t2Vectorizer, lexicon);
 		documentContainer.normalizeDocumentVector(vectorNormalizer);
 		return documentContainer; //return 
 		
