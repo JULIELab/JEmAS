@@ -34,10 +34,22 @@ public class DocumentContainer {
 		this.usedPreprocessing = this.settings.usedPreprocessing;
 		this.documentFile = new File(this.documentPath);
 		String[] nameParts = this.documentFile.getName().split("\\.");
-		this.reportCategory = nameParts[0];
-		this.origin = nameParts[1];
-		this.organization = nameParts[2];
-		this.year = nameParts[3];
+		//TODO this must be generalized and configurable
+		if (nameParts.length == 5){
+			this.reportCategory = nameParts[0];
+			this.origin = nameParts[1];
+			this.organization = nameParts[2];
+			this.year = nameParts[3];
+		}
+		//if the name conventions are not right //TODO must be editited if formating of filenames is configurable
+		else {
+			this.reportCategory = null;
+			this.origin = null;
+			this.organization = null;
+			this.year =null;
+		}
+			
+			
 		this.letterTokenCount = -1;
 	}
 

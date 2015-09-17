@@ -1,4 +1,4 @@
-package emotionAnalyzer;
+package stanford_lemmatizer;
 
 import java.io.*;
 import java.util.*;
