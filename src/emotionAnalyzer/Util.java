@@ -1,7 +1,10 @@
 package emotionAnalyzer;
 
 import java.util.List;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -44,7 +47,7 @@ public class Util {
 			private static final long serialVersionUID = 1L;
 
 		{
-			put(EmotionAnalyzer.DEFAULTLEXICON, "/emotionAnalyzer/LexiconWarriner2013_transformed.txt");
+			put(Util.DEFAULTLEXICON, "/emotionAnalyzer/LexiconWarriner2013_transformed.txt");
 		}};
 		return map.get(formerLocation);
 		
@@ -59,7 +62,7 @@ public class Util {
 		return givenToken.matches("\\p{L}+");
 	}
 	
-	public static String file2String(String path) throws IOException{
+	public static String readfile2String(String path) throws IOException{
 		List<String> lines = Files.readAllLines(Paths.get(path));
 		String output = "";
 		for (String line: lines){
@@ -69,9 +72,30 @@ public class Util {
 		return output;
 	}
 	
+	public static void writeList2File(List<String> list, String path) throws IOException{
+		FileWriter writer = new FileWriter(path); 
+		for (String line : list){
+			writer.write(line+'\n');
+		}
+		writer.close();
+	}
+	
+	
 	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false);
 	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false);
 	public static final Settings settings_stem = new Settings(Preprocessing.STEM, false);
+	public static final String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
+	public static final String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
+	public static final  String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
+	public static final String TESTFILE_STEM = "src/emotionAnalyzer/test.test.test.testFile_Stem.txt";
+	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
+	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
+	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
+	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
+	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
+	public static final String STOPWORDLIST = "resources/NLTK_stopwords_English.txt";
+	public static final String TESTFOLDER ="src/emotionAnalyzer/testFolder";
 
 
 }

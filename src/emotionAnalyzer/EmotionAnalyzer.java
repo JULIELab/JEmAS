@@ -1,33 +1,62 @@
 package emotionAnalyzer;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.Box.Filler;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+import porterStemmer.PorterStemmerWrapper;
+import stanford_lemmatizer.StanfordLemmatizer;
+import stanford_lemmatizer.StanfordLemmatizerInterface;
 
 public class EmotionAnalyzer {
 
-	
-	public static final String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
-	public static final String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
-	public static final  String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
-	public static final String TESTFILE_STEM = "src/emotionAnalyzer/test.test.test.testFile_Stem.txt";
-	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
-	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
-	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
-	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
-	
+
 	final private EmotionLexicon lexicon;
-	final private File2BagOfWords_Processor f2tReader;
-	final private BagOfWords2Vector_Processor t2Vectorizer;
-	final private VectorNormalizer vectorNormalizer;
+	final private StanfordLemmatizer lemmatizer;
+	final private PorterStemmerWrapper stemmer;
+	final private StopwordFilter stopwordfilter;
 	
 	/**
 	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
 	 */
 	private EmotionLexicon stemmedLexicon;
+	
 	/**
-	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
+	 * Collection of files which should be processed
 	 */
+	private File[] corpus;
+	/**
+	 * Folder in which the corpus (every txt-document in it) is lokated.
+	 */
+	private File corpusFolder;
+	private Vocabulary vocabulary;
+	private Settings settings;
+	private DocumentContainer[] containers;
+	
+	private File normalizedDocumentFolder;
+	private File documentTermVectorFolder;
+	private File VocabularyFolder;
+	
+	
+//	final private File2BagOfWords_Processor f2tReader;
+//	final private BagOfWords2Vector_Processor t2Vectorizer;
+	//	final private VectorNormalizer vectorNormalizer;
+	
+	
+	
 	
 	
 	/**
@@ -37,32 +66,138 @@ public class EmotionAnalyzer {
 	 */
 	public EmotionAnalyzer(String givenLexiconPath) throws IOException{
 		this.lexicon = new EmotionLexicon(givenLexiconPath);
-		this.f2tReader = new File2BagOfWords_Processor();
-		this.t2Vectorizer = new BagOfWords2Vector_Processor();
-		this.vectorNormalizer = new VectorNormalizer();
+		this.lemmatizer = new StanfordLemmatizer();
+		this.stemmer = new PorterStemmerWrapper();
+		this.stopwordfilter = new StopwordFilter(Files.readAllLines(new File(Util.STOPWORDLIST).toPath()));
+
 	}
 		
 	
-	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{
-		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenSettings);
-		//calculates BagOfWords in documentContainer using f2tReader
-		documentContainer.calculateBagOfWords(this.f2tReader);
-		documentContainer.calculateLetterTokenCount();
-		//if the selected preprocessor is stemming, another lexicon (the stemmed one) must be used.
-		if (documentContainer.settings.usedPreprocessing == Preprocessing.STEM){
-			//checks if the lexicon has already been stemmed and does so if necessary
-			if (this.stemmedLexicon == null){this.stemmedLexicon = this.lexicon.stemLexicon();
-			//calculate the sum of vectors with the stemmed lexicon
-			documentContainer.calculateSumOfVectors(t2Vectorizer, stemmedLexicon);
+
+	DocumentContainer[] analyze(File givenCorpusFolder, Settings givenSettings) throws Exception{
+		//ensure everything is null
+		this.vocabulary = null;
+		this.containers = null;
+		this.corpus = null;
+		this.corpusFolder = null;
+		//txt-files erfassen, File[] corpus füllen, container initialiseren.
+		this.corpusFolder=givenCorpusFolder;
+		if (!corpusFolder.isDirectory()) throw new Exception("Input is not a directory!");
+		this.corpus = fillCorpusArray();
+		
+		//make folders for normalized files and Document-Term-Vectors
+		this.normalizedDocumentFolder = new File(this.corpusFolder.getPath()+"/Normalized_Documents");
+		this.normalizedDocumentFolder.mkdir();
+		this.documentTermVectorFolder = new File(this.corpusFolder.getPath()+"/Document-Term-Vectors");
+		this.documentTermVectorFolder.mkdir();
+		//container array initialisieren und füllen
+		this.containers = new DocumentContainer[this.corpus.length];
+		for (int index =0; index<this.corpus.length; index++){
+			this.containers[index] = new DocumentContainer(this.corpus[index], this.normalizedDocumentFolder, this.documentTermVectorFolder);
+		}
+		//jeden text normalisieren: lemmatisieren, stopwörter entfernen (wegen dem verwendeten Lemmatizer geht es nicht andersherum) und die bereinigte lemma-listen in extra ordner speichern
+		for (DocumentContainer cont: containers){
+			List<String> normalizedText = lemmatizer.lemmatize(Util.readfile2String(cont.document.getPath()));
+			normalizedText = stopwordfilter.filter(normalizedText);
+			Util.writeList2File(normalizedText, cont.normalizedDocument.getPath());	
+		}
+		//vokabular erheben, Feld vokabular initialisieren.
+		this.vocabulary = collectVocabulary();
+		//für jedes Dokument den Dokument-Term-Vektor berechnen und in gesondertem Ordner abspeichern. Referenz in Container schreiben.
+		for (DocumentContainer container: containers){
+			calculateDocumentTermVector(container);
+		}
+		//für jedes Dokument Dokument-Term-Vektor dicionary look-up durchführen (D-T-Vektor in Liste von Wortemotionsvektoren umwandeln (diese NICHT speichern!), mittelwert berechnen (ist gleichzeitig Dokumentenemotionsvektor), Standardabweichung berechnen, diese Kennwerte festhalten.
+		for (DocumentContainer container: containers){
+			calculateEmotionVector(container);
+		}
+		//Rückgabe
+		return containers;
+	}
+	
+	//	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{
+//		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenSettings);
+//		//calculates BagOfWords in documentContainer using f2tReader
+//		documentContainer.calculateBagOfWords(this.f2tReader);
+//		documentContainer.calculateLetterTokenCount();
+//		//if the selected preprocessor is stemming, another lexicon (the stemmed one) must be used.
+//		if (documentContainer.settings.usedPreprocessing == Preprocessing.STEM){
+//			//checks if the lexicon has already been stemmed and does so if necessary
+//			if (this.stemmedLexicon == null){this.stemmedLexicon = this.lexicon.stemLexicon();
+//			//calculate the sum of vectors with the stemmed lexicon
+//			documentContainer.calculateSumOfVectors(t2Vectorizer, stemmedLexicon);
+//			}
+//		}
+//		//calculates the emotion vectors if preprocessor is different than stemmer
+//		else documentContainer.calculateSumOfVectors(t2Vectorizer, lexicon);
+//		documentContainer.normalizeDocumentVector(vectorNormalizer);
+//		return documentContainer; //return 
+		
+	
+	
+	
+	private void calculateEmotionVector(DocumentContainer container) throws IOException {
+		int[] documentTermVector = container.getDocumentTermVector(this.vocabulary.size);
+		String token;
+		List<EmotionVector> emotionVectors = new LinkedList<EmotionVector>();
+		//adding emotionVectors to emotion vector list
+		for (int component=0 ; component<documentTermVector.length; component++){
+			if (documentTermVector[component] > 0){
+				token = vocabulary.indexMap.inverse().get(component);
+				EmotionVector currentEmotionVector = this.lexicon.lookUp(token);
+				//den Emotionsvektor mal den Wert des Index im Dokumenten-Term-Vektor hinzufügen
+				for (int i = documentTermVector[component]; i>0; i--){
+					emotionVectors.add(currentEmotionVector);
+				}
 			}
 		}
-		//calculates the emotion vectors if preprocessor is different than stemmer
-		else documentContainer.calculateSumOfVectors(t2Vectorizer, lexicon);
-		documentContainer.normalizeDocumentVector(vectorNormalizer);
-		return documentContainer; //return 
+		EmotionVector meanVector = EmotionVector.calculateMean(emotionVectors);
+		EmotionVector standardDeviationVector = EmotionVector.calculateStandardDeviation(emotionVectors, meanVector);
+		container.documentEmotionVector = meanVector;
+		container.standardDeviationVector = standardDeviationVector;
 		
-	}
+		}
+		
+		
 	
+
+
+
+	//TODO funktioniert das??? Das sollte ich unbedingt mal testen...
+	private void calculateDocumentTermVector(DocumentContainer container) throws IOException {
+		int index;
+		FileWriter writer = new FileWriter(container.documentTermVector);
+		int[] documentTermVector = new int[this.vocabulary.size];
+		List<String> normalizedDocument = Files.readAllLines(container.normalizedDocument.toPath());
+		for (String str: normalizedDocument){
+			index = this.vocabulary.indexMap.get(str);
+			documentTermVector[index]++;
+		}
+		for (int i: documentTermVector){
+			writer.write(i);
+		}
+		writer.close();
+	}
+
+
+
+	private File[] fillCorpusArray() throws Exception {
+		if (this.corpusFolder==null) throw new Exception("No folder is indicated yet!");
+		 // create new filename filter
+        FilenameFilter filter = new FilenameFilter() {
+  
+           @Override
+           public boolean accept(File dir, String name) {
+              if (name.endsWith(".txt")) return true;
+              else return false;
+           }
+        };
+		corpus = corpusFolder.listFiles(filter);
+		return corpus;
+	}
+
+
+
 	/**
 	 * Runs EmotionsAnalyzer using default settings (Lemmatizer).
 	 * @param givenDocumentPath
@@ -70,7 +205,8 @@ public class EmotionAnalyzer {
 	 * @throws IOException
 	 */
 	DocumentContainer analyzeEmotions (String givenDocumentPath) throws IOException{
-		return analyzeEmotions(givenDocumentPath, Util.defaultSettings);
+//		return analyzeEmotions(givenDocumentPath, Util.defaultSettings); //TODO wieder einschalten
+		return null;
 	}
 	
 	
@@ -80,6 +216,30 @@ public class EmotionAnalyzer {
 	
 	void showStemmedLexicon(){
 		this.stemmedLexicon.printLexicon();
+	}
+	
+	private Vocabulary collectVocabulary() throws IOException{
+		this.VocabularyFolder=new File(this.corpusFolder.getAbsolutePath()+"/Vocabulary");
+		this.VocabularyFolder.mkdir();
+		Set<String> vocabularySet= new HashSet<String>();
+		for (DocumentContainer container: this.containers){
+			List<String> normalizedDocument = Files.readAllLines(container.normalizedDocument.toPath());
+			for (String line : normalizedDocument){
+				vocabularySet.add(line);
+			}
+		}
+		int vocabularySize =  0;
+		BiMap<String, Integer> indexMap = HashBiMap.create();
+		File vocabularyFile = new File(this.VocabularyFolder.getPath()+"/vocabulary.txt");
+		FileWriter writer = new FileWriter(vocabularyFile);
+		for (String str: vocabularySet){
+			indexMap.put(str, vocabularySize);
+			writer.write(str+'\n');
+			vocabularySize++;	
+		}
+		writer.close();
+		Vocabulary voc = new Vocabulary(vocabularySize, indexMap, vocabularyFile);
+		return voc;
 	}
 
 }

@@ -1,5 +1,9 @@
 package emotionAnalyzer;
 
+import java.util.List;
+
+import edu.stanford.nlp.trees.BobChrisTreeNormalizer.AOverAFilter;
+
 /*
  * Vector representation of an emotion according to dimensional emotion model (also named VAD-model (valence, arousal, dominance).
  */
@@ -75,6 +79,46 @@ public class EmotionVector {
 		this.valence=0.0;
 		this.arousal=0.0;
 		this.dominance=0.0;
+	}
+
+	public static EmotionVector calculateMean(List<EmotionVector> emotionVectors) {
+		EmotionVector result = new EmotionVector();
+		for (EmotionVector emo: emotionVectors){
+			result.addVector(emo);
+		}
+		result.normalize(emotionVectors.size());	
+		return result;
+	}
+	
+	
+	//TODO i really need to test this.
+	public static EmotionVector calculateStandardDeviation(List<EmotionVector> emotionVectors, EmotionVector mean){
+		double valenceMean = mean.valence;
+		double arousalMean = mean.arousal;
+		double dominanceMean = mean.dominance;
+		double valenceStdev = 0;
+		double arousalStdev = 0;
+		double dominanceStdev =0;
+		
+		double n = emotionVectors.size();
+		
+		for (EmotionVector emo: emotionVectors){
+			valenceStdev =+  Math.pow(emo.valence - valenceMean, 2);
+			arousalStdev =+ Math.pow(emo.arousal - arousalMean, 2);
+			dominanceStdev =+ Math.pow(emo.dominance - dominanceMean, 2);
+		}
+		
+		valenceStdev = valenceStdev/n;
+		arousalStdev = arousalStdev/n;
+		dominanceStdev = dominanceStdev/n;
+		
+		valenceStdev = Math.sqrt(valenceStdev);
+		arousalStdev = Math.sqrt(arousalStdev);
+		dominanceStdev = Math.sqrt(dominanceStdev);
+		
+		EmotionVector standardDeviation = new EmotionVector(valenceStdev, arousalStdev, dominanceStdev);
+		
+		return standardDeviation;
 	}
 
 }

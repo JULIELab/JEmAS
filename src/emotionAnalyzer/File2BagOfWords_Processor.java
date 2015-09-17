@@ -63,7 +63,7 @@ public  class File2BagOfWords_Processor {
 	 */
 	public HashMultiset<String> produceBagOfWords_Lemma(String documentPath) throws IOException{
 		HashMultiset<String> lemmaMultiset = HashMultiset.create();
-		String doc = Util.file2String(documentPath);
+		String doc = Util.readfile2String(documentPath);
 //		if (this.lemmatizer==null) this.lemmatizer = new StanfordLemmatizer(); //deprecated. will be constructed in class constructor
 		List<String> lemmas = this.lemmatizer.lemmatize(doc);
 		for (String lemma: lemmas){

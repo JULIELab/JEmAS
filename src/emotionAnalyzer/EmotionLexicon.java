@@ -64,7 +64,7 @@ public class EmotionLexicon {
 			this.loadLexicon(lexiconPath);
 		} catch (Exception e) {
 			//if packed in jar
-			this.loadLexicon(EmotionAnalyzer.DEFAULTLEXICON_JAR);
+			this.loadLexicon(Util.DEFAULTLEXICON_JAR);
 		}
 	}
 	
