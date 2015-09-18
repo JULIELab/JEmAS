@@ -1,6 +1,10 @@
 package emotionAnalyzer;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+
 import com.google.common.collect.BiMap;
 
 
@@ -18,4 +22,9 @@ public class Vocabulary {
 	 */
 	final BiMap<String, Integer> indexMap;
 	final File vocabularyFile;
+	
+	public String[] asArray() throws IOException{
+		List<String> list = Files.readAllLines(vocabularyFile.toPath());
+		return list.toArray(new String[list.size()]);
+	}
 }

@@ -28,6 +28,7 @@ public class EmotionAnalyzer {
 	final private StanfordLemmatizer lemmatizer;
 	final private PorterStemmerWrapper stemmer;
 	final private StopwordFilter stopwordfilter;
+	final private NonAlphabeticFilter nonAlphabeticFilter;
 	
 	/**
 	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
@@ -43,6 +44,10 @@ public class EmotionAnalyzer {
 	 */
 	private File corpusFolder;
 	private Vocabulary vocabulary;
+	public Vocabulary getVocabulary() {
+		return vocabulary;
+	}
+
 	private Settings settings;
 	private DocumentContainer[] containers;
 	
@@ -68,6 +73,7 @@ public class EmotionAnalyzer {
 		this.lexicon = new EmotionLexicon(givenLexiconPath);
 		this.lemmatizer = new StanfordLemmatizer();
 		this.stemmer = new PorterStemmerWrapper();
+		this.nonAlphabeticFilter = new NonAlphabeticFilter();
 		this.stopwordfilter = new StopwordFilter(Files.readAllLines(new File(Util.STOPWORDLIST).toPath()));
 
 	}
@@ -95,10 +101,14 @@ public class EmotionAnalyzer {
 		for (int index =0; index<this.corpus.length; index++){
 			this.containers[index] = new DocumentContainer(this.corpus[index], this.normalizedDocumentFolder, this.documentTermVectorFolder);
 		}
-		//jeden text normalisieren: lemmatisieren, stopwörter entfernen (wegen dem verwendeten Lemmatizer geht es nicht andersherum) und die bereinigte lemma-listen in extra ordner speichern
+		//jeden text normalisieren: lemmatisieren, non-alphabetics entfernen, stopwörter entfernen (wegen dem verwendeten Lemmatizer geht es nicht andersherum) und die bereinigte lemma-listen in extra ordner speichern
 		for (DocumentContainer cont: containers){
 			List<String> normalizedText = lemmatizer.lemmatize(Util.readfile2String(cont.document.getPath()));
+			cont.tokenCount = normalizedText.size();
+			normalizedText = nonAlphabeticFilter.filter(normalizedText);
+			cont.alphabeticTokenCount = normalizedText.size();
 			normalizedText = stopwordfilter.filter(normalizedText);
+			cont.non_stopword_tokenCount = normalizedText.size();
 			Util.writeList2File(normalizedText, cont.normalizedDocument.getPath());	
 		}
 		//vokabular erheben, Feld vokabular initialisieren.
@@ -145,12 +155,15 @@ public class EmotionAnalyzer {
 			if (documentTermVector[component] > 0){
 				token = vocabulary.indexMap.inverse().get(component);
 				EmotionVector currentEmotionVector = this.lexicon.lookUp(token);
-				//den Emotionsvektor mal den Wert des Index im Dokumenten-Term-Vektor hinzufügen
-				for (int i = documentTermVector[component]; i>0; i--){
-					emotionVectors.add(currentEmotionVector);
+				if (currentEmotionVector!=null) {
+					//den Emotionsvektor mal den Wert des Index im Dokumenten-Term-Vektor hinzufügen, wenn der Emotionsvektor nicht null ist (weil er nicht im Lexikon auftaucht)
+					for (int i = documentTermVector[component]; i > 0; i--) {
+						emotionVectors.add(currentEmotionVector);
+					}
 				}
 			}
 		}
+		container.recognizedTokenCount = emotionVectors.size();
 		EmotionVector meanVector = EmotionVector.calculateMean(emotionVectors);
 		EmotionVector standardDeviationVector = EmotionVector.calculateStandardDeviation(emotionVectors, meanVector);
 		container.documentEmotionVector = meanVector;
@@ -173,8 +186,9 @@ public class EmotionAnalyzer {
 			index = this.vocabulary.indexMap.get(str);
 			documentTermVector[index]++;
 		}
-		for (int i: documentTermVector){
-			writer.write(i);
+		for (int i = 0; i<documentTermVector.length; i++){
+			String str = Integer.toString(documentTermVector[i]); 
+			writer.write(str+'\n');
 		}
 		writer.close();
 	}
@@ -196,19 +210,6 @@ public class EmotionAnalyzer {
 		return corpus;
 	}
 
-
-
-	/**
-	 * Runs EmotionsAnalyzer using default settings (Lemmatizer).
-	 * @param givenDocumentPath
-	 * @return
-	 * @throws IOException
-	 */
-	DocumentContainer analyzeEmotions (String givenDocumentPath) throws IOException{
-//		return analyzeEmotions(givenDocumentPath, Util.defaultSettings); //TODO wieder einschalten
-		return null;
-	}
-	
 	
 	void showLexicon(){
 		this.lexicon.printLexicon();

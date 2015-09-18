@@ -30,10 +30,10 @@ public class DocumentContainer {
 	// final private File documentFile;
 	// Preprocessing usedPreprocessing;
 
-	final private String reportCategory;
-	final private String origin;
-	final private String organization;
-	final private String year;
+	final String reportCategory;
+	final String origin;
+	final String organization;
+	final String year;
 	/**
 	 * Number of "letter tokens" (Tokens which purely of letters and can
 	 * therefore be regarded as "real words". This deviation may be important in
@@ -42,15 +42,19 @@ public class DocumentContainer {
 	 * many tokens may be numbers.)
 	 */
 
-	private int tokenCount;
-	private int normalizedTokenCount;
+	int tokenCount;
+	int alphabeticTokenCount;
+	/**
+	 * alphabetic non-stopwords
+	 */
+	int non_stopword_tokenCount;
 	/**
 	 * Number of word vectors which contribute to the document vector. Unlike in
 	 * prior versions, only the words which can be found in the lexicon
 	 * contribute to the vector count (unidentified words will be evaluated as
 	 * null vecotor and not neutral vector anymore.)
 	 */
-	private int recognizedTokenCount;
+	int recognizedTokenCount;
 	// final Settings settings;
 
 	EmotionVector documentEmotionVector;
@@ -63,10 +67,10 @@ public class DocumentContainer {
 		// document and the document-term-vector
 		this.document = givenDocument;
 		this.normalizedDocument = new File(
-				givenNormalizedDocumentFolder.getPath()
+				givenNormalizedDocumentFolder.getPath()+"/"
 						+ givenDocument.getName());
 		this.documentTermVector = new File(
-				givenDocumentTermVectorFolder.getPath()
+				givenDocumentTermVectorFolder.getPath()+"/"
 						+ givenDocument.getName());
 		// Initialize the attributes of the document as coded in the filename.
 		String[] nameParts = this.document.getName().split("\\.");
@@ -86,7 +90,7 @@ public class DocumentContainer {
 			this.year = null;
 		}
 
-		this.normalizedTokenCount = -1;
+		this.non_stopword_tokenCount = -1;
 	}
 
 	// public String getDocumentPath() {
@@ -116,11 +120,12 @@ public class DocumentContainer {
 				+ this.year + "\t" + this.documentEmotionVector.getValence()
 				+ "\t" + this.documentEmotionVector.getArousal() + "\t"
 				+ this.documentEmotionVector.getDominance() + "\t"
-				+ this.documentEmotionVector.getLength() + "\t"
 				+ this.standardDeviationVector.getValence() + "\t"
 				+ this.standardDeviationVector.getArousal() + "\t"
 				+ this.standardDeviationVector.getDominance() + "\t"
-				+ this.tokenCount + "\t" + this.normalizedTokenCount + "\t"
+				+ this.tokenCount + "\t"  
+				+ this.alphabeticTokenCount + "\t"
+				+ this.non_stopword_tokenCount + "\t"
 				+ this.recognizedTokenCount);
 	}
 
@@ -141,11 +146,11 @@ public class DocumentContainer {
 
 	// private double normalizationParameter;
 
-	public int getVectorCount() {
+	public int getRecognizedTokenCount() {
 		return recognizedTokenCount;
 	}
 
-	public int[] getDocumentTermVector(int vocabularySize)
+	public int[] getDocumentTermVector(int vocabularySize) //TODO voc size lieber in einer Datei speichern, sodass alle darauf zugreifen können?
 			throws NumberFormatException, IOException {
 		int[] vector = new int[vocabularySize];
 		BufferedReader reader = new BufferedReader(new FileReader(
@@ -153,7 +158,8 @@ public class DocumentContainer {
 		String currentLine;
 		int i = 0;
 		while ((currentLine = reader.readLine()) != null) {
-			vector[i++] = Integer.parseInt(currentLine);
+			vector[i] = Integer.parseInt(currentLine);
+			i++;
 		}
 		reader.close();
 		return vector;

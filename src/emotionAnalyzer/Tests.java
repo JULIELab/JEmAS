@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import porterStemmer.PorterStemmerWrapper;
@@ -347,22 +349,128 @@ public class Tests {
 	 * Tests if the printed output of the tool is correct. 
 	 * @throws IOException
 	 */
+//	@Test
+//	public void testPrintedOutput() throws IOException{
+//		PrintStream originalStream = System.out;
+//		File output = File.createTempFile("temp", "txt");
+//		File testOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+//		PrintStream newOut = new PrintStream(output);
+//		//redirect output
+//		System.setOut(newOut);
+//		EmotionAnalyzer_UI.main(new String[]{"-file", Util.TESTFILE_LEMMA});
+//		//switch output back to normal
+//		System.setOut(originalStream);
+//		assertEquals("Wrong printed output! Output differs from predefined test output.", true, Util.compareFiles(output, testOutput));
+//	}
+//	
 	@Test
-	public void testPrintedOutput() throws IOException{
-		PrintStream originalStream = System.out;
-		File output = File.createTempFile("temp", "txt");
-		File testOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
-		PrintStream newOut = new PrintStream(output);
-		//redirect output
-		System.setOut(newOut);
-		EmotionAnalyzer_UI.main(new String[]{"-file", Util.TESTFILE_LEMMA});
-		//switch output back to normal
-		System.setOut(originalStream);
-		assertEquals("Wrong printed output! Output differs from predefined test output.", true, Util.compareFiles(output, testOutput));
+	public void testEmotionAnaylzer2() throws Exception{
+		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER2});
 	}
 	
 	@Test
-	public void testEmotionAnaylzer() throws Exception{
+	public void testEmotionAnaylzer_UI() throws Exception{
 		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER});
 	}
+	
+	@Test
+	public void testUtilStdev(){
+		double[] sample ={1,2,3,4,5,6,7,8,9,};
+		double expected = 2.5819888975;
+		assertEquals(expected, Util.stdev(sample), 0.00000001);
+	}
+	
+	@Test
+	public void testUtilAverage(){
+		double[] sample = {1,2,3,4,5,6,7,8,9,};
+		double expected = 5;
+		assertEquals(expected, Util.average(sample), 0.000000001);
+	}
+	
+	@Test
+	public void testUtilVariance(){
+		double[] sample = {1,2,3,4,5,6,7,8,9,};
+		double expected = 6.666666666666666;
+		assertEquals(expected, Util.var(sample), 0.000000001);
+	}
+	
+	@Test
+	public void testEmotionAnalyzer() throws Exception{
+		EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
+		DocumentContainer[] containers = analyzer.analyze(new File(Util.TESTFOLDER), Util.defaultSettings);
+		DocumentContainer container;
+		/**
+		 * checking testfile3 ("I am very happy to go outside.")
+		 */
+		container = containers[2];
+		//check emotion vector
+		assertEquals(false, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.012)));
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.01333)));
+		//check standard deviation vector
+		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(1.0480776053, 1.071105348, 0.8490124983)));
+		//ckeck token count
+		assertEquals(8, container.tokenCount);
+		//check alphabetic tokens
+		assertEquals(7, container.alphabeticTokenCount);
+		//check non-stopword tokens
+		assertEquals(4, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		//check recognized tokens
+		assertEquals(3, container.recognizedTokenCount);
+		//check report's attributes
+		assertEquals("type", container.reportCategory);
+		assertEquals("origin", container.origin);
+		assertEquals("enterprise", container.organization);
+		assertEquals("year2000", container.year);
+		/**
+		 * checking testfile ("fish fish fish...")
+		 */
+		container = containers[0];
+		//check emotion vector
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(0.925,-1.4275, 0.575)));
+		//check standard deviation vector
+		assertEquals(true, containers[0].standardDeviationVector.equals(new EmotionVector(0.8573651497,0.4200223208, 0.8746856578)));
+		//ckeck token count
+		assertEquals(8, container.tokenCount);
+		//check alphabetic tokens
+		assertEquals(5, container.alphabeticTokenCount);
+		//check non-stopword tokens
+		assertEquals(5, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		//check recognized tokens
+		assertEquals(4, container.recognizedTokenCount);
+		//check report's attributes
+		assertEquals("test", container.reportCategory);
+		assertEquals("test", container.origin);
+		assertEquals("test", container.organization);
+		assertEquals("testFile", container.year);
+		/**
+		 * checking testfile2 (AIDS, calm, lobotomy,...)
+		 */
+		container=containers[1];
+		//check emotion vector
+		assertEquals(false, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.012)));
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(-8.43/6.0, -3.75/6.0, -7.04/6.0)));
+		//check standard deviation vector
+		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(2.2311114569, 1.9608735298 ,1.9010669519)));
+		//ckeck token count
+		assertEquals(7, container.tokenCount);
+		//check alphabetic tokens
+		assertEquals(6, container.alphabeticTokenCount);
+		//check non-stopword tokens
+		assertEquals(6, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		//check recognized tokens
+		assertEquals(6, container.recognizedTokenCount);
+		//check report's attributes
+		assertEquals("test", container.reportCategory);
+		assertEquals("test", container.origin);
+		assertEquals("test", container.organization);
+		assertEquals("testFile2", container.year);
+		/**
+		 * checking vocabulary
+		 */
+		String[] expected = new String[]{"leukemia","be","test","happy","go","AIDS","librarian","earthquake","calm","outside","fish","lobotomy","ThisIsNotInLexicon"};
+		String[] actual = analyzer.getVocabulary().asArray();
+		assertArrayEquals(expected, actual);
+	}
+	
+	
 }

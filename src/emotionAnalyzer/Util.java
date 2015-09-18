@@ -80,6 +80,28 @@ public class Util {
 		writer.close();
 	}
 	
+	public static double stdev (double[] sample){
+		return Math.sqrt(Util.var(sample));
+	}
+	
+	public static double average (double[] sample){
+		double result = 0.0;
+		for (int i = 0; i<sample.length; i++){
+			result = result+sample[i];
+		}
+		return result/(double)sample.length;
+	}
+	
+	public static double var(double[]sample){
+		double result = 0.0;
+		double mean = Util.average(sample);
+		for (int i=0; i<sample.length; i++){
+			result = result + Math.pow(sample[i]-mean, 2);
+		}
+		
+		return result/sample.length;
+	}
+	
 	
 	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false);
 	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false);
@@ -94,8 +116,10 @@ public class Util {
 	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
 	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
 	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
-	public static final String STOPWORDLIST = "resources/NLTK_stopwords_English.txt";
+	public static final String STOPWORDLIST_NLTK = "resources/NLTK_stopwords_English.txt";
+	public static final String TESTFOLDER2 ="src/emotionAnalyzer/testFolder2";
 	public static final String TESTFOLDER ="src/emotionAnalyzer/testFolder";
+	public static final String STOPWORDLIST = "resources/Stopwords_lemmatisiert_nicht_im_Lexikon.txt";
 
 
 }

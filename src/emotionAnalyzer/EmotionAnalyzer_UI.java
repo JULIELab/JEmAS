@@ -99,10 +99,10 @@ public class EmotionAnalyzer_UI {
 				+ "\tStdDev Valenence"
 				+ "\tStdDev Arousal"
 				+ "\tStdDev Dominance"
-				+ "\tLength"
 				+ "\tTokens"
-				+ "\tWord Tokens"
-				+ "\tIdentified Tokens"); //Documentname, Valence, Arousal, Dominace, vector lenght
+				+ "\tAlphabetic Token"
+				+ "\tNon-Stopword Tokens"
+				+ "\tRecognized Tokens"); 
 		
 	}
 
