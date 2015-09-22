@@ -433,7 +433,7 @@ public class Tests {
 		assertEquals("type", container.reportCategory);
 		assertEquals("origin", container.origin);
 		assertEquals("enterprise", container.organization);
-		assertEquals("year2000", container.year);
+		assertEquals("2000", container.year);
 		/**
 		 * checking testfile ("fish fish fish...")
 		 */
@@ -494,6 +494,47 @@ public class Tests {
 		List<String> actualList = filter.filter(inputList);
 		String[] actual = actualList.toArray(new String[actualList.size()]);
 		assertArrayEquals(expected, actual);
+	}
+	
+	/**
+	 * Test the method in DocumentContainer which gets the attributes of a report out of the files name.
+	 */
+	@Test
+	public void testDocumentContainerGetDocumentAttributes(){
+		String input;
+		String[] expected;
+		String[] actual;
+		//normal case, everything is fine here.
+		input = "Annual_Reports.Dax.Adidas.1996.txt";
+		expected = new String[]{"Annual_Reports", "Dax", "Adidas", "1996", "txt"};
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+		//everything is normal here, too
+		input = "Annual_Reports.FTSE.WPP.2006.txt";
+		expected = new String[]{"Annual_Reports", "FTSE", "WPP","2006", "txt" };
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+		//too many parts caused by additional suffix
+		input = "Annual_Reports.DowJones.Johnson_Johnson.2009.PDF.txt";
+		expected = new String[]{"Annual_Reports", "DowJones","Johnson_Johnson","2009", "txt"}; 
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+		//too many parts caused by E.ON
+		input = "CSR_Reports.Dax.EON.E.ON_CR_Report_2004.txt";
+		expected = new String[] {"CSR_Reports","Dax","EON", "2004", "txt" };	
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+		//wrong year format
+		input = "CSR_Reports.Dax.Muenchener_Rueck.MunichRe_CSR_2011.txt";
+		expected = new String[]{"CSR_Reports", "Dax", "Muenchener_Rueck","2011", "txt"};
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+		//another wrong year format
+		input= "CSR_Reports.FTSE.WPP.WPP_201314.txt";
+		expected = new String[]{"CSR_Reports","FTSE","WPP", "2013", "txt"};
+		actual = DocumentContainer.getDocumentAttributes(input);
+		assertArrayEquals(expected, actual);
+
 	}
 	
 	
