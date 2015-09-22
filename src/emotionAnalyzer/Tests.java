@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -363,14 +366,24 @@ public class Tests {
 //		assertEquals("Wrong printed output! Output differs from predefined test output.", true, Util.compareFiles(output, testOutput));
 //	}
 //	
-	@Test
-	public void testEmotionAnaylzer2() throws Exception{
-		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER2});
-	}
+//	@Test
+//	public void testEmotionAnaylzer2() throws Exception{
+//		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER2});
+//	}
 	
 	@Test
 	public void testEmotionAnaylzer_UI() throws Exception{
+		PrintStream originalStream = System.out;
+		File acutalOutput = File.createTempFile("temp", "txt");
+		File expectedOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		PrintStream newOut = new PrintStream(acutalOutput);
+		//redirect output
+		System.setOut(newOut);
 		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER});
+		//switch output back to normal
+		System.setOut(originalStream);
+		//test
+		assertEquals("Wrong printed output! Output differs from predefined test output.", true, Util.compareFiles(acutalOutput, expectedOutput));
 	}
 	
 	@Test
@@ -448,7 +461,7 @@ public class Tests {
 		container=containers[1];
 		//check emotion vector
 		assertEquals(false, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.012)));
-		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(-8.43/6.0, -3.75/6.0, -7.04/6.0)));
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(-1.405, -0.625,-1.1733333333)));
 		//check standard deviation vector
 		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(2.2311114569, 1.9608735298 ,1.9010669519)));
 		//ckeck token count
@@ -469,6 +482,17 @@ public class Tests {
 		 */
 		String[] expected = new String[]{"leukemia","be","test","happy","go","AIDS","librarian","earthquake","calm","outside","fish","lobotomy","ThisIsNotInLexicon"};
 		String[] actual = analyzer.getVocabulary().asArray();
+		assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void testFilterNonAlphabetics(){
+		NonAlphabeticFilter filter = new NonAlphabeticFilter();
+		String[] input = {"123", "123a", "a-b", ".", "djfkdjf", "apple", "tree", "mushroom", "Mr. President"};
+		String[] expected = {"123a", "a-b","djfkdjf", "apple", "tree", "mushroom", "Mr. President"};
+		List<String> inputList = Arrays.asList(input);
+		List<String> actualList = filter.filter(inputList);
+		String[] actual = actualList.toArray(new String[actualList.size()]);
 		assertArrayEquals(expected, actual);
 	}
 	

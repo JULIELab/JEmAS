@@ -1,2 +1,4 @@
-File Name	Report Category	Origin	Organization	Year	Valence	Arousal	Dominance	Length	Tokens	Word Tokens	Identified Tokens
-test.test.test.testFile_Lemma.txt	test	test	test	testFile_Lemma	0.865	-0.28500000000000003	0.605	1.0933777938114528	10	8	4
+File Name	Report Category	Origin	Organization	Year	Valence	Arousal	Dominance	StdDev Valenence	StdDev Arousal	StdDev Dominance	Tokens	Alphabetic Token	Non-Stopword Tokens	Recognized Tokens
+test.test.test.testFile.txt	test	test	test	testFile	0.9249999999999999	-1.4275	0.5750000000000001	0.8573651497465942	0.4200223208354527	0.874685657822283	8	5	5	4
+test.test.test.testFile2.txt	test	test	test	testFile2	-1.4049999999999998	-0.625	-1.1733333333333333	2.231111456949951	1.960873529833069	1.9010669518866388	7	6	6	6
+type.origin.enterprise.year2000.txt	type	origin	enterprise	year2000	1.9900000000000002	-0.22	1.0133333333333332	1.0480776052691263	1.071105348071172	0.8490124982720938	8	7	4	3

@@ -13,9 +13,10 @@ public class NonAlphabeticFilter {
 	public ArrayList<String> filter(List<String> document){
 		ArrayList<String> filteredList = new ArrayList<String>();
 		for (String token: document){
-			if ( (token.matches(".*\\p{L}.*")) &&  //at least one letter
-					(!token.matches(".*[0-9].*")) //no digits
-					){
+			if ( token.matches(".*\\p{L}.*")){ //at least one letter
+//			(token.matches(".*\\p{L}.*")) &&  //at least one letter
+//					(!token.matches(".*[0-9].*")) //no digits
+//					){
 				filteredList.add(token);	
 			}
 		}
