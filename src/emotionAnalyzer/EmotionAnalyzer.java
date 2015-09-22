@@ -87,11 +87,13 @@ public class EmotionAnalyzer {
 		this.corpus = null;
 		this.corpusFolder = null;
 		//txt-files erfassen, File[] corpus füllen, container initialiseren.
+		System.err.println("Registering input files...");
 		this.corpusFolder=givenCorpusFolder;
 		if (!corpusFolder.isDirectory()) throw new Exception("Input is not a directory!");
 		this.corpus = fillCorpusArray();
 		
 		//make folders for normalized files and Document-Term-Vectors
+		System.err.println("Making directories...");
 		this.normalizedDocumentFolder = new File(this.corpusFolder.getPath()+"/Normalized_Documents");
 		this.normalizedDocumentFolder.mkdir();
 		this.documentTermVectorFolder = new File(this.corpusFolder.getPath()+"/Document-Term-Vectors");
@@ -102,7 +104,9 @@ public class EmotionAnalyzer {
 			this.containers[index] = new DocumentContainer(this.corpus[index], this.normalizedDocumentFolder, this.documentTermVectorFolder);
 		}
 		//jeden text normalisieren: lemmatisieren, non-alphabetics entfernen, stopwörter entfernen (wegen dem verwendeten Lemmatizer geht es nicht andersherum) und die bereinigte lemma-listen in extra ordner speichern
+		System.err.println("Normalizing input files...");
 		for (DocumentContainer cont: containers){
+			System.err.println("\t"+cont.document.getName());
 			List<String> normalizedText = lemmatizer.lemmatize(Util.readfile2String(cont.document.getPath()));
 			cont.tokenCount = normalizedText.size();
 			normalizedText = nonAlphabeticFilter.filter(normalizedText);
@@ -112,13 +116,18 @@ public class EmotionAnalyzer {
 			Util.writeList2File(normalizedText, cont.normalizedDocument.getPath());	
 		}
 		//vokabular erheben, Feld vokabular initialisieren.
+		System.err.println("Building vocabulary...");
 		this.vocabulary = collectVocabulary();
 		//für jedes Dokument den Dokument-Term-Vektor berechnen und in gesondertem Ordner abspeichern. Referenz in Container schreiben.
+		System.err.println("Calculating document-term-vectors...");
 		for (DocumentContainer container: containers){
+			System.err.println("\t"+container.document.getName());
 			calculateDocumentTermVector(container);
 		}
 		//für jedes Dokument Dokument-Term-Vektor dicionary look-up durchführen (D-T-Vektor in Liste von Wortemotionsvektoren umwandeln (diese NICHT speichern!), mittelwert berechnen (ist gleichzeitig Dokumentenemotionsvektor), Standardabweichung berechnen, diese Kennwerte festhalten.
+		System.err.println("Performing dictionary look-ups and calculating document emotion...");
 		for (DocumentContainer container: containers){
+			System.err.println("\t"+container.document.getName());
 			calculateEmotionVector(container);
 		}
 		//Rückgabe
@@ -224,6 +233,7 @@ public class EmotionAnalyzer {
 		this.VocabularyFolder.mkdir();
 		Set<String> vocabularySet= new HashSet<String>();
 		for (DocumentContainer container: this.containers){
+			System.err.println("\t"+container.document.getName());
 			List<String> normalizedDocument = Files.readAllLines(container.normalizedDocument.toPath());
 			for (String line : normalizedDocument){
 				vocabularySet.add(line);
