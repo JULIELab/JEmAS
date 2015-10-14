@@ -278,25 +278,31 @@ public class Tests {
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 	
+	
 	/**
-	 * Tests the static function Util.isLetterToken.
+	 *Die hier getestete Funktion wird scheinbar gar nicht benötigt.
 	 */
-	@Test
-	public void testIsLetterToken (){
-		boolean boo;
-		boo = Util.isLetterToken("314345");
-		assertEquals("Wrong result.", false, boo);
-		boo = Util.isLetterToken("look-up");
-		assertEquals("Wrong result.", false, boo);
-		boo = Util.isLetterToken("house");
-		assertEquals("Wrong result.", true, boo);
-		boo = Util.isLetterToken("Allé");
-		assertEquals("Wrong result.", true, boo);
-		boo = Util.isLetterToken(".");
-		assertEquals("Wrong result.", false, boo);
-	}
+//	/**
+//	 * Tests the static function Util.isLetterToken.
+//	 */
+//	@Test
+//	public void testIsLetterToken (){
+//		boolean boo;
+//		boo = Util.isLetterToken("314345");
+//		assertEquals("Wrong result.", false, boo);
+//		boo = Util.isLetterToken("look-up");
+//		assertEquals("Wrong result.", false, boo);
+//		boo = Util.isLetterToken("house");
+//		assertEquals("Wrong result.", true, boo);
+//		boo = Util.isLetterToken("Allé");
+//		assertEquals("Wrong result.", true, boo);
+//		boo = Util.isLetterToken(".");
+//		assertEquals("Wrong result.", false, boo);
+//	}
 	
 	
+	
+	//TODO wird das stemmen überhaupt noch benutzt?
 	/**
 	 * Tests the method stemLexicon of EmotionLexicon class.
 	 * @throws IOException
@@ -371,6 +377,11 @@ public class Tests {
 //		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER2});
 //	}
 	
+	
+	/**
+	 * Tests the output, this tool should produce.
+	 * @throws Exception
+	 */
 	@Test
 	public void testEmotionAnaylzer_UI() throws Exception{
 		PrintStream originalStream = System.out;
@@ -407,6 +418,11 @@ public class Tests {
 		assertEquals(expected, Util.var(sample), 0.000000001);
 	}
 	
+	
+	/**
+	 * Tests the whole tool.
+	 * @throws Exception
+	 */
 	@Test
 	public void testEmotionAnalyzer() throws Exception{
 		EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
@@ -426,7 +442,7 @@ public class Tests {
 		//check alphabetic tokens
 		assertEquals(7, container.alphabeticTokenCount);
 		//check non-stopword tokens
-		assertEquals(4, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		assertEquals(4, container.non_stopword_tokenCount);
 		//check recognized tokens
 		assertEquals(3, container.recognizedTokenCount);
 		//check report's attributes
@@ -447,7 +463,7 @@ public class Tests {
 		//check alphabetic tokens
 		assertEquals(5, container.alphabeticTokenCount);
 		//check non-stopword tokens
-		assertEquals(5, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		assertEquals(5, container.non_stopword_tokenCount);
 		//check recognized tokens
 		assertEquals(4, container.recognizedTokenCount);
 		//check report's attributes
@@ -469,7 +485,7 @@ public class Tests {
 		//check alphabetic tokens
 		assertEquals(6, container.alphabeticTokenCount);
 		//check non-stopword tokens
-		assertEquals(6, container.non_stopword_tokenCount); //TODO must be adjusted, when punction will be removed.
+		assertEquals(6, container.non_stopword_tokenCount);
 		//check recognized tokens
 		assertEquals(6, container.recognizedTokenCount);
 		//check report's attributes
@@ -485,6 +501,10 @@ public class Tests {
 		assertArrayEquals(expected, actual);
 	}
 	
+	
+	/**
+	 * Tests method which removes tokens which do not include a letter.
+	 */
 	@Test
 	public void testFilterNonAlphabetics(){
 		NonAlphabeticFilter filter = new NonAlphabeticFilter();

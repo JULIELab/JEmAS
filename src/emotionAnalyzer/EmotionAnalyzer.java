@@ -184,8 +184,6 @@ public class EmotionAnalyzer {
 	
 
 
-
-	//TODO funktioniert das??? Das sollte ich unbedingt mal testen...
 	private void calculateDocumentTermVector(DocumentContainer container) throws IOException {
 		int index;
 		FileWriter writer = new FileWriter(container.documentTermVector);

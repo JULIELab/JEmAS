@@ -53,14 +53,14 @@ public class Util {
 		
 	}
 	
-	/**
-	 * Decides if the given token is a letter word (meaning it consists purely of letters).
-	 * @param currentToken
-	 * @return
-	 */
-	public static boolean isLetterToken(String givenToken) {
-		return givenToken.matches("\\p{L}+");
-	}
+//	/**
+//	 * Decides if the given token is a letter word (meaning it consists purely of letters).
+//	 * @param currentToken
+//	 * @return
+//	 */
+//	public static boolean isLetterToken(String givenToken) {
+//		return givenToken.matches("\\p{L}+");
+//	}
 	
 	public static String readfile2String(String path) throws IOException{
 		List<String> lines = Files.readAllLines(Paths.get(path));

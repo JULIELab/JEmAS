@@ -3,6 +3,13 @@ package emotionAnalyzer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 public class EmotionAnalyzer_UI {
 	
@@ -14,15 +21,40 @@ public class EmotionAnalyzer_UI {
 	
 	public static void main (String[] args) throws Exception{
 		if (args.length==1){
-			File dir = new File(args[0]);
-			EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
-			DocumentContainer[] containers = analyzer.analyze(dir, Util.defaultSettings);
-			printDataTemplate();
-			for (DocumentContainer container: containers){
-				container.printData();
+			switch (args[0]){
+			
+			case "-help":
+				printHelp();
+				break;
+			case "-test":
+				runTests();
+				break;
+			default:
+				File dir = new File(args[0]);
+				EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
+				DocumentContainer[] containers = analyzer.analyze(dir, Util.defaultSettings);
+				printDataTemplate();
+				for (DocumentContainer container: containers){
+					container.printData();
+				}
 			}
 		}
 		else printHelp();
+	}
+	
+	
+	private static void runTests(){
+		JUnitCore junit = new JUnitCore();
+		Result result = junit.run(Tests.class);
+		System.out.println("Ran " + result.getRunCount() + "tests in "+ result.getRunTime() +"ms.");
+		if (result.wasSuccessful()) System.out.println("All tests were successfull!");
+		else {
+			System.out.println(result.getFailureCount() + "Failures:");
+			for (Failure fail: result.getFailures()){
+				fail.getMessage();
+			}
+		}
+		
 	}
 	
 //	public static void main(String[] args) throws IOException {

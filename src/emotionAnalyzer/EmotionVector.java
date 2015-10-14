@@ -91,35 +91,8 @@ public class EmotionVector {
 	}
 	
 	
-	//TODO i really need to test this.
+
 	public static EmotionVector calculateStandardDeviation(List<EmotionVector> emotionVectors, EmotionVector mean){
-//		double valenceMean = mean.valence;
-//		double arousalMean = mean.arousal;
-//		double dominanceMean = mean.dominance;
-//		double valenceStdev = 0;
-//		double arousalStdev = 0;
-//		double dominanceStdev =0;
-//		
-//		double n = emotionVectors.size();
-//		
-//		for (EmotionVector emo: emotionVectors){
-//			valenceStdev +=  Math.pow(emo.valence - valenceMean, 2);
-//			arousalStdev += Math.pow(emo.arousal - arousalMean, 2);
-//			dominanceStdev += Math.pow(emo.dominance - dominanceMean, 2);
-//		}
-//		
-//		valenceStdev = valenceStdev/n;
-//		arousalStdev = arousalStdev/n;
-//		dominanceStdev = dominanceStdev/n;
-//		
-//		valenceStdev = Math.sqrt(valenceStdev);
-//		arousalStdev = Math.sqrt(arousalStdev);
-//		dominanceStdev = Math.sqrt(dominanceStdev);
-//		
-//		EmotionVector standardDeviation = new EmotionVector(valenceStdev, arousalStdev, dominanceStdev);
-//		
-//		return standardDeviation;
-		
 		double resultValence;
 		double resultArousal;
 		double resultDominance;

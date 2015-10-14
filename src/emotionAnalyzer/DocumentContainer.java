@@ -81,7 +81,7 @@ public class DocumentContainer {
 		this.organization = nameParts[2];
 		this.year = nameParts[3];
 
-		this.non_stopword_tokenCount = -1; //TODO ???
+		this.non_stopword_tokenCount = -1; //wird erstmal auf einen Wert initialisert, der, wenn nicht verändert, eindeutig als Fehler zu erkennen ist.
 	}
 	
 	/**
@@ -89,7 +89,6 @@ public class DocumentContainer {
 	 * @param document
 	 * @return index 0: category type, 1: origin: 2: organization, 3: year, 4: suffix
 	 */
-	//TODO should be made configurable
 	public static String[] getDocumentAttributes(String documentName){
 		String[] nameParts = documentName.split("\\.");
 		String[] attributes;
@@ -187,7 +186,7 @@ public class DocumentContainer {
 		return recognizedTokenCount;
 	}
 
-	public int[] getDocumentTermVector(int vocabularySize) //TODO voc size lieber in einer Datei speichern, sodass alle darauf zugreifen können?
+	public int[] getDocumentTermVector(int vocabularySize) 
 			throws NumberFormatException, IOException {
 		int[] vector = new int[vocabularySize];
 		BufferedReader reader = new BufferedReader(new FileReader(
