@@ -386,11 +386,23 @@ public class Tests {
 	public void testEmotionAnaylzer_UI() throws Exception{
 		PrintStream originalStream = System.out;
 		File acutalOutput = File.createTempFile("temp", "txt");
-		File expectedOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		File expectedOutput;
+		//TODO Problem: try-catch bringt es hier nicht. Man kann das file schon erstellen (da gibt es kein Fehler) aber man kann Sie dann eben nicht vergleichen. Deswegen lieber if else Anweisung, stattdessen: Wenn es dieses file nicht gibt, nehmen wird das andere.
+		try {
+			expectedOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		} catch (Exception e) {
+			System.err.println("SWITCH TO CATCH-BLOCK ########################"); //TODO remove this.
+			System.out.println("SWITCH TO CATCH-BLOCK ########################"); //TODO remove this.
+			expectedOutput = new File("testOutput_testPrintedOutput.txt"); //TODO Hinzufügen, dass die Datei automatisch dort erstellt wird.
+		}
 		PrintStream newOut = new PrintStream(acutalOutput);
 		//redirect output
 		System.setOut(newOut);
-		EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER});
+		try {
+			EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER});
+		} catch (Exception e) {
+			EmotionAnalyzer_UI.main(new String[]{"testFolder"}); //TODO Hinzufügen, dass die Datei automatisch dort erstellt wird. Das gleiche für den Test ohne UI.
+		}
 		//switch output back to normal
 		System.setOut(originalStream);
 		//test
@@ -425,8 +437,20 @@ public class Tests {
 	 */
 	@Test
 	public void testEmotionAnalyzer() throws Exception{
-		EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
-		DocumentContainer[] containers = analyzer.analyze(new File(Util.TESTFOLDER), Util.defaultSettings);
+		EmotionAnalyzer analyzer;
+		try {
+			analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
+		} catch (Exception e1) {
+			analyzer = new EmotionAnalyzer(Util.getJarPath(Util.DEFAULTLEXICON));
+
+		}
+		DocumentContainer[] containers;
+		try {
+			containers = analyzer.analyze(new File(Util.TESTFOLDER), Util.defaultSettings);
+		} catch (Exception e) {
+			//this is necessary to run tests from within jar-files.
+			containers = analyzer.analyze(new File("testFolder"), Util.defaultSettings);
+		}
 		DocumentContainer container;
 		/**
 		 * checking testfile3 ("I am very happy to go outside.")

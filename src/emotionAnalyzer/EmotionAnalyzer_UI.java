@@ -37,6 +37,7 @@ public class EmotionAnalyzer_UI {
 				for (DocumentContainer container: containers){
 					container.printData();
 				}
+				break;
 			}
 		}
 		else printHelp();
@@ -46,12 +47,15 @@ public class EmotionAnalyzer_UI {
 	private static void runTests(){
 		JUnitCore junit = new JUnitCore();
 		Result result = junit.run(Tests.class);
-		System.out.println("Ran " + result.getRunCount() + "tests in "+ result.getRunTime() +"ms.");
+		System.err.println("Ran " + result.getRunCount() + " tests in "+ result.getRunTime() +"ms.");
 		if (result.wasSuccessful()) System.out.println("All tests were successfull!");
 		else {
-			System.out.println(result.getFailureCount() + "Failures:");
+			System.err.println(result.getFailureCount() + "Failures:");
 			for (Failure fail: result.getFailures()){
-				fail.getMessage();
+				System.err.println("Failure in: "+ fail.getTestHeader());
+				System.err.println(fail.getMessage());
+				System.err.println(fail.getTrace());
+				System.err.println();
 			}
 		}
 		
@@ -148,7 +152,7 @@ public class EmotionAnalyzer_UI {
 //	}
 	
 	private static void printHelp(){
-		System.out.println("\tUsage:\tIndicate a folder. All txt-files will be analyzed.");
+		System.out.println("\tUsage:\tIndicate a folder. All txt-files will be analyzed.\n\n -help\t\tPrint this message.\n-test\t\tRun tests. To do this, please place‘testFolder‘ in the working directory");
 	}
 
 //	private static void getVector(String documentPath, EmotionAnalyzer emotionAnalyzer) throws IOException{

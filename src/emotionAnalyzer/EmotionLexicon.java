@@ -77,7 +77,7 @@ public class EmotionLexicon {
 		BufferedReader bReader = null;
 		String line = null;
 		
-		bReader = this.file2BufferedReader(path);
+		bReader = Util.file2BufferedReader(path);
 		 while ((line = bReader.readLine())!=null){
 			 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
 			 while (line.startsWith("//")){
@@ -142,24 +142,7 @@ public class EmotionLexicon {
 	
 	
 	
-	/**
-	 * Returns a Buffered reader of the indicated file/resource. The path which worked in IDE should also work when packed into jar.
-	 * @param path
-	 * @return
-	 * @throws FileNotFoundException
-	 */
-	private BufferedReader file2BufferedReader(String path) throws FileNotFoundException{
-		BufferedReader bReader = null;
-			try {
-				//if not packed into jar
-				bReader= new BufferedReader(new FileReader(path));
-			} catch (Exception e) {
-				//if packed into jar
-				bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(Util.getJarLocation(path))));
-			}
-		return bReader;
-		
-	}
+	
 	
 	void printLexicon(){
 		for (Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){

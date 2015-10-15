@@ -1,13 +1,18 @@
 package emotionAnalyzer;
 
 import java.util.List;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +34,14 @@ public class Util {
 	 * @return
 	 */
 	public static String getJarPath(String path) {
-		path = path.substring(4);
+		
+		if (path.startsWith("src")) {
+			path = path.substring(4);
+		}
+		else if (path.startsWith("resources")) {
+			path = path.substring(10);
+			path = "emotionAnalyzer/"+path;
+		}
 		return path;
 	}
 	
@@ -40,29 +52,8 @@ public class Util {
 		else return false;	
 	}
 	
-	public static String getJarLocation (String formerLocation){
-		final Map<String, String> map = new HashMap<String, String>(){/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-		{
-			put(Util.DEFAULTLEXICON, "/emotionAnalyzer/LexiconWarriner2013_transformed.txt");
-		}};
-		return map.get(formerLocation);
-		
-	}
-	
-//	/**
-//	 * Decides if the given token is a letter word (meaning it consists purely of letters).
-//	 * @param currentToken
-//	 * @return
-//	 */
-//	public static boolean isLetterToken(String givenToken) {
-//		return givenToken.matches("\\p{L}+");
-//	}
-	
 	public static String readfile2String(String path) throws IOException{
+//		List<String> lines = Util.readFile2List(path); 
 		List<String> lines = Files.readAllLines(Paths.get(path));
 		String output = "";
 		for (String line: lines){
@@ -71,6 +62,56 @@ public class Util {
 		}
 		return output;
 	}
+	
+	/**
+	 * Reads a given File und returns it listwise. Also works when packed in jar-File.
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String> readFile2List(String path) throws IOException{
+		List<String> lines = new ArrayList<String>();
+		// Works in IDE
+		try{
+			lines = Files.readAllLines(Paths.get(path));
+		}
+		//Works in Jar
+		catch (Exception e){
+			String line;
+			BufferedReader bReader= Util.file2BufferedReader(getJarPath(path));
+			while ((line = bReader.readLine())!=null){
+				lines.add(line);
+			}
+		}
+		return lines;
+	}
+	
+	/**
+	 * Returns a Buffered reader of the indicated file/resource. The path which worked in IDE should also work when packed into jar.
+	 * @param path
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public static BufferedReader file2BufferedReader(String path) throws FileNotFoundException{
+		BufferedReader bReader = null;
+			try {
+				//if not packed into jar
+				bReader= new BufferedReader(new FileReader(path));
+			} catch (Exception e) {
+				//if packed into jar
+				try{
+					bReader = new BufferedReader(new InputStreamReader(Util.class.getClassLoader().getResourceAsStream(Util.getJarPath(path))));
+				} catch (Exception f){
+					f.printStackTrace();
+					System.out.println("\nFailed to find file in jar. Looked at path " + Util.getJarPath(path) );
+				}
+			}
+		
+		return bReader;
+		
+	}
+	
+	
 	
 	public static void writeList2File(List<String> list, String path) throws IOException{
 		FileWriter writer = new FileWriter(path); 

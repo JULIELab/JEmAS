@@ -74,7 +74,8 @@ public class EmotionAnalyzer {
 		this.lemmatizer = new StanfordLemmatizer();
 		this.stemmer = new PorterStemmerWrapper();
 		this.nonAlphabeticFilter = new NonAlphabeticFilter();
-		this.stopwordfilter = new StopwordFilter(Files.readAllLines(new File(Util.STOPWORDLIST).toPath()));
+//		this.stopwordfilter = new StopwordFilter(Files.readAllLines(new File(Util.STOPWORDLIST).toPath()));
+		this.stopwordfilter = new StopwordFilter(Util.readFile2List(Util.STOPWORDLIST)); 
 
 	}
 		
@@ -89,7 +90,8 @@ public class EmotionAnalyzer {
 		//txt-files erfassen, File[] corpus füllen, container initialiseren.
 		System.err.println("Registering input files...");
 		this.corpusFolder=givenCorpusFolder;
-		if (!corpusFolder.isDirectory()) throw new Exception("Input is not a directory!");
+		//TODO Does this work?
+		if (! (corpusFolder.isDirectory() || corpusFolder.getPath().equals("emotionAnalyzer/testFolder"))) throw new Exception("Input ( "+ corpusFolder.getPath() +" ) is not a directory!");
 		this.corpus = fillCorpusArray();
 		
 		//make folders for normalized files and Document-Term-Vectors
