@@ -5,21 +5,16 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.Box.Filler;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
-import stanford_lemmatizer.StanfordLemmatizerInterface;
 
 public class EmotionAnalyzer {
 
@@ -74,9 +69,7 @@ public class EmotionAnalyzer {
 		this.lemmatizer = new StanfordLemmatizer();
 		this.stemmer = new PorterStemmerWrapper();
 		this.nonAlphabeticFilter = new NonAlphabeticFilter();
-//		this.stopwordfilter = new StopwordFilter(Files.readAllLines(new File(Util.STOPWORDLIST).toPath()));
 		this.stopwordfilter = new StopwordFilter(Util.readFile2List(Util.STOPWORDLIST)); 
-
 	}
 		
 	
@@ -90,7 +83,6 @@ public class EmotionAnalyzer {
 		//txt-files erfassen, File[] corpus füllen, container initialiseren.
 		System.err.println("Registering input files...");
 		this.corpusFolder=givenCorpusFolder;
-		//TODO Does this work?
 		if (! (corpusFolder.isDirectory() || corpusFolder.getPath().equals("emotionAnalyzer/testFolder"))) throw new Exception("Input ( "+ corpusFolder.getPath() +" ) is not a directory!");
 		this.corpus = fillCorpusArray();
 		
@@ -136,6 +128,10 @@ public class EmotionAnalyzer {
 		return containers;
 	}
 	
+	/**
+	 * This is the old method, dealing with one document at a time.
+	 * 
+	 */
 	//	DocumentContainer analyzeEmotions(String givenDocumentPath, Settings givenSettings) throws IOException{
 //		DocumentContainer documentContainer = new DocumentContainer(givenDocumentPath, givenSettings);
 //		//calculates BagOfWords in documentContainer using f2tReader

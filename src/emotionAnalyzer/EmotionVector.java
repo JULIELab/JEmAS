@@ -2,8 +2,6 @@ package emotionAnalyzer;
 
 import java.util.List;
 
-import edu.stanford.nlp.trees.BobChrisTreeNormalizer.AOverAFilter;
-
 /*
  * Vector representation of an emotion according to dimensional emotion model (also named VAD-model (valence, arousal, dominance).
  */

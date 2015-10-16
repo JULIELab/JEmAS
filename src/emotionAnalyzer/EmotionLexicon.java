@@ -2,11 +2,8 @@ package emotionAnalyzer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -92,39 +89,7 @@ public class EmotionLexicon {
 			 }
 		 }
 		
-//		 try {
-//			bReader = this.file2BufferedReader(path);
-//			 while ((line = bReader.readLine())!=null){
-//				 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
-//				 while (line.startsWith("//")){
-//					 line =bReader.readLine();
-//				 }
-//				 String[] line2Array = line.split("\t");
-//				 String currentWord = line2Array[0];
-//				 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
-//					 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
-//					 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
-//					 this.LexiconMap.put(currentWord, currentVector);}
-//			 }
-//		} catch (Exception e) {
-//			//if packed in jar
-////			bReader = this.file2BufferedReader(Util.getJarPath(path));
-//			bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/emotionAnalyzer/LexiconWarriner2013_transformed.txt")));
-//			 while ((line = bReader.readLine())!=null){
-//				 //the lines at the beginning of the file starting with // are comments. Therefore, should not be read to EmotionVector.
-//				 while (line.startsWith("//")){
-//					 line =bReader.readLine();
-//				 }
-//				 String[] line2Array = line.split("\t");
-//				 String currentWord = line2Array[0];
-//				 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
-//					 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
-//					 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
-//					 this.LexiconMap.put(currentWord, currentVector);}
-//			 }
-//			
-//		}
-//		 return;
+
 	}
 	
 	
@@ -183,6 +148,8 @@ public class EmotionLexicon {
 		}
 	}
 	
+	
+	// Currently not in use.
 	/**
 	 * Returns a new EmotionLexicon with stemmed entries.
 	 * @return

@@ -22,11 +22,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/corpusRenamer/Korpus_Sample</name>
-			<type>2</type>
-			<location>/Users/sven/GitHub/EmotionAnalyzer/Korpus_Sample</location>
-		</link>
-		<link>
 			<name>src/emotionAnalyzer/NLTK_stopwords_English.txt</name>
 			<type>1</type>
 			<location>/Users/sven/GitHub/EmotionAnalyzer/resources/NLTK_stopwords_English.txt</location>

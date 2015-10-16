@@ -2,19 +2,15 @@ package emotionAnalyzer;
 
 import java.util.List;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.HashMultiset;
@@ -94,11 +90,11 @@ public class Util {
 	 */
 	public static BufferedReader file2BufferedReader(String path) throws FileNotFoundException{
 		BufferedReader bReader = null;
-			try {
-				//if not packed into jar
+		//if not packed into jar	
+		try {
 				bReader= new BufferedReader(new FileReader(path));
-			} catch (Exception e) {
 				//if packed into jar
+			} catch (Exception e) {
 				try{
 					bReader = new BufferedReader(new InputStreamReader(Util.class.getClassLoader().getResourceAsStream(Util.getJarPath(path))));
 				} catch (Exception f){
@@ -130,7 +126,7 @@ public class Util {
 		for (int i = 0; i<sample.length; i++){
 			result = result+sample[i];
 		}
-		return result/(double)sample.length;
+		return result/sample.length;
 	}
 	
 	public static double var(double[]sample){

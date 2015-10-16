@@ -5,16 +5,12 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
 import porterStemmer.PorterStemmerWrapper;
-
-import com.google.common.collect.HashMultiset;
 
 
 public class Tests {
@@ -304,7 +300,7 @@ public class Tests {
 	
 	
 	
-	//TODO wird das stemmen überhaupt noch benutzt?
+	//Stemming is currently not in use.
 	/**
 	 * Tests the method stemLexicon of EmotionLexicon class.
 	 * @throws IOException
@@ -411,13 +407,6 @@ public class Tests {
 			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE3)), "testFolder/type.origin.enterprise.year2000.txt");
 			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE4)), "testFolder/type.origin.enterprise.year1999.txt");
 		}
-		//TODO kann ich das entfernen?
-//		try {
-//			EmotionAnalyzer_UI.main(new String[]{Util.TESTFOLDER});
-//		} catch (Exception e) {
-//			EmotionAnalyzer_UI.main(new String[]{"testFolder"}); //TODO Hinzufügen, dass die Datei automatisch dort erstellt wird. Das gleiche für den Test ohne UI.
-//		}
-		
 		EmotionAnalyzer_UI.main(new String[]{testfolder.getPath()});
 		//switch output back to normal
 		System.setOut(originalStream);
