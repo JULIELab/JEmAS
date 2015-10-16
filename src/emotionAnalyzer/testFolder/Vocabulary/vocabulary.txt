@@ -1,3 +1,4 @@
+love
 leukemia
 be
 test
@@ -7,7 +8,10 @@ AIDS
 librarian
 earthquake
 calm
+icecream
+cake
 outside
 fish
 lobotomy
+eat
 ThisIsNotInLexicon

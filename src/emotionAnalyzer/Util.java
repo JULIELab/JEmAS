@@ -161,6 +161,7 @@ public class Util {
 	public static final String TESTFOLDER2 ="src/emotionAnalyzer/testFolder2";
 	public static final String TESTFOLDER ="src/emotionAnalyzer/testFolder";
 	public static final String STOPWORDLIST = "resources/Stopwords_lemmatisiert_nicht_im_Lexikon.txt";
+	public static final String TESTFILE4 = "src/emotionAnalyzer/type.origin.enterprise.year1999.txt";
 
 
 }
