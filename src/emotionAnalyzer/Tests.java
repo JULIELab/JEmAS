@@ -274,7 +274,9 @@ public class Tests {
 	 */
 	@Test
 	public void testFile2String() throws IOException{
-		String str = Util.readfile2String(Util.TESTFILE);
+		String str;
+		str = Util.readfile2String(Util.TESTFILE);
+	
 		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
 	}
 	
@@ -386,14 +388,13 @@ public class Tests {
 	public void testEmotionAnaylzer_UI() throws Exception{
 		PrintStream originalStream = System.out;
 		File acutalOutput = File.createTempFile("temp", "txt");
-		File expectedOutput;
-		//TODO Problem: try-catch bringt es hier nicht. Man kann das file schon erstellen (da gibt es kein Fehler) aber man kann Sie dann eben nicht vergleichen. Deswegen lieber if else Anweisung, stattdessen: Wenn es dieses file nicht gibt, nehmen wird das andere.
-		try {
-			expectedOutput = new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
-		} catch (Exception e) {
-			System.err.println("SWITCH TO CATCH-BLOCK ########################"); //TODO remove this.
-			System.out.println("SWITCH TO CATCH-BLOCK ########################"); //TODO remove this.
-			expectedOutput = new File("testOutput_testPrintedOutput.txt"); //TODO Hinzufügen, dass die Datei automatisch dort erstellt wird.
+		File expectedOutput =new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		if (!expectedOutput.exists()){
+			expectedOutput = new File("testOutput_testPrintedOutput.txt");
+		}
+		//If file does not exists in working directory, write it.
+		if (!expectedOutput.exists()){
+			Util.writeList2File(Util.readFile2List(Util.getJarPath("src/emotionAnalyzer/testOutput_testPrintedOutput.txt")), "testOutput_testPrintedOutput.txt");
 		}
 		PrintStream newOut = new PrintStream(acutalOutput);
 		//redirect output
