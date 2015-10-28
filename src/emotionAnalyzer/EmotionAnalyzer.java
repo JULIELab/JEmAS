@@ -92,7 +92,7 @@ public class EmotionAnalyzer {
 		this.normalizedDocumentFolder.mkdir();
 		this.documentTermVectorFolder = new File(this.corpusFolder.getPath()+"/Document-Term-Vectors");
 		this.documentTermVectorFolder.mkdir();
-		//container array initialisieren und füllen
+		//container array initialisieren und füllen, Metadaten erheben
 		this.containers = new DocumentContainer[this.corpus.length];
 		for (int index =0; index<this.corpus.length; index++){
 			this.containers[index] = new DocumentContainer(this.corpus[index], this.normalizedDocumentFolder, this.documentTermVectorFolder);
