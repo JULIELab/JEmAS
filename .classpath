@@ -14,11 +14,11 @@
 	<classpathentry kind="lib" path="/Users/sven/GitHub/guava-16.0.1.jar"/>
 	<classpathentry kind="lib" path="/Users/sven/GitHub/stanford-corenlp-3.5.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/Users/sven/GitHub/stanford-corenlp-3.5.2-models.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/sven/GitHub/stanford-corenlp-3.5.2-models.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
