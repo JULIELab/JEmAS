@@ -24,6 +24,7 @@ public class EmotionAnalyzer {
 	final private PorterStemmerWrapper stemmer;
 	final private StopwordFilter stopwordfilter;
 	final private NonAlphabeticFilter nonAlphabeticFilter;
+	final private NumberFilter numberFilter;
 	
 	/**
 	 * Will only be assingned if a passed DocumentContainer requires stemming as preprocessing.
@@ -70,6 +71,7 @@ public class EmotionAnalyzer {
 		this.stemmer = new PorterStemmerWrapper();
 		this.nonAlphabeticFilter = new NonAlphabeticFilter();
 		this.stopwordfilter = new StopwordFilter(Util.readFile2List(Util.STOPWORDLIST)); 
+		this.numberFilter = new NumberFilter();
 	}
 		
 	
@@ -103,6 +105,9 @@ public class EmotionAnalyzer {
 			System.err.println("\t"+cont.document.getName());
 			List<String> normalizedText = lemmatizer.lemmatize(Util.readfile2String(cont.document.getPath()));
 			cont.tokenCount = normalizedText.size();
+			//Zahlen entfernen und Anzahl berechnen.
+			normalizedText = numberFilter.filter(normalizedText);
+			cont.numberCount = cont.tokenCount - normalizedText.size();
 			normalizedText = nonAlphabeticFilter.filter(normalizedText);
 			cont.alphabeticTokenCount = normalizedText.size();
 			normalizedText = stopwordfilter.filter(normalizedText);

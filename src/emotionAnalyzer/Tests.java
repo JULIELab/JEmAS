@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -264,6 +265,7 @@ public class Tests {
 	}
 	
 	
+	
 	/**
 	 * Tests the method .file2String of File2BagOfWords_Processor.
 	 * @throws IOException
@@ -467,16 +469,17 @@ public class Tests {
 		DocumentContainer container;
 		
 		/**
-		 * Checking testfile 4 ("I love to eat cake and icecream")
+		 * Checking testfile4 ("I love to eat cake and icecream")
 		 */
 		container = containers[2];
+//		System.out.println(container.)
 		//check emotion vector
 		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(2.56, 0.0233333333, 1.3533333333)));
 		//check standard deviation vector
 //		container.standardDeviationVector.print();
 		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(0.3676955262, 0.455070202, 0.6413180871)));
 		//ckeck token count
-		assertEquals(8, container.tokenCount);
+		assertEquals(13, container.tokenCount);
 		//check alphabetic tokens
 		assertEquals(7, container.alphabeticTokenCount);
 		//check non-stopword tokens
@@ -499,7 +502,7 @@ public class Tests {
 		//check standard deviation vector
 		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(1.0480776053, 1.071105348, 0.8490124983)));
 		//ckeck token count
-		assertEquals(8, container.tokenCount);
+		assertEquals(12, container.tokenCount);
 		//check alphabetic tokens
 		assertEquals(7, container.alphabeticTokenCount);
 		//check non-stopword tokens
@@ -618,6 +621,15 @@ public class Tests {
 //		assertArrayEquals(expected, actual);
 //
 //	}
+	
+	@Test
+	public void testNumberFilter(){
+		List<String> testList = Arrays.asList(new String[]{"a", "b", "test", "133", "1", "foo", "bar", "000"});
+		List<String> actualList = new NumberFilter().filter(testList);
+		List<String> expectedList = Arrays.asList(new String[]{"a", "b", "test", "foo", "bar"});
+		assertArrayEquals(expectedList.toArray(new String[expectedList.size()]), actualList.toArray(new String[actualList.size()]));
+//		for (String line: actualList) System.out.println(line);
+	}
 	
 	
 }

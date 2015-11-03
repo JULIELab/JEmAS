@@ -38,6 +38,7 @@ public class DocumentContainer {
 
 	int tokenCount;
 	int alphabeticTokenCount;
+	int numberCount;
 	/**
 	 * alphabetic non-stopwords
 	 */
@@ -156,7 +157,8 @@ public class DocumentContainer {
 				+ this.tokenCount + "\t"  
 				+ this.alphabeticTokenCount + "\t"
 				+ this.non_stopword_tokenCount + "\t"
-				+ this.recognizedTokenCount);
+				+ this.recognizedTokenCount	+	"\t"
+				+ this.numberCount);
 	}
 
 	// public EmotionVector getNormalizedEmotionVector() {

@@ -71,7 +71,8 @@ public class EmotionAnalyzer_UI {
 				+ "\tTokens"
 				+ "\tAlphabetic Token"
 				+ "\tNon-Stopword Tokens"
-				+ "\tRecognized Tokens"); 
+				+ "\tRecognized Tokens"
+				+ "\tNumberCount"); 
 		
 	}
 
