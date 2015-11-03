@@ -484,10 +484,10 @@ public class Tests {
 		//check recognized tokens
 		assertEquals(3, container.recognizedTokenCount);
 		//check report's attributes
-		assertEquals("type", container.reportCategory);
-		assertEquals("origin", container.origin);
-		assertEquals("enterprise", container.organization);
-		assertEquals("1999", container.year);
+//		assertEquals("type", container.reportCategory);
+//		assertEquals("origin", container.origin);
+//		assertEquals("enterprise", container.organization);
+//		assertEquals("1999", container.year);
 		
 		/**
 		 * checking testfile3 ("I am very happy to go outside.")
@@ -507,10 +507,10 @@ public class Tests {
 		//check recognized tokens
 		assertEquals(3, container.recognizedTokenCount);
 		//check report's attributes
-		assertEquals("type", container.reportCategory);
-		assertEquals("origin", container.origin);
-		assertEquals("enterprise", container.organization);
-		assertEquals("2000", container.year);
+//		assertEquals("type", container.reportCategory);
+//		assertEquals("origin", container.origin);
+//		assertEquals("enterprise", container.organization);
+//		assertEquals("2000", container.year);
 		/**
 		 * checking testfile ("fish fish fish...")
 		 */
@@ -528,10 +528,10 @@ public class Tests {
 		//check recognized tokens
 		assertEquals(4, container.recognizedTokenCount);
 		//check report's attributes
-		assertEquals("test", container.reportCategory);
-		assertEquals("test", container.origin);
-		assertEquals("test", container.organization);
-		assertEquals("testFile", container.year);
+//		assertEquals("test", container.reportCategory);
+//		assertEquals("test", container.origin);
+//		assertEquals("test", container.organization);
+//		assertEquals("testFile", container.year);
 		/**
 		 * checking testfile2 (AIDS, calm, lobotomy,...)
 		 */
@@ -550,10 +550,10 @@ public class Tests {
 		//check recognized tokens
 		assertEquals(6, container.recognizedTokenCount);
 		//check report's attributes
-		assertEquals("test", container.reportCategory);
-		assertEquals("test", container.origin);
-		assertEquals("test", container.organization);
-		assertEquals("testFile2", container.year);
+//		assertEquals("test", container.reportCategory);
+//		assertEquals("test", container.origin);
+//		assertEquals("test", container.organization);
+//		assertEquals("testFile2", container.year);
 		/**
 		 * checking vocabulary
 		 */
@@ -577,46 +577,47 @@ public class Tests {
 		assertArrayEquals(expected, actual);
 	}
 	
-	/**
-	 * Test the method in DocumentContainer which gets the attributes of a report out of the files name.
-	 */
-	@Test
-	public void testDocumentContainerGetDocumentAttributes(){
-		String input;
-		String[] expected;
-		String[] actual;
-		//normal case, everything is fine here.
-		input = "Annual_Reports.Dax.Adidas.1996.txt";
-		expected = new String[]{"Annual_Reports", "Dax", "Adidas", "1996", "txt"};
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-		//everything is normal here, too
-		input = "Annual_Reports.FTSE.WPP.2006.txt";
-		expected = new String[]{"Annual_Reports", "FTSE", "WPP","2006", "txt" };
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-		//too many parts caused by additional suffix
-		input = "Annual_Reports.DowJones.Johnson_Johnson.2009.PDF.txt";
-		expected = new String[]{"Annual_Reports", "DowJones","Johnson_Johnson","2009", "txt"}; 
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-		//too many parts caused by E.ON
-		input = "CSR_Reports.Dax.EON.E.ON_CR_Report_2004.txt";
-		expected = new String[] {"CSR_Reports","Dax","EON", "2004", "txt" };	
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-		//wrong year format
-		input = "CSR_Reports.Dax.Muenchener_Rueck.MunichRe_CSR_2011.txt";
-		expected = new String[]{"CSR_Reports", "Dax", "Muenchener_Rueck","2011", "txt"};
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-		//another wrong year format
-		input= "CSR_Reports.FTSE.WPP.WPP_201314.txt";
-		expected = new String[]{"CSR_Reports","FTSE","WPP", "2013", "txt"};
-		actual = DocumentContainer.getDocumentAttributes(input);
-		assertArrayEquals(expected, actual);
-
-	}
+	//TODO remove, not in use anymore
+//	/**
+//	 * Test the method in DocumentContainer which gets the attributes of a report out of the files name.
+//	 */
+//	@Test
+//	public void testDocumentContainerGetDocumentAttributes(){
+//		String input;
+//		String[] expected;
+//		String[] actual;
+//		//normal case, everything is fine here.
+//		input = "Annual_Reports.Dax.Adidas.1996.txt";
+//		expected = new String[]{"Annual_Reports", "Dax", "Adidas", "1996", "txt"};
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//		//everything is normal here, too
+//		input = "Annual_Reports.FTSE.WPP.2006.txt";
+//		expected = new String[]{"Annual_Reports", "FTSE", "WPP","2006", "txt" };
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//		//too many parts caused by additional suffix
+//		input = "Annual_Reports.DowJones.Johnson_Johnson.2009.PDF.txt";
+//		expected = new String[]{"Annual_Reports", "DowJones","Johnson_Johnson","2009", "txt"}; 
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//		//too many parts caused by E.ON
+//		input = "CSR_Reports.Dax.EON.E.ON_CR_Report_2004.txt";
+//		expected = new String[] {"CSR_Reports","Dax","EON", "2004", "txt" };	
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//		//wrong year format
+//		input = "CSR_Reports.Dax.Muenchener_Rueck.MunichRe_CSR_2011.txt";
+//		expected = new String[]{"CSR_Reports", "Dax", "Muenchener_Rueck","2011", "txt"};
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//		//another wrong year format
+//		input= "CSR_Reports.FTSE.WPP.WPP_201314.txt";
+//		expected = new String[]{"CSR_Reports","FTSE","WPP", "2013", "txt"};
+//		actual = DocumentContainer.getDocumentAttributes(input);
+//		assertArrayEquals(expected, actual);
+//
+//	}
 	
 	
 }

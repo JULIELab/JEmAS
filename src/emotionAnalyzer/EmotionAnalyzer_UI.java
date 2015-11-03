@@ -58,10 +58,10 @@ public class EmotionAnalyzer_UI {
 	
 	private static void printDataTemplate() {
 		System.out.println("File Name"
-				+ "\tReport Category"
-				+ "\tOrigin"
-				+ "\tOrganization"
-				+ "\tYear"
+//				+ "\tReport Category"
+//				+ "\tOrigin"
+//				+ "\tOrganization"
+//				+ "\tYear"
 				+ "\tValence"
 				+ "\tArousal"
 				+ "\tDominance"
