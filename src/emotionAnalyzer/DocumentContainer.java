@@ -18,7 +18,7 @@ public class DocumentContainer {
 
 	final File document;
 	final File normalizedDocument;
-	final File documentTermVector;
+//	final File documentTermVector;
 
 	// final private String documentPath;
 	// final private File documentFile;
@@ -56,17 +56,18 @@ public class DocumentContainer {
 	EmotionVector standardDeviationVector;
 
 	public DocumentContainer(File givenDocument,
-			File givenNormalizedDocumentFolder,
-			File givenDocumentTermVectorFolder) {
+			File givenNormalizedDocumentFolder
+//			File givenDocumentTermVectorFolder
+			) {
 		// initialize final fields for files of the document, the normalized
 		// document and the document-term-vector
 		this.document = givenDocument;
 		this.normalizedDocument = new File(
 				givenNormalizedDocumentFolder.getPath()+"/"
 						+ givenDocument.getName());
-		this.documentTermVector = new File(
-				givenDocumentTermVectorFolder.getPath()+"/"
-						+ givenDocument.getName());
+//		this.documentTermVector = new File(
+//				givenDocumentTermVectorFolder.getPath()+"/"
+//						+ givenDocument.getName());
 //		// Initialize the attributes of the document as coded in the filename.
 //		String[] nameParts = getDocumentAttributes(this.document.getName());
 //		this.reportCategory = nameParts[0];
@@ -182,20 +183,20 @@ public class DocumentContainer {
 		return recognizedTokenCount;
 	}
 
-	public int[] getDocumentTermVector(int vocabularySize) 
-			throws NumberFormatException, IOException {
-		int[] vector = new int[vocabularySize];
-		BufferedReader reader = new BufferedReader(new FileReader(
-				this.documentTermVector));
-		String currentLine;
-		int i = 0;
-		while ((currentLine = reader.readLine()) != null) {
-			vector[i] = Integer.parseInt(currentLine);
-			i++;
-		}
-		reader.close();
-		return vector;
-	}
+//	public int[] getDocumentTermVector(int vocabularySize) 
+//			throws NumberFormatException, IOException {
+//		int[] vector = new int[vocabularySize];
+//		BufferedReader reader = new BufferedReader(new FileReader(
+//				this.documentTermVector));
+//		String currentLine;
+//		int i = 0;
+//		while ((currentLine = reader.readLine()) != null) {
+//			vector[i] = Integer.parseInt(currentLine);
+//			i++;
+//		}
+//		reader.close();
+//		return vector;
+//	}
 
 	// public double getNormalizationParameter() {
 	// return normalizationParameter;
