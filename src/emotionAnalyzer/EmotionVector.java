@@ -81,16 +81,20 @@ public class EmotionVector {
 
 	public static EmotionVector calculateMean(List<EmotionVector> emotionVectors) {
 		EmotionVector result = new EmotionVector(0,0,0);
-		for (EmotionVector emo: emotionVectors){
-			result.addVector(emo);
+		if (emotionVectors.size() == 0) return result;
+		else{
+			for (EmotionVector emo: emotionVectors){
+				result.addVector(emo);
+			}
+			result.normalize(emotionVectors.size());	
+			return result;
 		}
-		result.normalize(emotionVectors.size());	
-		return result;
 	}
 	
 	
 
 	public static EmotionVector calculateStandardDeviation(List<EmotionVector> emotionVectors, EmotionVector mean){
+		if (emotionVectors.size() == 0) return new EmotionVector(0,0,0);
 		double resultValence;
 		double resultArousal;
 		double resultDominance;

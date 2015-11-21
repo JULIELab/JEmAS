@@ -468,12 +468,36 @@ public class Tests {
 		
 		DocumentContainer container;
 		
+		
 		/**
-		 * Checking testfile4 ("I love to eat cake and icecream")
+		 * Checking testfile3 ("NothingInLexikon") 
+		 * this is for checking if EmotionAnalyzer produces 0,0,0 instead of NaN if no token
+		 * has been recognized.
 		 */
 		container = containers[2];
 //		System.out.println(container.)
 		//check emotion vector
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(0.0, 0.0, 0.0)));
+		//check standard deviation vector
+//		container.standardDeviationVector.print();
+		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(0.0,0.0,0.0)));
+		//ckeck token count
+		assertEquals(1, container.tokenCount);
+		//check alphabetic tokens
+		assertEquals(1, container.alphabeticTokenCount);
+		//check non-stopword tokens
+		assertEquals(1, container.non_stopword_tokenCount);
+		//check recognized tokens
+		assertEquals(0, container.recognizedTokenCount);
+		
+		
+		/**
+		 * Checking testfile4 ("I love to eat cake and icecream")
+		 */
+		container = containers[3];
+//		System.out.println(container.)
+		//check emotion vector
+		container.documentEmotionVector.print();
 		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(2.56, 0.0233333333, 1.3533333333)));
 		//check standard deviation vector
 //		container.standardDeviationVector.print();
@@ -495,7 +519,7 @@ public class Tests {
 		/**
 		 * checking testfile3 ("I am very happy to go outside.")
 		 */
-		container = containers[3];
+		container = containers[4];
 		//check emotion vector
 		assertEquals(false, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.012)));
 		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.01333)));
@@ -560,7 +584,7 @@ public class Tests {
 		/**
 		 * checking vocabulary
 		 */
-		String[] expected = new String[]{"love", "leukemia", "be", "test", "happy", "go", "AIDS", "librarian", "earthquake", "calm", "icecream", "cake", "outside", "fish", "lobotomy", "eat", "ThisIsNotInLexicon"};
+		String[] expected = new String[]{"love", "leukemia", "be", "test", "happy", "go", "AIDS", "librarian", "earthquake", "calm", "icecream", "cake", "outside", "fish", "lobotomy", "eat", "ThisIsNotInLexicon", "nothinginlexikon"};
 		String[] actual = analyzer.getVocabulary().asArray();
 		assertArrayEquals(expected, actual);
 	}

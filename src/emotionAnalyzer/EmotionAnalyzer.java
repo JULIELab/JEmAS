@@ -13,6 +13,7 @@ import java.util.Set;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import edu.stanford.nlp.neural.NeuralUtils;
 import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
 
@@ -177,6 +178,8 @@ public class EmotionAnalyzer {
 		//this ist not more in use, because document-term-vectors will not be saved on the filesystem anymore.:  int[] documentTermVector = container.getDocumentTermVector(this.vocabulary.size);
 		String token;
 		List<EmotionVector> emotionVectors = new LinkedList<EmotionVector>();
+//		//adding neutral Vector to Emotion-Vector-List so that final Emotion-Vector of the document may not result in NaN but (0,0,0) instead.
+//		emotionVectors.add(new EmotionVector(0,0,0));
 		//adding emotionVectors to emotion vector list
 		for (int component=0 ; component<documentTermVector.length; component++){
 			if (documentTermVector[component] > 0){
@@ -190,7 +193,7 @@ public class EmotionAnalyzer {
 				}
 			}
 		}
-		container.recognizedTokenCount = emotionVectors.size();
+		container.recognizedTokenCount = emotionVectors.size(); 
 		EmotionVector meanVector = EmotionVector.calculateMean(emotionVectors);
 		EmotionVector standardDeviationVector = EmotionVector.calculateStandardDeviation(emotionVectors, meanVector);
 		container.documentEmotionVector = meanVector;
