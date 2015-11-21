@@ -51,6 +51,12 @@ public class EmotionAnalyzer {
 	private File normalizedDocumentFolder;
 //	private File documentTermVectorFolder;
 	private File VocabularyFolder;
+
+	private int[] vocabularyLexiconVector; // used for lexiconProjection. Compounents are 0 if the word
+											// represented by this index is not in the lexicon
+	
+	private double[][] vocabularyEmotionMatrix; //repräsents the emotion values of the words in
+												// the lexicon. A row is (0	0 0) if the word is not in the lexicon.
 	
 	
 //	final private File2BagOfWords_Processor f2tReader;
@@ -120,6 +126,27 @@ public class EmotionAnalyzer {
 		System.err.println("Building vocabulary...");
 		this.vocabulary = collectVocabulary();
 		
+		//calculate Vocabulary-Emotion-Matrix and vocabulary-lexicon-vector
+		this.vocabularyEmotionMatrix = new double[this.vocabulary.size][3];
+		this.vocabularyLexiconVector = new int[this.vocabulary.size];
+		for (int i=0; i< this.vocabulary.size; i++){
+			EmotionVector currentEmotionVector = this.lexicon.lookUp(this.vocabulary.getStringByIndex(i));
+			if (currentEmotionVector!=null){
+				this.vocabularyEmotionMatrix[i][0] = currentEmotionVector.getValence();
+				this.vocabularyEmotionMatrix[i][1] = currentEmotionVector.getArousal();
+				this.vocabularyEmotionMatrix[i][2] = currentEmotionVector.getDominance();
+				this.vocabularyLexiconVector[i] = 1;
+			}
+			else{
+				this.vocabularyEmotionMatrix[i][0] = 0;
+				this.vocabularyEmotionMatrix[i][1] = 0;
+				this.vocabularyEmotionMatrix[i][2] = 0;
+				this.vocabularyLexiconVector[i] = 0;
+			}
+		}
+		
+		
+		
 		//Alte Version, als Dokument-Term-Vektoren noch gespeichert wurden.
 		/** 
 		//für jedes Dokument den Dokument-Term-Vektor berechnen und in gesondertem Ordner abspeichern. Referenz in Container schreiben.
@@ -175,35 +202,85 @@ public class EmotionAnalyzer {
 	
 	
 	private void calculateEmotionVector(DocumentContainer container, int[] documentTermVector) throws IOException {
-		//this ist not more in use, because document-term-vectors will not be saved on the filesystem anymore.:  int[] documentTermVector = container.getDocumentTermVector(this.vocabulary.size);
-		String token;
-		List<EmotionVector> emotionVectors = new LinkedList<EmotionVector>();
-//		//adding neutral Vector to Emotion-Vector-List so that final Emotion-Vector of the document may not result in NaN but (0,0,0) instead.
-//		emotionVectors.add(new EmotionVector(0,0,0));
-		//adding emotionVectors to emotion vector list
-		for (int component=0 ; component<documentTermVector.length; component++){
-			if (documentTermVector[component] > 0){
-				token = vocabulary.indexMap.inverse().get(component);
-				EmotionVector currentEmotionVector = this.lexicon.lookUp(token);
-				if (currentEmotionVector!=null) {
-					//den Emotionsvektor mal den Wert des Index im Dokumenten-Term-Vektor hinzufügen, wenn der Emotionsvektor nicht null ist (weil er nicht im Lexikon auftaucht)
-					for (int i = documentTermVector[component]; i > 0; i--) {
-						emotionVectors.add(currentEmotionVector);
-					}
-				}
+//		//this ist not more in use, because document-term-vectors will not be saved on the filesystem anymore.:  int[] documentTermVector = container.getDocumentTermVector(this.vocabulary.size);
+//		String token;
+//		List<EmotionVector> emotionVectors = new LinkedList<EmotionVector>();
+////		//adding neutral Vector to Emotion-Vector-List so that final Emotion-Vector of the document may not result in NaN but (0,0,0) instead.
+////		emotionVectors.add(new EmotionVector(0,0,0));
+//		//adding emotionVectors to emotion vector list
+//		for (int component=0 ; component<documentTermVector.length; component++){
+//			if (documentTermVector[component] > 0){
+//				token = vocabulary.getStringByIndex(component);
+//				EmotionVector currentEmotionVector = this.lexicon.lookUp(token);
+//				if (currentEmotionVector!=null) {
+//					//den Emotionsvektor mal den Wert des Index im Dokumenten-Term-Vektor hinzufügen, wenn der Emotionsvektor nicht null ist (weil er nicht im Lexikon auftaucht)
+//					for (int i = documentTermVector[component]; i > 0; i--) {
+//						emotionVectors.add(currentEmotionVector);
+//					}
+//				}
+//			}
+//		}
+//		container.recognizedTokenCount = emotionVectors.size(); 
+//		EmotionVector meanVector = EmotionVector.calculateMean(emotionVectors);
+//		EmotionVector standardDeviationVector = EmotionVector.calculateStandardDeviation(emotionVectors, meanVector);
+//		container.documentEmotionVector = meanVector;
+//		container.standardDeviationVector = standardDeviationVector;
+		
+		int[] projectedDocumentTermVector = lexiconProjection(documentTermVector);
+		double valence = 0;
+		double arousal = 0;
+		double dominance = 0;
+		int recognizedTokens = 0;
+		for (int i = 0; i < this.vocabulary.size; i++){
+			valence += projectedDocumentTermVector[i]*this.vocabularyEmotionMatrix[i][0];
+			arousal += projectedDocumentTermVector[i]*this.vocabularyEmotionMatrix[i][1];
+			dominance += projectedDocumentTermVector[i]*this.vocabularyEmotionMatrix[i][2];
+			recognizedTokens +=  projectedDocumentTermVector[i];
+		}
+		container.recognizedTokenCount = recognizedTokens;
+		// if the number of recognized tokens is 0, normalisation is not possivle
+		if (recognizedTokens==0){
+			container.documentEmotionVector = new EmotionVector(0,0,0);
+			container.standardDeviationVector = new EmotionVector(0,0,0);
+		}
+		else{
+		EmotionVector emotionVector = new EmotionVector(valence, arousal, dominance);
+		emotionVector.normalize(recognizedTokens);
+		container.documentEmotionVector = emotionVector;
+		//calcualte standarddev vector
+		//squared Deviation Valence
+		double sqDevValence = 0;
+		//squared Deviation Arousl
+		double sqDevArousal = 0;
+		//squared Deviation Dominance
+		double sqDevDominance = 0;
+		//calculate summed squared deviation from mean for VAD (which is the standard dev of all recognized emotion vectors)
+		for (int i = 0; i < this.vocabulary.size; i++){
+			if(vocabularyLexiconVector[i] == 1){
+				sqDevValence += projectedDocumentTermVector[i] * Math.pow((emotionVector.getValence() - vocabularyEmotionMatrix[i][0]), 2);
+				sqDevArousal += projectedDocumentTermVector[i] * Math.pow((emotionVector.getArousal() - vocabularyEmotionMatrix[i][1]), 2);
+				sqDevDominance += projectedDocumentTermVector[i] * Math.pow((emotionVector.getDominance() - vocabularyEmotionMatrix[i][2]), 2);
 			}
 		}
-		container.recognizedTokenCount = emotionVectors.size(); 
-		EmotionVector meanVector = EmotionVector.calculateMean(emotionVectors);
-		EmotionVector standardDeviationVector = EmotionVector.calculateStandardDeviation(emotionVectors, meanVector);
-		container.documentEmotionVector = meanVector;
-		container.standardDeviationVector = standardDeviationVector;
-		
+		EmotionVector sdVector = new EmotionVector(Math.sqrt(sqDevValence/recognizedTokens),Math.sqrt(sqDevArousal/recognizedTokens),Math.sqrt(sqDevDominance/recognizedTokens));
+		container.standardDeviationVector = sdVector;
 		}
+	}
 		
 		
-	
 
+	/**
+	 * Sets all compounents of the document-term-vector to 0, if they represent a word not in
+	 * the lexicon.
+	 * @param givenDocumentTermVector
+	 * @return
+	 */
+	private int[] lexiconProjection(int[] givenDocumentTermVector){
+		for (int i=0; i<givenDocumentTermVector.length; i++){
+			givenDocumentTermVector[i] = givenDocumentTermVector[i]*this.vocabularyLexiconVector[i];			
+		}
+		return givenDocumentTermVector;
+	}
 
 	private int[] calculateDocumentTermVector(DocumentContainer container) throws IOException {
 		int index;
@@ -211,7 +288,7 @@ public class EmotionAnalyzer {
 		int[] documentTermVector = new int[this.vocabulary.size];
 		List<String> normalizedDocument = Files.readAllLines(container.normalizedDocument.toPath());
 		for (String str: normalizedDocument){
-			index = this.vocabulary.indexMap.get(str);
+			index = this.vocabulary.getIndexByString(str);
 			documentTermVector[index]++;
 		}
 //		for (int i = 0; i<documentTermVector.length; i++){

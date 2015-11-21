@@ -497,7 +497,7 @@ public class Tests {
 		container = containers[3];
 //		System.out.println(container.)
 		//check emotion vector
-		container.documentEmotionVector.print();
+//		container.documentEmotionVector.print();
 		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(2.56, 0.0233333333, 1.3533333333)));
 		//check standard deviation vector
 //		container.standardDeviationVector.print();
