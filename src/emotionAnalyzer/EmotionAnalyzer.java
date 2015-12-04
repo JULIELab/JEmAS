@@ -112,12 +112,14 @@ public class EmotionAnalyzer {
 		for (DocumentContainer cont: containers){
 			System.err.println("\t"+cont.document.getName());
 			List<String> normalizedText = lemmatizer.lemmatize(Util.readfile2String(cont.document.getPath()));
+			//measure token count
 			cont.tokenCount = normalizedText.size();
 			//Zahlen entfernen und Anzahl berechnen.
 			normalizedText = numberFilter.filter(normalizedText);
 			cont.numberCount = cont.tokenCount - normalizedText.size();
 			normalizedText = nonAlphabeticFilter.filter(normalizedText);
 			cont.alphabeticTokenCount = normalizedText.size();
+			//remove stopwords and map to lowe case (case-folding)
 			normalizedText = stopwordfilter.filter(normalizedText);
 			cont.non_stopword_tokenCount = normalizedText.size();
 			Util.writeList2File(normalizedText, cont.normalizedDocument.getPath());	

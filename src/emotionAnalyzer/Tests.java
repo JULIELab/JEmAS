@@ -565,9 +565,9 @@ public class Tests {
 		container=containers[1];
 		//check emotion vector
 		assertEquals(false, container.documentEmotionVector.equals(new EmotionVector(1.99, -0.22, 1.012)));
-		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(-1.405, -0.625,-1.1733333333)));
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(-1.04, -0.83333333,-0.95166666666666)));
 		//check standard deviation vector
-		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(2.2311114569, 1.9608735298 ,1.9010669519)));
+		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(1.997631931396105, 1.9497749157844406 ,1.9331530088318296)));
 		//ckeck token count
 		assertEquals(7, container.tokenCount);
 		//check alphabetic tokens
@@ -584,7 +584,7 @@ public class Tests {
 		/**
 		 * checking vocabulary
 		 */
-		String[] expected = new String[]{"love", "leukemia", "be", "test", "happy", "go", "AIDS", "librarian", "earthquake", "calm", "icecream", "cake", "outside", "fish", "lobotomy", "eat", "ThisIsNotInLexicon", "nothinginlexikon"};
+		String[] expected = new String[]{"love", "leukemia", "be", "test", "happy", "go", "librarian", "earthquake", "calm", "icecream", "cake", "outside", "fish", "lobotomy", "eat", "aids","thisisnotinlexicon", "nothinginlexikon", };
 		String[] actual = analyzer.getVocabulary().asArray();
 		assertArrayEquals(expected, actual);
 	}
@@ -597,7 +597,7 @@ public class Tests {
 	public void testFilterNonAlphabetics(){
 		NonAlphabeticFilter filter = new NonAlphabeticFilter();
 		String[] input = {"123", "123a", "a-b", ".", "djfkdjf", "apple", "tree", "mushroom", "Mr. President"};
-		String[] expected = {"123a", "a-b","djfkdjf", "apple", "tree", "mushroom", "Mr. President"};
+		String[] expected = {"a-b","djfkdjf", "apple", "tree", "mushroom", "Mr. President"};
 		List<String> inputList = Arrays.asList(input);
 		List<String> actualList = filter.filter(inputList);
 		String[] actual = actualList.toArray(new String[actualList.size()]);
@@ -648,9 +648,10 @@ public class Tests {
 	
 	@Test
 	public void testNumberFilter(){
-		List<String> testList = Arrays.asList(new String[]{"a", "b", "test", "133", "1", "foo", "bar", "000"});
+		List<String> testList = Arrays.asList(new String[]{"a", "b", "test", "133", "1", "foo", "bar", "000", "$12", "$12.50", "£12", 
+				"£12.50", "€12.50","€12foo.50", "123.9382", "145.246345%", "23/45/2424"});
 		List<String> actualList = new NumberFilter().filter(testList);
-		List<String> expectedList = Arrays.asList(new String[]{"a", "b", "test", "foo", "bar"});
+		List<String> expectedList = Arrays.asList(new String[]{"a", "b", "test", "foo", "bar", "€12foo.50"});
 		assertArrayEquals(expectedList.toArray(new String[expectedList.size()]), actualList.toArray(new String[actualList.size()]));
 //		for (String line: actualList) System.out.println(line);
 	}
