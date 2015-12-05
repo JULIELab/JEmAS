@@ -23,6 +23,12 @@ public class EmotionVector {
 		return this.dominance;
 	}
 	
+	void divide(double divisor){
+		this.valence = this.valence/divisor;
+		this.arousal = this.arousal/divisor;
+		this.dominance = this.dominance/divisor;
+	}
+	
 	void addVector(EmotionVector givenVector){
 		this.valence+=givenVector.getValence();
 		this.dominance+=givenVector.getDominance();

@@ -44,6 +44,11 @@ public class StanfordLemmatizer {
         this.pipeline = new StanfordCoreNLP(props);
     }
 
+    /**
+     * Takes a string and returns a list of lemmas.
+     * @param documentText
+     * @return
+     */
     public List<String> lemmatize(String documentText)
     {
         List<String> lemmas = new LinkedList<String>();
@@ -65,5 +70,23 @@ public class StanfordLemmatizer {
         }
 
         return lemmas;
+    }
+    
+    
+    /**
+     * 
+     * @param input
+     * @return
+     */
+    public String lemmatizeToken(String input){
+    	List<String> lemmatizedInput = this.lemmatize(input);
+    	String output ="";
+    	// concats all lemmas in with blank in between
+    	for (String str: lemmatizedInput){
+    		output = output+str+" ";
+    	}
+    	//cuts off last blank.
+    	output = output.substring(0, output.length()-1);
+    	return output;
     }
 }

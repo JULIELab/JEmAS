@@ -73,8 +73,8 @@ public class EmotionAnalyzer {
 	 * @throws IOException
 	 */
 	public EmotionAnalyzer(String givenLexiconPath) throws IOException{
-		this.lexicon = new EmotionLexicon(givenLexiconPath);
 		this.lemmatizer = new StanfordLemmatizer();
+		this.lexicon = new EmotionLexicon(givenLexiconPath, this.lemmatizer);
 		this.stemmer = new PorterStemmerWrapper();
 		this.nonAlphabeticFilter = new NonAlphabeticFilter();
 		this.stopwordfilter = new StopwordFilter(Util.readFile2List(Util.STOPWORDLIST)); 

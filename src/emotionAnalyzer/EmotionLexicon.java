@@ -7,24 +7,28 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import porterStemmer.PorterStemmerWrapper;
+import stanford_lemmatizer.StanfordLemmatizer;
 
 public class EmotionLexicon {
 	
+	//StanfordLemmatizer lemmatizer;
 	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	HashMap<String, EmotionVector> LexiconMap = new HashMap<String, EmotionVector>(14000,(float)1.0);
 		
-	public EmotionLexicon() throws IOException{
-//		System.out.println("loading lexicon");
-		this.loadLexicon();
-	}
+//	public EmotionLexicon() throws IOException{
+////		System.out.println("loading lexicon");
+//		this.loadLexicon();
+//	}
 	
-	public EmotionLexicon(String lexiconPath) throws IOException{
-		this.loadLexicon(lexiconPath);
+	public EmotionLexicon(String lexiconPath, StanfordLemmatizer lemmatizer) throws IOException{
+		this.loadLexicon(lexiconPath, lemmatizer);
 	}
 	
 	/**
@@ -55,24 +59,26 @@ public class EmotionLexicon {
 	
 
 	//deprecated?
-		private void loadLexicon() throws IOException{
-		try {
-			//if unpacked
-			this.loadLexicon(lexiconPath);
-		} catch (Exception e) {
-			//if packed in jar
-			this.loadLexicon(Util.DEFAULTLEXICON_JAR);
-		}
-	}
+//		private void loadLexicon() throws IOException{
+//		try {
+//			//if unpacked
+//			this.loadLexicon(lexiconPath);
+//		} catch (Exception e) {
+//			//if packed in jar
+//			this.loadLexicon(Util.DEFAULTLEXICON_JAR);
+//		}
+//	}
+//	
+//	public Set<String> getKeySet(){
+//		return LexiconMap.keySet();
+//	}
 	
-	public Set<String> getKeySet(){
-		return LexiconMap.keySet();
-	}
 	
-	
-	private void loadLexicon(String path) throws IOException{
+	private void loadLexicon(String path, StanfordLemmatizer lemmatizer ) throws IOException{
 		BufferedReader bReader = null;
 		String line = null;
+		List<Token> tokenList = new LinkedList<Token>();
+		List<Lemma> lemmaList = new LinkedList<Lemma>();
 		
 		bReader = Util.file2BufferedReader(path);
 		 while ((line = bReader.readLine())!=null){
@@ -83,12 +89,37 @@ public class EmotionLexicon {
 			 String[] line2Array = line.split("\t");
 			 String currentWord = line2Array[0];
 			 if (line2Array.length==4){ //checks if csv-entry is well-formed. Otherwise, OutOfArray-Exepction may occur.
-				 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).
+				 //transforms the last 3 coloums of the csv-file into an emotion Vector. String values have to be transformed to double using Double.parseDouble(string).#
+				 //reads EmotionVector of token currentWord
 				 EmotionVector currentVector = new EmotionVector(Double.parseDouble(line2Array[1]), Double.parseDouble(line2Array[2]), Double.parseDouble(line2Array[3]));
-				 this.LexiconMap.put(currentWord, currentVector);
+				// filing tokenList with all the entries from the external Lexicon
+				 tokenList.add(new Token(currentWord, currentVector));
 			 }
 		 }
+		 // mapping tokens to lemmas filling lemmaList
+		for (Token currentToken: tokenList){
+			boolean exists = false;
+			String lemmatizedToken = lemmatizer.lemmatizeToken(currentToken.tokenName);
+			for (Lemma currentLemma : lemmaList){
+				if (currentLemma.lemmaName == lemmatizedToken){
+					currentLemma.tokenList.add(currentToken);
+					exists = true;
+				}
+			}
+			if (exists == false){
+				Lemma newLemma = new Lemma();
+				newLemma.lemmaName = lemmatizedToken;
+				newLemma.tokenList.add(currentToken);
+				lemmaList.add(newLemma);
+			}
+		}
+		//calculate lemma emotion and write into lexicon map.
+		for (Lemma currentLemma: lemmaList){
+			currentLemma.calculateEmotion();
+			this.LexiconMap.put(currentLemma.lemmaName, currentLemma.emotionVector);
+		}
 		
+
 
 	}
 	
@@ -119,34 +150,35 @@ public class EmotionLexicon {
 	
 	
 	
+	//dont really need this, transformation can be done beforehand.
 	
-	/**
-	 * converts a lexicon csc file by loading it to internal map representation, adding a given vector to every emotion vector in the lexicon.
-	 * This can be done a adjust the "neutral emotion vector" of a lexicon: if the lexicon was build using likert-scale the neutral vector will
-	 * usually be (5,5,5). However, for computation (0,0,0) would be more suitable.
-	 * @param additionalVector
-	 * @param outputPath
-	 * @throws IOException
-	 */
-	//not tested yet
-	public void convertLexicon(EmotionVector additionalVector, double multiplicationConstant) throws IOException{
-		String line = null;
-		this.loadLexicon();
-		for (Map.Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){
-			
-			EmotionVector currentVector = currentEntry.getValue();
-			currentVector.addVector(additionalVector);
-			currentVector.multiplyWithConstant(multiplicationConstant);
-			//transforms a map entry into a string
-			line = currentEntry.getKey()+"/t"+currentVector.getValence()+"/t"+currentVector.getArousal()+"/t"+
-					currentVector.getDominance();
-			//
-			try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-		              new FileOutputStream("convertedLexicon.txt"), "utf-8"))) {
-		   writer.write(line+"\n");
-			}
-		}
-	}
+//	/**
+//	 * converts a lexicon csc file by loading it to internal map representation, adding a given vector to every emotion vector in the lexicon.
+//	 * This can be done a adjust the "neutral emotion vector" of a lexicon: if the lexicon was build using likert-scale the neutral vector will
+//	 * usually be (5,5,5). However, for computation (0,0,0) would be more suitable.
+//	 * @param additionalVector
+//	 * @param outputPath
+//	 * @throws IOException
+//	 */
+//	//not tested yet
+//	public void convertLexicon(EmotionVector additionalVector, double multiplicationConstant) throws IOException{
+//		String line = null;
+//		this.loadLexicon();
+//		for (Map.Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){
+//			
+//			EmotionVector currentVector = currentEntry.getValue();
+//			currentVector.addVector(additionalVector);
+//			currentVector.multiplyWithConstant(multiplicationConstant);
+//			//transforms a map entry into a string
+//			line = currentEntry.getKey()+"/t"+currentVector.getValence()+"/t"+currentVector.getArousal()+"/t"+
+//					currentVector.getDominance();
+//			//
+//			try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+//		              new FileOutputStream("convertedLexicon.txt"), "utf-8"))) {
+//		   writer.write(line+"\n");
+//			}
+//		}
+//	}
 	
 	
 	// Currently not in use.
