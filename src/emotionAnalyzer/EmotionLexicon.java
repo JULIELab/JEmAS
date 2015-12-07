@@ -101,7 +101,7 @@ public class EmotionLexicon {
 			boolean exists = false;
 			String lemmatizedToken = lemmatizer.lemmatizeToken(currentToken.tokenName);
 			for (Lemma currentLemma : lemmaList){
-				if (currentLemma.lemmaName == lemmatizedToken){
+				if (currentLemma.lemmaName.equals(lemmatizedToken)){
 					currentLemma.tokenList.add(currentToken);
 					exists = true;
 				}
@@ -140,7 +140,7 @@ public class EmotionLexicon {
 	
 	
 	
-	void printLexicon(){
+	public void printLexicon(){
 		for (Entry<String, EmotionVector> currentEntry: LexiconMap.entrySet()){
 			System.out.print(currentEntry.getKey()+"\t");
 			currentEntry.getValue().print();

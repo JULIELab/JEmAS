@@ -11,8 +11,8 @@ public class Token {
 		this.tokenName = tokenName;
 		this.emotionVector = emotionVector;
 	}
-	final String tokenName;
-	final EmotionVector emotionVector;
+	public final String tokenName;
+	public final EmotionVector emotionVector;
 	
 	
 

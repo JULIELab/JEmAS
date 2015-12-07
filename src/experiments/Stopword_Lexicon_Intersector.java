@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
+import stanford_lemmatizer.StanfordLemmatizer;
 import emotionAnalyzer.EmotionLexicon;
 import emotionAnalyzer.Util;
 
@@ -15,7 +16,7 @@ public class Stopword_Lexicon_Intersector {
 	 * @throws IOException 
 	 */
 	public static void main (String[] args) throws IOException{
-		EmotionLexicon lexicon = new EmotionLexicon(Util.DEFAULTLEXICON);
+		EmotionLexicon lexicon = new EmotionLexicon(Util.DEFAULTLEXICON, new StanfordLemmatizer());
 		List<String> stopwords = Files.readAllLines(new File("resources/unique_lemmatized_stopwords.txt").toPath());
 		List<String> intersection = new LinkedList<String>();
 		for (String str : stopwords){

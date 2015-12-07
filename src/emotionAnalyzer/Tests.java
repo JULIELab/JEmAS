@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
@@ -217,7 +218,9 @@ public class Tests {
 	
 	@Test
 	public void testLemmatizeToken(){
-		String input = "AIDS";
+		String input = "pancake";
+		System.out.println(lemmatizer.lemmatizeToken(input));
+		input = "pancakes";
 		System.out.println(lemmatizer.lemmatizeToken(input));
 		
 	}
@@ -255,6 +258,27 @@ public class Tests {
 		//again testing normalization
 		testVector.normalize(4);
 		assertTrue(testVector.equals(testVectorNormalized));
+		vector1 = new EmotionVector(1,2,3);
+		vector2 = new EmotionVector(3,2,1);
+		List<EmotionVector> vectorList = Arrays.asList(new EmotionVector[]{vector1,vector2});
+		for (EmotionVector vec: vectorList){
+			vec.print();
+		}
+		//mean
+		EmotionVector.calculateMean(vectorList).print();
+		assertEquals(true, new EmotionVector(2,2,2).equals(EmotionVector.calculateMean(vectorList)));
+		//sd
+		assertEquals(true, new EmotionVector(1,0,1).equals( 
+				EmotionVector.calculateStandardDeviation(vectorList, EmotionVector.calculateMean(vectorList))));
+		assertEquals(true, new EmotionVector(1,0,1).equals(
+				EmotionVector.calculateStandardDeviation(vectorList)));
+		//min
+		assertEquals(true, new EmotionVector(1,2,1).
+				equals(EmotionVector.calculateMinimumVector(vectorList)));
+		//max
+		assertEquals(true, new EmotionVector(3,2,3).
+				equals(EmotionVector.calculateMaximumVector(vectorList)));
+		
 	}
 	
 	/**
@@ -271,8 +295,6 @@ public class Tests {
 				(vectorLovable.equals(lexicon.lookUp("lovable"))) &&
 				(lexicon.lookUp("this is not in lexikon")==null)
 				);
-		System.setOut(new PrintStream(new File("Lemmatisiertes_Lexikon_2015-12-05.csv")));
-		lexicon.printLexicon();
 	}
 	
 	

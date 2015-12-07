@@ -98,7 +98,10 @@ public class EmotionVector {
 	}
 	
 	
-
+	public static EmotionVector calculateStandardDeviation(List<EmotionVector> emotionVectors){
+		return calculateStandardDeviation(emotionVectors, EmotionVector.calculateMean(emotionVectors));
+	}
+	
 	public static EmotionVector calculateStandardDeviation(List<EmotionVector> emotionVectors, EmotionVector mean){
 		if (emotionVectors.size() == 0) return new EmotionVector(0,0,0);
 		double resultValence;
@@ -119,6 +122,30 @@ public class EmotionVector {
 		resultArousal = Util.stdev(arrayArousal);
 		resultDominance = Util.stdev(arrayDominance);	
 		return new EmotionVector(resultValence, resultArousal, resultDominance);
+	}
+	
+	public static EmotionVector calculateMinimumVector(List<EmotionVector> vectorList){
+		double minV = vectorList.get(0).getValence();
+		double minA = vectorList.get(0).getArousal();
+		double minD = vectorList.get(0).getDominance();
+		for (EmotionVector currentVector: vectorList){
+			minV = Math.min(minV, currentVector.getValence());
+			minA = Math.min(minA, currentVector.getArousal());
+			minD = Math.min(minD, currentVector.getDominance());
+		}
+		return new EmotionVector(minV, minA, minD);
+	}
+	
+	public static EmotionVector calculateMaximumVector(List<EmotionVector> vectorList){
+		double maxV = vectorList.get(0).getValence();
+		double maxA = vectorList.get(0).getArousal();
+		double maxD = vectorList.get(0).getDominance();
+		for (EmotionVector currentVector: vectorList){
+			maxV = Math.max(maxV, currentVector.getValence());
+			maxA = Math.max(maxA, currentVector.getArousal());
+			maxD = Math.max(maxD, currentVector.getDominance());
+		}
+		return new EmotionVector(maxV, maxA, maxD);
 	}
 
 }
