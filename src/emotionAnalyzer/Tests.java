@@ -531,14 +531,15 @@ public class Tests {
 //		System.out.println(container.)
 		//check emotion vector
 //		container.documentEmotionVector.print();
-		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(2.4433333333333334, 0.09999999999999998, 1.6066666666666667)));
+		assertEquals(true, container.documentEmotionVector.equals(new EmotionVector(2.5016, 0.0616666, 1.4799999)));
 		//check standard deviation vector
 //		container.standardDeviationVector.print();
-		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(0.24444949489732132, 0.5200640986134946, 0.5657639869140566)));
+		assertEquals(true, container.standardDeviationVector.equals(new EmotionVector(0.301118, 0.485632, 0.577581)));
 		//ckeck token count
 		assertEquals(13, container.tokenCount);
 		//check alphabetic tokens
 		assertEquals(7, container.alphabeticTokenCount);
+		assertEquals(3, container.numberCount);
 		//check non-stopword tokens
 		assertEquals(4, container.non_stopword_tokenCount);
 		//check recognized tokens
