@@ -1,6 +1,0 @@
-Hallo, das ist ein Test.
-hier mache ich ein paar änderungen an test.txt!
-
-das ist nur im master!
-
-...und jetzt auch im branch1

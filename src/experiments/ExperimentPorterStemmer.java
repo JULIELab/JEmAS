@@ -1,4 +1,4 @@
-package porterStemmer;
+package experiments;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,11 +8,12 @@ import java.util.Set;
 
 import stanford_lemmatizer.StanfordLemmatizer;
 import emotionAnalyzer.EmotionLexicon;
+import emotionAnalyzer.Util;
 
 public class ExperimentPorterStemmer {
 
 	public static void main(String[] arg) throws IOException{
-		EmotionLexicon currentLexicon = new EmotionLexicon();
+		EmotionLexicon currentLexicon = new EmotionLexicon(Util.DEFAULTLEXICON, new StanfordLemmatizer());
 		Set<String> unprocessedSet = currentLexicon.getKeySet();
 //		System.out.println("before processing: "+unprocessedSet.size());
 		Set<String> processedSet = new HashSet<String>();

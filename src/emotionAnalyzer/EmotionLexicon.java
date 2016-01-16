@@ -57,6 +57,15 @@ public class EmotionLexicon {
 		return stemmedMap;
 	}
 	
+	/**
+	 * 
+	 * @return Returns the key set of the internal representation of the lexicon, e.g., the the key set
+	 * of the internal hash map.
+	 */
+	public Set<String> getKeySet(){
+		return LexiconMap.keySet();
+	}
+	
 
 	//deprecated?
 //		private void loadLexicon() throws IOException{
