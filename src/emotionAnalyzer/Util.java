@@ -143,21 +143,23 @@ public class Util {
 	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false);
 	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false);
 	public static final Settings settings_stem = new Settings(Preprocessing.STEM, false);
-	public static final String TESTFILE ="src/emotionAnalyzer/test.test.test.testFile.txt";
-	public static final String TESTFILE2 ="src/emotionAnalyzer/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
-	public static final  String TESTFILE3 ="src/emotionAnalyzer/test.test.test.testFile3.txt";
-	public static final String TESTFILE_STEM = "src/emotionAnalyzer/test.test.test.testFile_Stem.txt";
-	public static final  String DEFAULTLEXICON ="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static final String DEFAULTLEXICON_JAR ="emotionAnalyzer/LexiconWarriner2013_transformed.txt";
-	public static final String TESTLEXICON="src/emotionAnalyzer/testLexicon.txt";
-	public static final String TESTFILE_LEMMA = "src/emotionAnalyzer/test.test.test.testFile_Lemma.txt";
-	public static final String TESTLEXICON_LEMMA = "src/emotionAnalyzer/testLexicon_Lemma.txt";
-	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
-	public static final String STOPWORDLIST_NLTK = "resources/NLTK_stopwords_English.txt";
-	public static final String TESTFOLDER2 ="src/emotionAnalyzer/testFolder2";
-	public static final String TESTFOLDER ="src/emotionAnalyzer/testFolder";
+	public static final String TESTFILE ="resources/test.test.test.testFile.txt";
+	public static final String TESTFILE2 ="resources/test.test.test.testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
+	public static final  String TESTFILE3 ="resources/test.test.test.testFile3.txt";
+//	public static final String TESTFILE_STEM = "src/emotionAnalyzer/test.test.test.testFile_Stem.txt";
+	public static final  String DEFAULTLEXICON ="resources/LexiconWarriner2013_transformed.txt";
+	public static final String DEFAULTLEXICON_JAR ="resources/LexiconWarriner2013_transformed.txt";
+	public static final String TESTLEXICON="resources/testLexicon.txt";
+	public static final String TESTFILE_LEMMA = "resources/test.test.test.testFile_Lemma.txt";
+	public static final String TESTLEXICON_LEMMA = "resources/testLexicon_Lemma.txt";
+//	public static final String TESTLEXICON_STEMMER = "src/emotionAnalyzer/testLexicon_Stemmer.txt";
+//	public static final String STOPWORDLIST_NLTK = "resources/NLTK_stopwords_English.txt";
+//	public static final String TESTFOLDER2 ="src/emotionAnalyzer/testFolder2";
+	public static final String TESTFOLDER ="resources/testFolder";
 	public static final String STOPWORDLIST = "resources/stopwords.txt";
-	public static final String TESTFILE4 = "src/emotionAnalyzer/type.origin.enterprise.year1999.txt";
+	public static final String TESTFILE4 = "resources/type.origin.enterprise.year1999.txt";
+	public static final String ACTUALOUTPUT ="target/actual_output.txt";
+	public static final String EXPECTEDOUTPUT ="resources/testOutput_testPrintedOutput.txt";
 
 
 }

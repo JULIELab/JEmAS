@@ -418,8 +418,8 @@ public class Tests {
 	@Test
 	public void testEmotionAnaylzer_UI() throws Exception{
 		PrintStream originalStream = System.out;
-		File acutalOutput = new File("actualOutput.txt");
-		File expectedOutput =new File("src/emotionAnalyzer/testOutput_testPrintedOutput.txt");
+		File acutalOutput = new File(Util.ACTUALOUTPUT);
+		File expectedOutput =new File(Util.EXPECTEDOUTPUT);
 		// if this file does not exist, the test will (hopefully) be run from inside a jar. In this case, create a new 
 		if (!expectedOutput.exists()){
 			expectedOutput = new File("testOutput_testPrintedOutput.txt");
