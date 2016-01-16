@@ -20,21 +20,4 @@
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/emotionAnalyzer/NLTK_stopwords_English.txt</name>
-			<type>1</type>
-			<location>/Users/sven/GitHub/EmotionAnalyzer/resources/NLTK_stopwords_English.txt</location>
-		</link>
-		<link>
-			<name>src/emotionAnalyzer/Stopwords_lemmatisiert_nicht_im_Lexikon.txt</name>
-			<type>1</type>
-			<location>/Users/sven/GitHub/EmotionAnalyzer/resources/Stopwords_lemmatisiert_nicht_im_Lexikon.txt</location>
-		</link>
-		<link>
-			<name>src/emotionAnalyzer/unique_lemmatized_stopwords.txt</name>
-			<type>1</type>
-			<location>/Users/sven/GitHub/EmotionAnalyzer/resources/unique_lemmatized_stopwords.txt</location>
-		</link>
-	</linkedResources>
 </projectDescription>
