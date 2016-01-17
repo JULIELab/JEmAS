@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -219,10 +221,9 @@ public class Tests {
 	@Test
 	public void testLemmatizeToken(){
 		String input = "pancake";
-		System.out.println(lemmatizer.lemmatizeToken(input));
+		assertEquals("pancake",lemmatizer.lemmatizeToken(input));
 		input = "pancakes";
-		System.out.println(lemmatizer.lemmatizeToken(input));
-		
+		assertEquals("pancake",lemmatizer.lemmatizeToken(input));		
 	}
 	
 	
@@ -261,11 +262,11 @@ public class Tests {
 		vector1 = new EmotionVector(1,2,3);
 		vector2 = new EmotionVector(3,2,1);
 		List<EmotionVector> vectorList = Arrays.asList(new EmotionVector[]{vector1,vector2});
-		for (EmotionVector vec: vectorList){
-			vec.print();
-		}
+//		for (EmotionVector vec: vectorList){
+//			vec.print();
+//		}
 		//mean
-		EmotionVector.calculateMean(vectorList).print();
+//		EmotionVector.calculateMean(vectorList).print();
 		assertEquals(true, new EmotionVector(2,2,2).equals(EmotionVector.calculateMean(vectorList)));
 		//sd
 		assertEquals(true, new EmotionVector(1,0,1).equals( 
@@ -308,7 +309,7 @@ public class Tests {
 		String str;
 		str = Util.readfile2String(Util.TESTFILE);
 	
-		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.", str);
+		assertEquals("File was read incorrectly.", "fish fish fish.\ntest.\nThisIsNotInLexicon.\ni it", str);
 	}
 	
 	
@@ -420,30 +421,36 @@ public class Tests {
 		PrintStream originalStream = System.out;
 		File acutalOutput = new File(Util.ACTUALOUTPUT);
 		File expectedOutput =new File(Util.EXPECTEDOUTPUT);
-		// if this file does not exist, the test will (hopefully) be run from inside a jar. In this case, create a new 
-		if (!expectedOutput.exists()){
-			expectedOutput = new File("testOutput_testPrintedOutput.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath("src/emotionAnalyzer/testOutput_testPrintedOutput.txt")), expectedOutput.getPath());
-			}
+//		//if this file does not exist, the test will (hopefully) be run from inside a jar. In this case, create a new 
+//		if (!expectedOutput.exists()){
+//			expectedOutput = new File("testOutput_testPrintedOutput.txt");
+//			Util.writeList2File(Util.readFile2List(Util.getJarPath("src/emotionAnalyzer/testOutput_testPrintedOutput.txt")), expectedOutput.getPath());
+//			}
 		PrintStream newOut = new PrintStream(acutalOutput);
 		//redirect output
 		System.setOut(newOut);
 		 //this works in IDE
-		File testfolder = new File(Util.TESTFOLDER);
+		Path testfolderPath = Files.createTempDirectory("testfolder");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE), testfolderPath+"/testFile1.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE2), testfolderPath+"/testFile2.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE3), testfolderPath+"/testFile3.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE5), testfolderPath+"/testFile5.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE4), testfolderPath+"/testFile4.txt");
+		
 		File targetFolder = new File(Util.TARGETFOLDER);
 		// if not in IDE, checks for the folder in the filesystem (in working directory)
 //		if (!testfolder.exists()) testfolder = new File("testFolder");
 		// if the folder does not exists in the filesystem, create and fill it.
-		if (!testfolder.exists()){
-//			System.err.println("********** NO TESTFOLDER. CREATING IT.");
-			testfolder = new File("testFolder");
-			testfolder.mkdir();
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE)), "testFolder/test.test.test.testFile.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE2)), "testFolder/test.test.test.testFile2.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE3)), "testFolder/type.origin.enterprise.year2000.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE4)), "testFolder/type.origin.enterprise.year1999.txt");
-		}
-		EmotionAnalyzer_UI.main(new String[]{testfolder.getPath(), targetFolder.getPath()});
+//		if (!testfolder.exists()){
+////			System.err.println("********** NO TESTFOLDER. CREATING IT.");
+//			testfolder = new File("testFolder");
+//			testfolder.mkdir();
+//			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE)), "testFolder/test.test.test.testFile.txt");
+//			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE2)), "testFolder/test.test.test.testFile2.txt");
+//			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE3)), "testFolder/type.origin.enterprise.year2000.txt");
+//			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE4)), "testFolder/type.origin.enterprise.year1999.txt");
+////		}
+		EmotionAnalyzer_UI.main(new String[]{testfolderPath.toString(), targetFolder.getPath()});
 		//switch output back to normal
 		System.setOut(originalStream);
 		//test
@@ -487,22 +494,25 @@ public class Tests {
 
 		}
 		DocumentContainer[] containers;
-		File testfolder = new File(Util.TESTFOLDER);
+		Path testfolderPath = Files.createTempDirectory("testfolder");
 		File targetFolder = new File(Util.TARGETFOLDER);
-		if (!testfolder.exists()){
-			testfolder = new File("testFolder");
-			testfolder.mkdir();
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE)), "testFolder/test.test.test.testFile.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE2)), "testFolder/test.test.test.testFile2.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE3)), "testFolder/type.origin.enterprise.year2000.txt");
-			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE4)), "testFolder/type.origin.enterprise.year1999.txt");
+//		if (!testfolder.exists()){
+//			testfolder = new File("testFolder");
+//			testfolder.mkdir();
+	
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE), testfolderPath+"/testFile1.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE2), testfolderPath+"/testFile2.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE3), testfolderPath+"/testFile3.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE5), testfolderPath+"/testFile5.txt");
+		Util.writeList2File(Util.readFile2List(Util.TESTFILE4), testfolderPath+"/testFile4.txt");
 
-		}
+//		}
 		
-		containers = analyzer.analyze(testfolder, targetFolder, Util.defaultSettings);
+		containers = analyzer.analyze(testfolderPath.toFile(), targetFolder, Util.defaultSettings);
 		
 		DocumentContainer container;
 		
+
 		
 		/**
 		 * Checking testfile3 ("NothingInLexikon") 
@@ -583,9 +593,9 @@ public class Tests {
 		//check standard deviation vector
 		assertEquals(true, containers[0].standardDeviationVector.equals(new EmotionVector(0.8573651497,0.4200223208, 0.8746856578)));
 		//ckeck token count
-		assertEquals(8, container.tokenCount);
+		assertEquals(10, container.tokenCount);
 		//check alphabetic tokens
-		assertEquals(5, container.alphabeticTokenCount);
+		assertEquals(7, container.alphabeticTokenCount);
 		//check non-stopword tokens
 		assertEquals(5, container.non_stopword_tokenCount);
 		//check recognized tokens
