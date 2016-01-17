@@ -14,7 +14,7 @@ public class EmotionAnalyzer_UI {
 	 */
 	
 	public static void main (String[] args) throws Exception{
-		if (args.length==1){
+		if (args.length > 0){
 			switch (args[0]){
 			
 			case "-help":
@@ -24,9 +24,16 @@ public class EmotionAnalyzer_UI {
 				runTests();
 				break;
 			default:
-				File dir = new File(args[0]);
+				File srcDir = new File(args[0]);
+				File targetDir;
+				if (args.length >1){
+					targetDir = new File(args[1]);
+				}
+				else{
+					targetDir = srcDir;
+				}
 				EmotionAnalyzer analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
-				DocumentContainer[] containers = analyzer.analyze(dir, Util.defaultSettings);
+				DocumentContainer[] containers = analyzer.analyze(srcDir, targetDir, Util.defaultSettings);
 				printDataTemplate();
 				for (DocumentContainer container: containers){
 					container.printData();

@@ -430,6 +430,7 @@ public class Tests {
 		System.setOut(newOut);
 		 //this works in IDE
 		File testfolder = new File(Util.TESTFOLDER);
+		File targetFolder = new File(Util.TARGETFOLDER);
 		// if not in IDE, checks for the folder in the filesystem (in working directory)
 //		if (!testfolder.exists()) testfolder = new File("testFolder");
 		// if the folder does not exists in the filesystem, create and fill it.
@@ -442,7 +443,7 @@ public class Tests {
 			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE3)), "testFolder/type.origin.enterprise.year2000.txt");
 			Util.writeList2File(Util.readFile2List(Util.getJarPath(Util.TESTFILE4)), "testFolder/type.origin.enterprise.year1999.txt");
 		}
-		EmotionAnalyzer_UI.main(new String[]{testfolder.getPath()});
+		EmotionAnalyzer_UI.main(new String[]{testfolder.getPath(), targetFolder.getPath()});
 		//switch output back to normal
 		System.setOut(originalStream);
 		//test
@@ -487,6 +488,7 @@ public class Tests {
 		}
 		DocumentContainer[] containers;
 		File testfolder = new File(Util.TESTFOLDER);
+		File targetFolder = new File(Util.TARGETFOLDER);
 		if (!testfolder.exists()){
 			testfolder = new File("testFolder");
 			testfolder.mkdir();
@@ -497,7 +499,7 @@ public class Tests {
 
 		}
 		
-		containers = analyzer.analyze(testfolder, Util.defaultSettings);
+		containers = analyzer.analyze(testfolder, targetFolder, Util.defaultSettings);
 		
 		DocumentContainer container;
 		

@@ -51,6 +51,10 @@ public class EmotionAnalyzer {
 	private File normalizedDocumentFolder;
 //	private File documentTermVectorFolder;
 	private File VocabularyFolder;
+	/**
+	 * The Folder where the additional output is saved.
+	 */
+	private File targetFolder;
 
 	private int[] vocabularyLexiconVector; // used for lexiconProjection. Compounents are 0 if the word
 											// represented by this index is not in the lexicon
@@ -83,21 +87,32 @@ public class EmotionAnalyzer {
 		
 	
 
-	DocumentContainer[] analyze(File givenCorpusFolder, Settings givenSettings) throws Exception{
+	/**
+	 * 
+	 * @param givenCorpusFolder The Folder where the txt-files which will be processed are in.
+	 * @param givenTargetFolder The Folder where the additional output (vocabulary, normalized document and 
+	 * eventually the document term vectors) will be saved.
+	 * @param givenSettings
+	 * @return
+	 * @throws Exception
+	 */
+	public DocumentContainer[] analyze(File givenCorpusFolder, File givenTargetFolder, Settings givenSettings) throws Exception{
 		//ensure everything is null
 		this.vocabulary = null;
 		this.containers = null;
 		this.corpus = null;
 		this.corpusFolder = null;
+		this.targetFolder = null;
 		//txt-files erfassen, File[] corpus füllen, container initialiseren.
 		System.err.println("Registering input files...");
 		this.corpusFolder=givenCorpusFolder;
 		if (! (corpusFolder.isDirectory() || corpusFolder.getPath().equals("emotionAnalyzer/testFolder"))) throw new Exception("Input ( "+ corpusFolder.getPath() +" ) is not a directory!");
 		this.corpus = fillCorpusArray();
+		this.targetFolder = givenTargetFolder;
 		
 		//make folders for normalized files and Document-Term-Vectors
 		System.err.println("Making directories...");
-		this.normalizedDocumentFolder = new File(this.corpusFolder.getPath()+"/Normalized_Documents");
+		this.normalizedDocumentFolder = new File(this.targetFolder.getPath()+"/Normalized_Documents");
 		this.normalizedDocumentFolder.mkdir();
 //		this.documentTermVectorFolder = new File(this.corpusFolder.getPath()+"/Document-Term-Vectors");
 //		this.documentTermVectorFolder.mkdir();
@@ -328,7 +343,7 @@ public class EmotionAnalyzer {
 	}
 	
 	private Vocabulary collectVocabulary() throws IOException{
-		this.VocabularyFolder=new File(this.corpusFolder.getAbsolutePath()+"/Vocabulary");
+		this.VocabularyFolder=new File(this.targetFolder.getAbsolutePath()+"/Vocabulary");
 		this.VocabularyFolder.mkdir();
 		Set<String> vocabularySet= new HashSet<String>();
 		for (DocumentContainer container: this.containers){

@@ -160,6 +160,7 @@ public class Util {
 	public static final String TESTFILE4 = "resources/type.origin.enterprise.year1999.txt";
 	public static final String ACTUALOUTPUT ="target/actual_output.txt";
 	public static final String EXPECTEDOUTPUT ="resources/testOutput_testPrintedOutput.txt";
+	public static final String TARGETFOLDER = "target/";
 
 
 }
