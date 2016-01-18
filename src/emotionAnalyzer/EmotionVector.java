@@ -47,7 +47,7 @@ public class EmotionVector {
 	}
 	
 	boolean equals (EmotionVector givenVector){
-		double delta = 0.0001; //rechnen mit doubles kann seltsame Rundungsfehler geben.
+		double delta = 0.0001;
 		if ( (Math.abs(this.valence-givenVector.getValence()) < delta) && (Math.abs(this.arousal-givenVector.getArousal())< delta) && (Math.abs(this.dominance-givenVector.getDominance()) < delta)) return true;
 		else return false;
 	}

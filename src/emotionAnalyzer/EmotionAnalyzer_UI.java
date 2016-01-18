@@ -7,12 +7,6 @@ import org.junit.runner.notification.Failure;
 
 public class EmotionAnalyzer_UI {
 	
-
-	/**
-	 * @param args
-	 * @throws Exception 
-	 */
-	
 	public static void main (String[] args) throws Exception{
 		if (args.length > 0){
 			switch (args[0]){
@@ -65,10 +59,6 @@ public class EmotionAnalyzer_UI {
 	
 	private static void printDataTemplate() {
 		System.out.println("File Name"
-//				+ "\tReport Category"
-//				+ "\tOrigin"
-//				+ "\tOrganization"
-//				+ "\tYear"
 				+ "\tValence"
 				+ "\tArousal"
 				+ "\tDominance"
@@ -83,15 +73,6 @@ public class EmotionAnalyzer_UI {
 		
 	}
 
-
-
-//	private static void printHelp() {
-//		System.out.println("USAGE: <option> <file>\n\n"
-//				+ "OPTIONS:\t-file\tAnalyzes a single file or a list of files.\n"
-//				+ "\t\t-folder\tAnalyzes all .txt-files in a folder.\n"
-//				+ "\t\t-help\tShow this help message");
-//	}
-	
 	private static void printHelp(){
 		System.out.println("\nUsage:\tIndicate a source folder (first argument, all txt-files will be "
 				+ "analyzed) and a target folder (second argument, auxilary files and additional output "
@@ -102,16 +83,4 @@ public class EmotionAnalyzer_UI {
 				+ "\n\t-test\t\tCheck functionality of this tool.\n"
 				);
 	}
-
-//	private static void getVector(String documentPath, EmotionAnalyzer emotionAnalyzer) throws IOException{
-////		EmotionAnalyzer currentEmotionAnalyzer = new EmotionAnalyzer(EmotionAnalyzer.DEFAULTLEXICON);
-//		DocumentContainer container = null;
-////			container = emotionAnalyzer.analyzeEmotions(documentPath);
-//		container = emotionAnalyzer.analyzeEmotions(documentPath, Util.defaultSettings);
-//		if (container!=null) {
-//			container.printData();
-//		}
-//		
-//	}
-
 }

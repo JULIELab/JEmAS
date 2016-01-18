@@ -49,7 +49,6 @@ public class Util {
 	}
 	
 	public static String readfile2String(String path) throws IOException{
-//		List<String> lines = Files.readAllLines(Paths.get(path));
 		List<String> lines = Util.readFile2List(path);
 		String output = "";
 		for (String line: lines){

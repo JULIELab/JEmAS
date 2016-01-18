@@ -14,6 +14,11 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
 
+
+
+/**
+ * Currently not in use.
+ */
 public  class File2BagOfWords_Processor {
 	StanfordLemmatizer lemmatizer = null;
 	PorterStemmerWrapper stemmer = null;
