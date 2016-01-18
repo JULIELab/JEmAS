@@ -419,8 +419,16 @@ public class Tests {
 	@Test
 	public void testEmotionAnaylzer_UI() throws Exception{
 		PrintStream originalStream = System.out;
-		File acutalOutput = new File(Util.ACTUALOUTPUT);
-		File expectedOutput =new File(Util.EXPECTEDOUTPUT);
+		File targetFolder = new File(Util.TARGETFOLDER);
+		if (!targetFolder.exists()){
+			targetFolder = new File(Files.createTempDirectory("targetFoler").toString());
+		}
+		File acutalOutput = new File(targetFolder.getPath() + "/actualOutput.txt");
+		File expectedOutput = new File(Util.EXPECTEDOUTPUT);
+//		//in case tests are run from jar file
+//		if (!expectedOutput.exists()){
+//			expectedOutput = new File (Util.EXPECTEDOUTPUT.substring(4));
+//		}
 //		//if this file does not exist, the test will (hopefully) be run from inside a jar. In this case, create a new 
 //		if (!expectedOutput.exists()){
 //			expectedOutput = new File("testOutput_testPrintedOutput.txt");
@@ -437,7 +445,7 @@ public class Tests {
 		Util.writeList2File(Util.readFile2List(Util.TESTFILE5), testfolderPath+"/testFile5.txt");
 		Util.writeList2File(Util.readFile2List(Util.TESTFILE4), testfolderPath+"/testFile4.txt");
 		
-		File targetFolder = new File(Util.TARGETFOLDER);
+	
 		// if not in IDE, checks for the folder in the filesystem (in working directory)
 //		if (!testfolder.exists()) testfolder = new File("testFolder");
 		// if the folder does not exists in the filesystem, create and fill it.
@@ -496,9 +504,10 @@ public class Tests {
 		DocumentContainer[] containers;
 		Path testfolderPath = Files.createTempDirectory("testfolder");
 		File targetFolder = new File(Util.TARGETFOLDER);
-//		if (!testfolder.exists()){
-//			testfolder = new File("testFolder");
-//			testfolder.mkdir();
+		if (!targetFolder.exists()){
+			targetFolder = new File(Files.createTempDirectory("tempFolder").toString());
+//			targetFolder.mkdir();
+		}
 	
 		Util.writeList2File(Util.readFile2List(Util.TESTFILE), testfolderPath+"/testFile1.txt");
 		Util.writeList2File(Util.readFile2List(Util.TESTFILE2), testfolderPath+"/testFile2.txt");

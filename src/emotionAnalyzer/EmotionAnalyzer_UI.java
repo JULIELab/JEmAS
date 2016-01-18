@@ -93,7 +93,14 @@ public class EmotionAnalyzer_UI {
 //	}
 	
 	private static void printHelp(){
-		System.out.println("\tUsage:\tIndicate a folder. All txt-files will be analyzed.\n\n -help\t\tPrint this message.\n-test\t\tRun tests. To do this, please place‘testFolder‘ in the working directory");
+		System.out.println("\nUsage:\tIndicate a source folder (first argument, all txt-files will be "
+				+ "analyzed) and a target folder (second argument, auxilary files and additional output "
+				+ "will be saved there). The main output of this tool will be printed in standard output."
+				+ " For further Information, please consult the README-file."
+				+ "\n\n Options:"
+				+ "\n\n\t-help\t\tPrint this message."
+				+ "\n\t-test\t\tCheck functionality of this tool.\n"
+				);
 	}
 
 //	private static void getVector(String documentPath, EmotionAnalyzer emotionAnalyzer) throws IOException{
