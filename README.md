@@ -1,4 +1,4 @@
-# EmotionAnalyzer
+# JenEmo
 JenEmo (Jena Emotion Analyzer) is an open source tool for textual emotion detection 
 written in 2015/16 at Jena University, Jena, Germany. 
 It inferes the emotion expressed by a text document on the basis of the used words. 
