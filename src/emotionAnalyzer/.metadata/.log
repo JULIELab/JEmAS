@@ -1,0 +1,22 @@
+!SESSION 2016-06-23 09:25:45.487 -----------------------------------------------
+eclipse.buildId=4.3.2.M20140221-1700
+java.version=1.8.0_40
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.standard.product -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.standard.product -keyring /Users/sven/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.standard.product -data /Users/sven/Google Drive/JULIE Lab/Emotionsanalyse/development/EmotionAnalyzer/src/emotionAnalyzer -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.standard.product -keyring /Users/sven/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui 4 4 2016-06-23 09:25:51.759
+!MESSAGE Conflicting handlers for org.eclipse.wst.xml.ui.referencedFileErrors: {org.eclipse.wst.xml.ui.internal.validation.core.errorinfo.ReferencedFileErrorsHandler} vs {org.eclipse.wst.xml.ui.internal.validation.core.errorinfo.ReferencedFileErrorsHandler}
+
+!ENTRY org.eclipse.ui 4 4 2016-06-23 09:25:51.763
+!MESSAGE Conflicting handlers for org.eclipse.wst.sse.ui.generate.xml: {org.eclipse.wst.xml.ui.internal.wizards.NewXMLHandler} vs {org.eclipse.wst.xml.ui.internal.wizards.NewXMLHandler}
+
+!ENTRY org.eclipse.ui 4 4 2016-06-23 09:25:51.764
+!MESSAGE Conflicting handlers for sed.tabletree.expandAll: {org.eclipse.wst.xml.ui.internal.handlers.ExpandAllHandler} vs {org.eclipse.wst.xml.ui.internal.handlers.ExpandAllHandler}
+
+!ENTRY org.eclipse.ui 4 4 2016-06-23 09:25:51.764
+!MESSAGE Conflicting handlers for sed.tabletree.collapseAll: {org.eclipse.wst.xml.ui.internal.handlers.CollapseAllHandler} vs {org.eclipse.wst.xml.ui.internal.handlers.CollapseAllHandler}
+
+!ENTRY org.eclipse.core.net 1 0 2016-06-23 09:25:52.761
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

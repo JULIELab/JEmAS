@@ -16,8 +16,8 @@ public class EmotionLexicon {
 	String lexiconPath="src/emotionAnalyzer/LexiconWarriner2013_transformed.txt";
 	HashMap<String, EmotionVector> LexiconMap = new HashMap<String, EmotionVector>(14000,(float)1.0);
 		
-	public EmotionLexicon(String lexiconPath, StanfordLemmatizer lemmatizer) throws IOException{
-		this.loadLexicon(lexiconPath, lemmatizer);
+	public EmotionLexicon(String lexiconPath, StanfordLemmatizer lemmatizer, Settings settings) throws IOException{
+		this.loadLexicon(lexiconPath, lemmatizer, settings);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class EmotionLexicon {
 	}
 	
 
-	private void loadLexicon(String path, StanfordLemmatizer lemmatizer ) throws IOException{
+	private void loadLexicon(String path, StanfordLemmatizer lemmatizer, Settings settings ) throws IOException{
 		BufferedReader bReader = null;
 		String line = null;
 		List<Token> tokenList = new LinkedList<Token>();
@@ -81,6 +81,10 @@ public class EmotionLexicon {
 				 tokenList.add(new Token(currentWord, currentVector));
 			 }
 		 }
+		 
+		 //unterschiedliche Verarbeitung je nach gewählter vorverarbeitung:
+		 if (settings.usedPreprocessing.equals(Preprocessing.LEMMATIZE)){
+		 
 		 // mapping tokens to lemmas filling lemmaList
 		for (Token currentToken: tokenList){
 			boolean exists = false;
@@ -103,6 +107,13 @@ public class EmotionLexicon {
 			currentLemma.calculateEmotion();
 			this.LexiconMap.put(currentLemma.lemmaName, currentLemma.emotionVector);
 		}
+		 }
+		 
+		 else if (settings.usedPreprocessing.equals(Preprocessing.NONE)){
+			 for (Token token: tokenList){
+				 this.LexiconMap.put(token.tokenName, token.emotionVector);
+			 }
+		 }
 		
 
 

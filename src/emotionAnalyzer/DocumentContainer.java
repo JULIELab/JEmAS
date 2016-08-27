@@ -2,6 +2,12 @@ package emotionAnalyzer;
 
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -44,7 +50,7 @@ public class DocumentContainer {
 	EmotionVector standardDeviationVector;
 
 	public DocumentContainer(File givenDocument,
-			File givenNormalizedDocumentFolder
+			File givenNormalizedDocumentFolder, File givenDocumentTermVectorFolder
 			) {
 		// initialize final fields for files of the document, the normalized
 		// document and the document-term-vector
@@ -54,7 +60,10 @@ public class DocumentContainer {
 						+ givenDocument.getName());
 
 		this.non_stopword_tokenCount = -1; 
+		this.documentTermVector = new File(givenDocumentTermVectorFolder.getPath()+"/"+givenDocument.getName());
 	}
+	
+	final File documentTermVector;
 
 
 	/**
@@ -67,25 +76,42 @@ public class DocumentContainer {
 	 * lexicon entry).
 	 */
 	public void printData() {
+		DecimalFormat df = new DecimalFormat("#.#####"); // Anzahl der Dezimalstellen festlegen.
 		System.out.println(this.document.getName() + "\t" 	
-				+ this.documentEmotionVector.getValence()
-				+ "\t" + this.documentEmotionVector.getArousal() + "\t"
-				+ this.documentEmotionVector.getDominance() + "\t"
-				+ this.standardDeviationVector.getValence() + "\t"
-				+ this.standardDeviationVector.getArousal() + "\t"
-				+ this.standardDeviationVector.getDominance() + "\t"
-				+ this.tokenCount + "\t"  
-				+ this.alphabeticTokenCount + "\t"
-				+ this.non_stopword_tokenCount + "\t"
-				+ this.recognizedTokenCount	+	"\t"
-				+ this.numberCount);
+				+ df.format(this.documentEmotionVector.getValence()) + "\t"
+				+ df.format(this.documentEmotionVector.getArousal()) + "\t"
+				+ df.format(this.documentEmotionVector.getDominance()) + "\t"
+				+ df.format(this.standardDeviationVector.getValence()) + "\t"
+				+ df.format(this.standardDeviationVector.getArousal()) + "\t"
+				+ df.format(this.standardDeviationVector.getDominance()) + "\t"
+				+ df.format(this.tokenCount) + "\t"  
+				+ df.format(this.alphabeticTokenCount) + "\t"
+				+ df.format(this.non_stopword_tokenCount) + "\t"
+				+ df.format(this.recognizedTokenCount)	+	"\t"
+				+ df.format(this.numberCount));
 	}
 
 	
 	/**
 	 * Number of tokens in the input text. Tokenization is done be Stanfords
 	 * PTBTokenizer.
+	 * @throws IOException 
 	 */
+	
+	public void writeDocumentTermVector(int[] vec) throws IOException{
+		FileWriter writer = new FileWriter(this.documentTermVector);
+		for (int i: vec)
+			writer.write(i +"\n");
+		writer.close();
+	}
+	
+	public int[] getDocumentTermVector() throws IOException{
+		List<String> vecList = Util.readFile2List(this.documentTermVector.getPath());
+		int[] vec = new int[vecList.size()];
+		for (int i = 0; i < vecList.size(); i++)
+			vec[i] =  Integer.parseInt(vecList.get(i));
+		return vec;
+	}
 
 	public int getTokenCount() {
 		return tokenCount;

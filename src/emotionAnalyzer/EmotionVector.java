@@ -69,7 +69,7 @@ public class EmotionVector {
 	 * or other measure).
 	 * @param length
 	 */
-	void normalize(int length){
+	void normalize(double length){
 		this.multiply(1.0/length);
 	}
 	

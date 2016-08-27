@@ -1,2 +1,2 @@
 package emotionAnalyzer;
-public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE}
+public enum Preprocessing {TOKENIZE, STEM, LEMMATIZE, NONE}

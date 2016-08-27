@@ -12,10 +12,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Set;
-
 import com.google.common.collect.HashMultiset;
 
 public class Util {
+	
+	public static double tfidf (int termFrequency, int collectionSize, int documentFrequency){
+		// watch out for implicit type cast!
+		double tfidf = (double)termFrequency * Math.log10((double)collectionSize/(double)documentFrequency);
+		return tfidf;
+	}
 	
 	static void printBagOfWords(HashMultiset<String> bagOfWords){
 		Set<String> set = bagOfWords.elementSet();
@@ -56,6 +61,13 @@ public class Util {
 			output=output+line;
 		}
 		return output;
+	}
+	
+	public static int sumOverVector(float[] a){
+		int sum = 0;
+		for (int i = 0; i < a.length; i++)
+			sum += a[i];
+		return sum;
 	}
 	
 	/**
@@ -139,9 +151,9 @@ public class Util {
 	}
 	
 	
-	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false);
-	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false);
-	public static final Settings settings_stem = new Settings(Preprocessing.STEM, false);
+	public final  static Settings defaultSettings = new Settings(Preprocessing.LEMMATIZE, false, "absolute");
+	public static final Settings settings_tokenize = new Settings(Preprocessing.TOKENIZE, false, "absolute");
+	public static final Settings settings_stem = new Settings(Preprocessing.STEM, false, "absolute");
 	public static final String TESTFILE ="src/emotionAnalyzer/testFile.txt";
 	public static final String TESTFILE2 ="src/emotionAnalyzer/testFile2.txt"; //(not normalized) Document vector should be (-8.43, -3.75, -7.04) using warriners (default) lexicon
 	public static final  String TESTFILE5 ="src/emotionAnalyzer/testFile5.txt";
@@ -161,6 +173,8 @@ public class Util {
 	public static final String EXPECTEDOUTPUT ="src/emotionAnalyzer/expectedTestOutput.txt";
 	public static final String TARGETFOLDER = "target/";
 	public static final String TESTFILE3 = "src/emotionAnalyzer/testFile3.txt";
+	
+
 
 
 }

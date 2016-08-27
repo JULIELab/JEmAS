@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Test;
+
 import stanford_lemmatizer.StanfordLemmatizer;
 
 public class Tests {
@@ -43,6 +45,28 @@ public class Tests {
 		assertEquals("pancake", lemmatizer.lemmatizeToken(input));
 	}
 
+	
+	
+	@Test
+	public void testTfidf(){
+		int tf1 = 5;
+		int tf2 = 12;
+		int N = 351;
+		int df1 = 50;
+		int df2 = 7;
+		double actual1 = Util.tfidf(tf1, N, df1);
+		double actual2 = Util.tfidf(tf2, N, df2);
+		double expected1 = 4.23168556065;
+		double expected2 = 20.4025089174;
+		//had some problems with implicit type cast...
+//		System.out.println(Math.log10(100000));
+//		System.out.println(tf1*(Math.log10(N/df1)));
+//		System.out.print((double)N/(double)df1);
+		assertEquals(expected1, actual1, 0.0000001);
+		assertEquals(expected2, actual2, 0.0000001);
+	}
+	
+	
 	/**
 	 * Tests functions of EmotionVector class: addition, equals, getters,
 	 */
@@ -109,7 +133,7 @@ public class Tests {
 	@Test
 	public void testEmotionLexicon() throws IOException {
 		EmotionLexicon lexicon = new EmotionLexicon(Util.DEFAULTLEXICON,
-				lemmatizer);
+				lemmatizer, Util.defaultSettings);
 		assertTrue(
 		// (vectorAIDS.equals(lexicon.lookUp("AIDS"))) && //to to caps-folding
 		// and lemma-folding, "AIDS" is no longer in lexicon
@@ -209,13 +233,13 @@ public class Tests {
 	 */
 	@Test
 	public void testEmotionAnalyzer() throws Exception {
-		EmotionAnalyzer analyzer;
-		try {
-			analyzer = new EmotionAnalyzer(Util.DEFAULTLEXICON);
-		} catch (Exception e1) {
-			analyzer = new EmotionAnalyzer(Util.getJarPath(Util.DEFAULTLEXICON));
+		EmotionAnalyzer analyzer = new EmotionAnalyzer();
+//		try {
+//			analyzer = new EmotionAnalyzer();
+//		} catch (Exception e1) {
+//			//analyzer = new EmotionAnalyzer(Util.getJarPath(Util.DEFAULTLEXICON));
 
-		}
+//		}
 		DocumentContainer[] containers;
 		Path testfolderPath = Files.createTempDirectory("testfolder");
 		File targetFolder = new File(Util.TARGETFOLDER);
@@ -237,7 +261,7 @@ public class Tests {
 				+ "/testFile4.txt");
 
 		containers = analyzer.analyze(testfolderPath.toFile(), targetFolder,
-				Util.defaultSettings);
+				Util.defaultSettings, Util.DEFAULTLEXICON);
 
 		DocumentContainer container;
 
