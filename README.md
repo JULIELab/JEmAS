@@ -1,9 +1,9 @@
 # JEmAS – Jena Emotion Analysis System
 
 Citation:
-'''
+```
 Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
-''''
+```
 
 JenEmo (Jena Emotion Analyzer) is an open source tool for textual emotion detection 
 written in 2015/16 at Jena University, Jena, Germany. 
