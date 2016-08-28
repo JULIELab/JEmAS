@@ -136,7 +136,7 @@ public class EmotionAnalyzer_UI {
 				+ " For further Information, please consult the README-file."
 				+ "\n\n Options:"
 				+ "\n\n\t-help\t\tPrint this message."
-				+ "\n\t-test\t\tCheck functionality of this tool.\n"
+//				+ "\n\t-test\t\tCheck functionality of this tool.\n"
 				+ "\n\t-advanced\t\tSpecify advanced settings in dialog-fashion."
 				);
 	}
