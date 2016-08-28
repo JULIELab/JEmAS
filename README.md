@@ -1,45 +1,46 @@
 # JEmAS – Jena Emotion Analysis System
 
-Citation:
-```
+##Intro
+JEmAS is an open source command line tool for measuring the emotional content of a textual document of arbitrary length. It employs a simple bag-of-words and lexicon-based approach. It follows the psychological Valence-Arousal-Dominance model of emotion so that an emotion will be represented as three-dimensional vector of numerical values. The elements of this emotion vector refer to Valence (the degree of pleasentness or unpleasentness of an emotion), Arousal (degree of calmness or excitement), and Dominance (the degree of perceived control ranging from submissive to dominant).
+
+##Citation
 Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
+
+##Usage
+JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
+- lexical normilazation: lemmatization
+- term weighting function: absolute term frequency
+- word emotion lexicon: a minor variation of Warriner's lexicon (Warriner, A.B., Kuperman, V., & Brysbaert, M. (2013). Norms of valence, arousal, and dominance for 13,915 English lemmas. Behavior Research Methods, 45, 1191-1207. Available: http://crr.ugent.be/archives/1003 ) where the range of the emotion values is transformed into [-4, 4].
+
+###Default mode:
+````
+java -jar NAME_OF_JAR INPUT_FOLDER AUXILIARY_FOLDER
+````
+Where INPUT_FOLDER is the path to a folder in which all existing files (with .txt suffix or without any suffix) will be processed and AUXILIARY_FOLDER is the path to an existing folder where auxiliary output files (such as the vocabulary) will be saved. 
+
+###Advanced mode:
+````
+java -jar NAME_OF_JAR -advanced
 ```
+You will specify your desired settings in a dialog-like fashion.
 
-JenEmo (Jena Emotion Analyzer) is an open source tool for textual emotion detection 
-written in 2015/16 at Jena University, Jena, Germany. 
-It inferes the emotion expressed by a text document on the basis of the used words. 
-For that, it employs an emotion lexicon developed 
-by pschologist which consists of 14k entries. Emotions are represented as 
-a point in a three dimensional space. The dimensions are called "valence", 
-"arousal" and "dominance". 
-They take on numeric values ranging from -4 to 4, respecively.
-git
-git
-The application is packed in a jar JAR file 
-and will be run from the command line interface. 
-The Usage is straightforward:
-	a) run the JAR file indicating a directory
-	b) run the JAR file indicating two directories
+###Formatting of custom emotion lexicons:
+The lexcion has to be csv-formatted with TAB as delimiter and without column headers. Each entry (consisting of a word and an associated VAD value) must, thus, be formatted like this:
+````
+WORD TAB VALENCE TAB AROUSAL TAB DOMINANCE
+```
+Where VALENCE, AROUSAL and DOMINANCE are numerical values.
 
-In the case a), the application will analyze all txt-files in the indicated directory. 
-It produces some auxilary files which will be saved in subdirectories. 
-The results will be printed in the standard output. Case b) differs from the first case, 
-insofar that the second argument indicates the, where the auxilary files will be saved. 
-The results will still be printed in the standard output.
-Appart from that, the argument "-help" will show a brief help-text 
-whereas the argument "-test" will run a short number of tests 
-checking the functionality of the tool. If no argument is given, the help text also
-appears.
+##Output
+The output of the tool is printed on standard output in CSV format, indicating the following information:
+- the name of the respective file
+- valence, arousal and domiance of the file as calculated by the tool
+- the standard deviation of valence arousal and dominance of the words in the file
+- the number of tokens
+- the number of "alphabetic" tokens, i.e., tokens which start with a letter (no numbers and punctuation).
+- the number of numeric expressions
+- the number of tokens left after stopword removal
+- the number of tokens which are recognized to be emotional relevant according to the emotion lexicon.
 
-The output of the tool is presented in CSV format, indicating the following information:
-	a) the name of the respective file
-	b) – d) valence, arousal and domiance of the file as calculated by the tool
-	e) – g) the standard deviation of valence arousal and dominance 
-		of the words in the file
-	h) the number of tokens
-	i) the number of "alphabetic" tokens, i.e., tokens which start with a letter 
-		(no numbers and punctuation).
-	j) the number of numeric expressions
-	k) the number of tokens left after stopword removal
-	l) the number of tokens which are recognized to be emotional relevant 
-		according to the emotion lexicon.
+## Contact
+I am happy to give additional information or get feedback on this tool via email: sven-eric.buechel@uni-jena.de
