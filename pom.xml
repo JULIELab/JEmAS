@@ -17,5 +17,23 @@
     </plugins>
   </build>
   <dependencies>
+  <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>16.0.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>3.5.2</version>
+</dependency>
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>3.5.2</version>
+    <classifier>models</classifier>
+</dependency>
 </dependencies>
 </project>

@@ -1,4 +1,8 @@
-# JenEmo
+# JEmAS – Jena Emotion Analysis System
+
+Citation:
+Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
+
 JenEmo (Jena Emotion Analyzer) is an open source tool for textual emotion detection 
 written in 2015/16 at Jena University, Jena, Germany. 
 It inferes the emotion expressed by a text document on the basis of the used words. 
@@ -7,7 +11,8 @@ by pschologist which consists of 14k entries. Emotions are represented as
 a point in a three dimensional space. The dimensions are called "valence", 
 "arousal" and "dominance". 
 They take on numeric values ranging from -4 to 4, respecively.
-
+git
+git
 The application is packed in a jar JAR file 
 and will be run from the command line interface. 
 The Usage is straightforward:
