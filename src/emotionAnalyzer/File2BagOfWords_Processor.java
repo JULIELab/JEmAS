@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-import porterStemmer.PorterStemmerWrapper;
+//import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
 
 import com.google.common.collect.HashMultiset;
@@ -21,7 +21,7 @@ import edu.stanford.nlp.process.PTBTokenizer;
  */
 public  class File2BagOfWords_Processor {
 	StanfordLemmatizer lemmatizer = null;
-	PorterStemmerWrapper stemmer = null;
+//	PorterStemmerWrapper stemmer = null;
 
 	
 	public File2BagOfWords_Processor(){
@@ -35,7 +35,7 @@ public  class File2BagOfWords_Processor {
 		    }
 		}));
 		this.lemmatizer = new StanfordLemmatizer();
-		this.stemmer = new PorterStemmerWrapper();
+//		this.stemmer = new PorterStemmerWrapper();
 		// set everything back to its original state afterwards
 		System.setErr(err); 
 	}
@@ -85,14 +85,14 @@ public  class File2BagOfWords_Processor {
 	 * @return Tokenize document with method above. Then stems the tokens using porter stemmer and returns the stemmed tokens using a multiset.
 	 * @throws IOException
 	 */
-	public HashMultiset<String> produceBagOfWords_Stems(String documentPath) throws IOException{
-		HashMultiset<String> tokens = produceBagOfWords_Token(documentPath);
-		HashMultiset<String> stems = HashMultiset.create();
-		for (String str: tokens){
-			stems.add(stemmer.stem(str));
-		}
-		return stems;
-	}
+//	public HashMultiset<String> produceBagOfWords_Stems(String documentPath) throws IOException{
+//		HashMultiset<String> tokens = produceBagOfWords_Token(documentPath);
+//		HashMultiset<String> stems = HashMultiset.create();
+//		for (String str: tokens){
+//			stems.add(stemmer.stem(str));
+//		}
+//		return stems;
+//	}
 		
 }
 

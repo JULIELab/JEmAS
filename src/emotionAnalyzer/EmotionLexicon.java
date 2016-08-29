@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import porterStemmer.PorterStemmerWrapper;
+//import porterStemmer.PorterStemmerWrapper;
 import stanford_lemmatizer.StanfordLemmatizer;
 
 public class EmotionLexicon {
@@ -36,16 +36,16 @@ public class EmotionLexicon {
 	 * Returns the a stemmed version of the lexicon's map.
 	 * Only the first occurence will be put in the map, if multiple entries are made the same by stemming.
 	 */
-	public HashMap<String, EmotionVector> getStemmedLexicon(){
-		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
-		HashMap<String, EmotionVector> stemmedMap = new HashMap<String, EmotionVector>();
-		for (Entry<String, EmotionVector> currentEntry: this.LexiconMap.entrySet()){
-			//for every entry of the orignial map, put an entry in the new map in which the key 
-			//is stemmed and the value is the same.
-			stemmedMap.putIfAbsent(stemmer.stem(currentEntry.getKey()), currentEntry.getValue());
-		}
-		return stemmedMap;
-	}
+//	public HashMap<String, EmotionVector> getStemmedLexicon(){
+//		PorterStemmerWrapper stemmer = new PorterStemmerWrapper();
+//		HashMap<String, EmotionVector> stemmedMap = new HashMap<String, EmotionVector>();
+//		for (Entry<String, EmotionVector> currentEntry: this.LexiconMap.entrySet()){
+//			//for every entry of the orignial map, put an entry in the new map in which the key 
+//			//is stemmed and the value is the same.
+//			stemmedMap.putIfAbsent(stemmer.stem(currentEntry.getKey()), currentEntry.getValue());
+//		}
+//		return stemmedMap;
+//	}
 	
 	/**
 	 * 
@@ -150,10 +150,10 @@ public class EmotionLexicon {
 	 * @return
 	 * @throws IOException
 	 */
-	public EmotionLexicon stemLexicon () throws IOException{
-		EmotionLexicon stemmedLexicon = new EmotionLexicon(this.getStemmedLexicon(), this.lexiconPath);
-		return stemmedLexicon;
-	}
+//	public EmotionLexicon stemLexicon () throws IOException{
+//		EmotionLexicon stemmedLexicon = new EmotionLexicon(this.getStemmedLexicon(), this.lexiconPath);
+//		return stemmedLexicon;
+//	}
 	
 	
 	
