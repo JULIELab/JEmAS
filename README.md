@@ -6,6 +6,9 @@ JEmAS is an open source command line tool for measuring the emotional content of
 ##Citation
 Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
 
+##Installation
+JEmAS was written for Java 7. You will need Maven to compile. Alternatively, you can use the already compiled JAR (attached with the v0.1 release).
+
 ##Usage
 JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
 - lexical normilazation: lemmatization
