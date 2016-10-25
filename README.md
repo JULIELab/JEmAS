@@ -6,6 +6,9 @@ JEmAS is an open source command line tool for measuring the emotional content of
 ##Citation
 Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
 
+##Installation
+JEmAS was written for Java 7. You will need Maven to compile. Alternatively, you can use the already compiled JAR (attached with the v0.1 release).
+
 ##Usage
 JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
 - lexical normilazation: lemmatization
@@ -32,15 +35,24 @@ WORD TAB VALENCE TAB AROUSAL TAB DOMINANCE
 Where VALENCE, AROUSAL and DOMINANCE are numerical values.
 
 ##Output
-The output of the tool is printed on standard output in CSV format, indicating the following information:
-- the name of the respective file
-- valence, arousal and domiance of the file as calculated by the tool
-- the standard deviation of valence arousal and dominance of the words in the file
-- the number of tokens
-- the number of "alphabetic" tokens, i.e., tokens which start with a letter (no numbers and punctuation).
-- the number of numeric expressions
-- the number of tokens left after stopword removal
-- the number of tokens which are recognized to be emotional relevant according to the emotion lexicon.
+The output of the tool is printed on standard output (your terminal window) in tsv format (TAB seperated values). It should look like this where "..." indicates some following lines with numbers (one line per document you analyze). 
+```
+File Name	Valence	Arousal	Dominance	StdDev Valence	StdDev Arousal	StdDev Dominance	Tokens	Alphabetic Token	Non-Stopword Tokens	Recognized Tokens	NumberCount
+test.txt	0,51901	-0,82562	0,7281	1,17961	0,82111	0,85398	612	362	274	121	25
+...
+```
+You can copy+paste this output into excel or calc to get proper formatting (or redirect the output into a file right from the start). 
+
+The columns have the following meanings:
+
+- File Name: The file you analyzed.
+- Valence, Arousal, Domiance: The three-dimensional emotion value of the document as determined by JEmAS (this is the most important piece of information you want to get from it).
+- StdDev Valence, StdDev Arousal, StdDev Dominance: Standard deviation (SD) of all the _words_ in the document in respect to their individual Valence, Arousal and Dominance ratings.
+- Token: The number of tokens (i.e., individual words, numbers, punctuation marks, ...) in your document
+- Alphabethic Token: the number of tokens which start with a letter (thus excluding numbers and punctuation).
+- Non-Stopword Tokens: the number of tokens left after stopword (mostly non-content words) removal
+- Recognized Tokens: the number of tokens which are recognized to be emotional relevant according to the emotion lexicon.
+- NumberCount: the number of numeric expressions (numbers, currency,...)
 
 ## Contact
 I am happy to give additional information or get feedback on this tool via email: sven-eric.buechel@uni-jena.de
