@@ -71,6 +71,41 @@ public class EmotionAnalyzer_UI {
 				}
 				Util.writeList2File(output_list, output);
 				break;
+			case "-config":
+				String inputfolder = args[1];
+				String lexiconpath = args[2];
+				String preprocessing_string = args[3];
+				Preprocessing preprocessing_type = null;
+				if (preprocessing_string.equals("lemmatize")) preprocessing_type = Preprocessing.LEMMATIZE;
+				else if (preprocessing_string.equals("none")) preprocessing_type = Preprocessing.NONE;
+				String weighting_function = args[4];
+				String aux_path = args[5];
+				String output_path = args[6];
+				analyzer = new EmotionAnalyzer();
+				containers = analyzer.analyze(new File(inputfolder), new File(aux_path), 
+						new Settings(preprocessing_type, false, weighting_function), lexiconpath);
+				List<String> outlist = new ArrayList<String>();
+				outlist.add(DATA_TEMPLATE);
+				DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+				symbols.setDecimalSeparator('.');
+				symbols.setGroupingSeparator(','); 
+				DecimalFormat df1 = new DecimalFormat("#.#####", symbols); // Anzahl der Dezimalstellen festlegen	
+				for ( DocumentContainer container: containers){
+					outlist.add(container.document.getName() + "\t" 	
+							+ df1.format(container.documentEmotionVector.getValence()) + "\t"
+							+ df1.format(container.documentEmotionVector.getArousal()) + "\t"
+							+ df1.format(container.documentEmotionVector.getDominance()) + "\t"
+							+ df1.format(container.standardDeviationVector.getValence()) + "\t"
+							+ df1.format(container.standardDeviationVector.getArousal()) + "\t"
+							+ df1.format(container.standardDeviationVector.getDominance()) + "\t"
+							+ df1.format(container.tokenCount) + "\t"  
+							+ df1.format(container.alphabeticTokenCount) + "\t"
+							+ df1.format(container.non_stopword_tokenCount) + "\t"
+							+ df1.format(container.recognizedTokenCount)	+	"\t"
+							+ df1.format(container.numberCount));
+				}
+				Util.writeList2File(outlist, output_path);
+				break;
 			default:
 				File srcDir = new File(args[0]);
 				File targetDir;
@@ -137,7 +172,8 @@ public class EmotionAnalyzer_UI {
 				+ "\n\n Options:"
 				+ "\n\n\t-help\t\tPrint this message."
 //				+ "\n\t-test\t\tCheck functionality of this tool.\n"
-				+ "\n\t-advanced\t\tSpecify advanced settings in dialog-fashion."
+				+ "\n\t-advanced\t\tSpecify advanced settings in dialog-fashion.\n"
+				+ "\t-config\t\t Parameters: input, lexicon, preprocessing, weighting, auxilary files, output."
 				);
 	}
 }

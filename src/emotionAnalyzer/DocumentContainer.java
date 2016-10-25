@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,7 +77,11 @@ public class DocumentContainer {
 	 * lexicon entry).
 	 */
 	public void printData() {
-		DecimalFormat df = new DecimalFormat("#.#####"); // Anzahl der Dezimalstellen festlegen.
+		
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		otherSymbols.setGroupingSeparator(','); 
+		DecimalFormat df = new DecimalFormat("#.#####", otherSymbols); // Anzahl der Dezimalstellen festlegen.
 		System.out.println(this.document.getName() + "\t" 	
 				+ df.format(this.documentEmotionVector.getValence()) + "\t"
 				+ df.format(this.documentEmotionVector.getArousal()) + "\t"
@@ -90,6 +95,22 @@ public class DocumentContainer {
 				+ df.format(this.recognizedTokenCount)	+	"\t"
 				+ df.format(this.numberCount));
 	}
+//	public void printData() {
+//	System.out.println(this.document.getName() + "\t" 	
+//			+ this.documentEmotionVector.getValence() + "\t"
+//			+ this.documentEmotionVector.getArousal() + "\t"
+//			+ this.documentEmotionVector.getDominance() + "\t"
+//			+ this.standardDeviationVector.getValence() + "\t"
+//			+ this.standardDeviationVector.getArousal() + "\t"
+//			+ this.standardDeviationVector.getDominance() + "\t"
+//			+ this.tokenCount + "\t"  
+//			+ this.alphabeticTokenCount + "\t"
+//			+ this.non_stopword_tokenCount + "\t"
+//			+ this.recognizedTokenCount	+	"\t"
+//			+ this.numberCount);
+//}
+	
+	
 
 	
 	/**
