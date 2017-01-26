@@ -55,4 +55,4 @@ The columns have the following meanings:
 - NumberCount: the number of numeric expressions (numbers, currency,...)
 
 ## Contact
-I am happy to give additional information or get feedback on this tool via email: sven-eric.buechel@uni-jena.de
+I am happy to give additional information or get feedback on this tool via email: sven.buechel@uni-jena.de
