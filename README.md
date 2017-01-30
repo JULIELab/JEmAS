@@ -17,9 +17,9 @@ JEmAS has two distinct operation mode, a default mode and an advanced mode. Usin
 
 ###Default mode:
 ````
-java -jar NAME_OF_JAR INPUT_FOLDER AUXILIARY_FOLDER
+java -jar NAME_OF_JAR INPUT AUXILIARY_FOLDER
 ````
-Where INPUT_FOLDER is the path to a folder in which all existing files (with .txt suffix or without any suffix) will be processed and AUXILIARY_FOLDER is the path to an existing folder where auxiliary output files (such as the vocabulary) will be saved. 
+Where INPUT is the path to a folder in which all existing files (with .txt suffix or without any suffix) will be processed or the path to a file where each line will then be processed indivudally (generating emotion scores for each seperate line). AUXILIARY_FOLDER is the path to an existing folder where auxiliary output files (such as the vocabulary) will be saved. 
 
 ###Advanced mode:
 ````
