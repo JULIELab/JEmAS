@@ -37,7 +37,7 @@ public class EmotionAnalyzer_UI {
 				if (preprocessing_in.equals("lemmatize")) preprocessing = Preprocessing.LEMMATIZE;
 				else if (preprocessing_in.equals("none")) preprocessing = Preprocessing.NONE;
 				else throw new Exception("Invalid preprocessing mode chosen. ");
-				System.out.print("Indicate the path of the input files. ");
+				System.out.print("Indicate the path of the input files or file. ");
 				String input = System.console().readLine();
 				System.out.print("Indicate the path where the aux files should be saved. ");
 				String aux = System.console().readLine();
@@ -165,15 +165,15 @@ public class EmotionAnalyzer_UI {
 	}
 
 	private static void printHelp(){
-		System.out.println("\nUsage:\tIndicate a source folder (first argument, all txt-files will be "
-				+ "analyzed) and a target folder (second argument, auxilary files and additional output "
+		System.out.println("\nUsage:\tIndicate a source folder or file (first argument, all txt-files will be "
+				+ "analyzed in case a folder was given; if a file was indicated, each line will be handeld  as separate document) and a target folder (second argument, auxilary files and additional output "
 				+ "will be saved there). The main output of this tool will be printed in standard output."
 				+ " For further Information, please consult the README-file."
 				+ "\n\n Options:"
 				+ "\n\n\t-help\t\tPrint this message."
 //				+ "\n\t-test\t\tCheck functionality of this tool.\n"
-				+ "\n\t-advanced\t\tSpecify advanced settings in dialog-fashion.\n"
-				+ "\t-config\t\t Parameters: input, lexicon, preprocessing, weighting, auxilary files, output."
+				+ "\n\t-advanced\tSpecify advanced settings in dialog-fashion.\n"
+				+ "\t-config\t\tParameters: input, lexicon, preprocessing, weighting, auxilary files, output."
 				);
 	}
 }

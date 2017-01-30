@@ -2,10 +2,13 @@ package emotionAnalyzer;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +18,9 @@ import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
+
+
 
 
 
@@ -115,8 +121,33 @@ public class EmotionAnalyzer {
 		//txt-files erfassen, File[] corpus füllen, container initialiseren.
 		System.err.println("Registering input files...");
 		this.corpusFolder=givenCorpusFolder;
-		if (! (corpusFolder.isDirectory() || corpusFolder.getPath().equals("emotionAnalyzer/testFolder"))) 
-			throw new Exception("Input ( "+ corpusFolder.getPath() +" ) is not a directory!");
+//		if (! (corpusFolder.isDirectory() || corpusFolder.getPath().equals("emotionAnalyzer/testFolder"))) 
+//			throw new Exception("Input ( "+ corpusFolder.getPath() +" ) is not a directory!");
+		//TODO Continue: if corpusFolder is not directory, read all lines from file, create 1 file per line in a temp directory and set this dir as corpus folder.
+		if (!corpusFolder.isDirectory()){
+			//file lesen und für jede Zeile eine neue Datei in tmpFolder schreiben
+			File tmpFolder = Files.createTempDirectory("tempCorpusFOlder").toFile();
+			try (BufferedReader br = new BufferedReader(new FileReader(corpusFolder))){
+				String line;
+				int count = 0;
+				while ((line = br.readLine()) != null){
+						count += 1;
+						File tmpFile = new File(tmpFolder.getPath() + "/"
+								+ count);
+						try {
+							PrintWriter pw = new PrintWriter(tmpFile);
+							pw.println(line);
+							pw.close();
+						} catch (IOException e) {
+							System.err
+									.print("Failed to write temporary files. Indicated input file is not a directory.");
+							System.err.print(e);
+						}
+				}
+			}
+			this.corpusFolder = tmpFolder;
+			givenTargetFolder = tmpFolder.getParentFile();
+		}
 		this.corpus = fillCorpusArray();
 		this.targetFolder = givenTargetFolder;
 		this.settings = givenSettings;
