@@ -6,6 +6,9 @@ JEmAS is an open source command line tool for measuring the emotional content of
 ## Citation
 Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensional Models and Their Implications on Emotion Representation and Metrical Evaluation. In: ECAI 2016. 22nd European Conference on Artificial Intelligence. August 29 - September 2, 2016, The Hague, Netherlands, pp. 1114-1122.
 
+## Alternative Versions
+The core functionality of JEmAS is also implemented in a [UIMA Analysis Engine](https://github.com/JULIELab/jcore-base/tree/master/jcore-jemas-ae) as part of our component repository [JCoRe](https://github.com/JULIELab/jcore-projects). This newer version should be a lot faster. However, you have to be familiar with the UIMA framework to use it.
+
 ## Installation
 JEmAS was written for Java 7. You will need Maven to compile. Alternatively, you can use the already compiled JAR (attached with the v0.1 release).
 
