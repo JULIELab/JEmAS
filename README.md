@@ -35,7 +35,7 @@ WORD TAB VALENCE TAB AROUSAL TAB DOMINANCE
 ```
 Where VALENCE, AROUSAL and DOMINANCE are numerical values.
 
-##Output
+## Output
 The output of the tool is printed on standard output (your terminal window) in tsv format (TAB seperated values). It should look like this where "..." indicates some following lines with numbers (one line per document you analyze). 
 ```
 File Name	Valence	Arousal	Dominance	StdDev Valence	StdDev Arousal	StdDev Dominance	Tokens	Alphabetic Token	Non-Stopword Tokens	Recognized Tokens	NumberCount
