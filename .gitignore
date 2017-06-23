@@ -1,5 +1,2 @@
-/target/
-.DS_Store
-.metadata/.DS_Store
-src/.DS_Store
-src/emotionAnalyzer/.DS_Store
+target*
+*.DS_Store
