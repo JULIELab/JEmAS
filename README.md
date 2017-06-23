@@ -10,7 +10,7 @@ Sven Buechel and Udo Hahn: Emotion Analysis as a Regression Problem - Dimensiona
 The core functionality of JEmAS is also implemented in a [UIMA Analysis Engine](https://github.com/JULIELab/jcore-base/tree/master/jcore-jemas-ae) as part of our component repository [JCoRe](https://github.com/JULIELab/jcore-projects). This newer version should be a lot faster. However, you have to be familiar with the UIMA framework to use it.
 
 ## Installation
-JEmAS was written for Java 7. You will need Maven to compile. Alternatively, you can use the already compiled JAR (attached with the v0.1 release).
+JEmAS was written for Java 7. If you only want to _use_ JEmAS, I recommend downloading the precompiled JAR-files from [here](https://github.com/JULIELab/JEmAS/releases). They are ready to use and come without prerequisites (other than a java installation). If you are a developer and like to build on top of JEmAS, you will need Maven for compilation. 
 
 ## Usage
 JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
