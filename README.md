@@ -12,39 +12,13 @@ The core functionality of JEmAS is also implemented in a [UIMA Analysis Engine](
 ## Installation
 JEmAS was written for Java 7. If you only want to _use_ JEmAS, I recommend downloading the precompiled JAR-files from [here](https://github.com/JULIELab/JEmAS/releases). They are ready to use and come without prerequisites (other than a java installation). If you are a developer and like to build on top of JEmAS, you will need Maven for compilation. 
 
-## Usage
-JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
-- lexical normilazation: lemmatization
-- term weighting function: absolute term frequency
-- word emotion lexicon: a minor variation of Warriner's lexicon (Warriner, A.B., Kuperman, V., & Brysbaert, M. (2013). Norms of valence, arousal, and dominance for 13,915 English lemmas. Behavior Research Methods, 45, 1191-1207. Available: http://crr.ugent.be/archives/1003 ) where the range of the emotion values is transformed into [-4, 4].
-
-### Default mode:
-````
-java -jar NAME_OF_JAR INPUT (AUXILIARY_FOLDER)
-```` 
-Where INPUT is the path to a folder in which all existing files (with .txt suffix or without any suffix) will be processed or the path to a file where each line will then be processed individually (generating emotion scores for each seperate line). AUXILIARY_FOLDER is the path to an existing folder where auxiliary output files (such as the vocabulary) will be saved. When you omit this argument, a new folder will be created in your working directory.
-
-### Advanced mode:
-````
-java -jar NAME_OF_JAR -advanced
-````
-
-You will specify your desired settings in a dialog-like fashion.
-
-### Formatting of custom emotion lexicons:
-The lexcion has to be csv-formatted with TAB as delimiter and without column headers. Each entry (consisting of a word and an associated VAD value) must, thus, be formatted like this:
-````
-WORD TAB VALENCE TAB AROUSAL TAB DOMINANCE
-```
-Where VALENCE, AROUSAL and DOMINANCE are numerical values.
-
 ## Output
-The output of the tool is printed on standard output (your terminal window) in tsv format (TAB seperated values). It should look like this where "..." indicates some following lines with numbers (one line per document you analyze). 
-```
-File Name	Valence	Arousal	Dominance	StdDev Valence	StdDev Arousal	StdDev Dominance	Tokens	Alphabetic Token	Non-Stopword Tokens	Recognized Tokens	NumberCount
-test.txt	0,51901	-0,82562	0,7281	1,17961	0,82111	0,85398	612	362	274	121	25
-...
-````
+The output of the tool is printed on standard output (your terminal window) in tsv format (TAB seperated values) which is structured like this:
+
+| File Name | Valence | Arousal  | Dominance | StdDev Valence | StdDev Arousal | StdDev Dominance | Tokens | Alphabetic Token | Non-Stopword Tokens | Recognized Tokens | NumberCount | 
+|-----------|---------|----------|-----------|----------------|----------------|------------------|--------|------------------|---------------------|-------------------|-------------| 
+| test.txt  | 0.51901 | -0.82562 | 0.7281    | 1.17961        | 0.82111        | 0.85398          | 612    | 362              | 274                 | 121               | 25          | 
+
 You can copy+paste this output into excel or calc to get proper formatting (or redirect the output into a file right from the start). 
 
 The columns have the following meanings:
@@ -57,6 +31,33 @@ The columns have the following meanings:
 - Non-Stopword Tokens: the number of tokens left after stopword (mostly non-content words) removal
 - Recognized Tokens: the number of tokens which are recognized to be emotional relevant according to the emotion lexicon.
 - NumberCount: the number of numeric expressions (numbers, currency,...)
+
+
+## Usage
+JEmAS has two distinct operation mode, a default mode and an advanced mode. Using the advanced mode, you can manually choose the employed  word emotion lexicon, the term weighting function for constructing the BOW representation (absolute frequency or TFIDF) and the preprocessing mode (no lexical normalization or lemmatization). Using the default mode, JEmAS will run with default settings:
+- lexical normilazation: lemmatization
+- term weighting function: absolute term frequency
+- word emotion lexicon: a minor variation of Warriner's lexicon (Warriner, A.B., Kuperman, V., & Brysbaert, M. (2013). Norms of valence, arousal, and dominance for 13,915 English lemmas. Behavior Research Methods, 45, 1191-1207. Available: http://crr.ugent.be/archives/1003 ) where the range of the emotion values is transformed into [-4, 4].
+
+### Default mode:
+````
+java -jar NAME_OF_JAR INPUT (AUXILIARY_FOLDER)
+```` 
+Where INPUT is the path to a folder in which all existing files (with .txt suffix or without any suffix) will be processed or the path to a file where each line will then be processed individually (generating emotion scores for each seperate line). In the latter case, the output table will use line numbers (starting with 1) in the "File Name" column instead (see above). AUXILIARY_FOLDER is the path to an existing folder where auxiliary output files (such as the vocabulary) will be saved. When you omit this argument, a new folder will be created in your working directory.
+
+### Advanced mode:
+````
+java -jar NAME_OF_JAR -advanced
+````
+
+You will specify your desired settings in a dialog-like fashion.
+
+### Formatting of custom emotion lexicons:
+The lexcion has to be csv-formatted with TAB as delimiter and without column headers. Each entry (consisting of a word and an associated VAD value) must, thus, be formatted like this:
+````
+WORD TAB VALENCE TAB AROUSAL TAB DOMINANCE
+````
+Where VALENCE, AROUSAL and DOMINANCE are numerical values.
 
 ## Contact
 I am happy to give additional information or get feedback on this tool via email: sven.buechel@uni-jena.de
