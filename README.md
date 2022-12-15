@@ -1,5 +1,8 @@
 # JEmAS – Jena Emotion Analysis System
 
+[![DOI](https://zenodo.org/badge/66729924.svg)](https://zenodo.org/badge/latestdoi/66729924)
+
+
 ## Intro
 JEmAS is an open source command line tool for measuring the emotional content of a textual document of arbitrary length. It employs a simple bag-of-words and lexicon-based approach. It follows the psychological Valence-Arousal-Dominance model of emotion so that an emotion will be represented as three-dimensional vector of numerical values. The elements of this emotion vector refer to Valence (the degree of pleasentness or unpleasentness of an emotion), Arousal (degree of calmness or excitement), and Dominance (the degree of perceived control ranging from submissive to dominant).
 
